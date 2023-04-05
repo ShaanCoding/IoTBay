@@ -9,8 +9,12 @@ import argon2 from "argon2";
 import fs from 'fs'
 import path from 'path'
 import fastifyPassport from '@fastify/passport'
+import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import { LoginDto, LoginDtoType } from "./auth/dtos/LoginDto";
+import fastifySwagger from "@fastify/swagger";
+import fastifySwaggerUi from "@fastify/swagger-ui";
 
-const server = fastify();
+const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
 // setup an Authenticator instance which uses @fastify/session
 // const fastifyPassport = new Authenticator();
@@ -22,6 +26,12 @@ server.register(fastifySecureSession, {
     path: "/"
   }
 });
+
+server.register(fastifySwagger)
+
+server.register(fastifySwaggerUi, {
+    routePrefix: '/documentation'
+})
 
 
 server.get('/', (req, res) => {
@@ -50,13 +60,16 @@ fastifyPassport.registerUserDeserializer(async (username: string, request) => {
   return user;
 });
 
-server.post(
+server.post<{ Body: LoginDtoType }>(
   "/login",
   {
-    preValidation: fastifyPassport.authenticate("local", {
+    preValidation: [fastifyPassport.authenticate("local", {
       authInfo: false,
       session: true,
-    }),
+    })],
+    schema: {
+        body: LoginDto,
+    }
   },
   (req, res) => {
     return res.status(200).send({
@@ -84,7 +97,7 @@ server.post("/register", async (req, res) => {
   });
 
   return res.status(201).send({
-    message: "Successfully created user",
+    message: `Successfully created user: ${user.username}`,
   });
 });
 
@@ -98,3 +111,4 @@ const start = async () => {
   }
 };
 start();
+
