@@ -1,0 +1,29 @@
+{
+  "name": "FastifySessionAuth",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "Sebastian Pietschner <sebastian.pietschner@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@fastify/cookie": "^8.3.0",
+    "@fastify/passport": "^2.2.0",
+    "@fastify/secure-session": "^6.0.0",
+    "@fastify/session": "^10.2.0",
+    "@prisma/client": "^4.12.0",
+    "argon2": "^0.30.3",
+    "fastify": "^4.15.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/passport-local": "^1.0.35",
+    "prisma": "^4.12.0",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.3"
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "start": "node dist/index.mjs"
+  },
+  "type": "module"
+}
