@@ -25,7 +25,7 @@ server.register(fastifySecureSession, {
 
 
 server.get('/', (req, res) => {
-    console.log(req.session)
+    console.log(req.user)
 
     res.send("Hello")
 })
