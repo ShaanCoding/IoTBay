@@ -29,7 +29,9 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "start": "node dist/index.mjs"
+    "start": "node dist/index.js",
+    "generate": "prisma generate",
+    "generate-secret-key": "node ./node_modules/@fastify/secure-session/genkey.js > secret_key"
   },
   "type": "module"
 }
