@@ -1,6 +1,6 @@
 import { FastifyRoute } from "../..";
 import fastifyPassport from "@fastify/passport";
-import { LoginDto } from "../dtos/LoginDto";
+import { LoginDto } from "../dto/LoginDto";
 
 const loginRoute = {
   method: "POST",

@@ -1,8 +1,7 @@
 import { FastifyRoute } from "../..";
 import argon2 from "argon2";
 import prisma from "../../services/prisma";
-import { LoginDto, LoginDtoType } from "../dtos/LoginDto";
-import { RegisterDto, RegisterDtoType } from "../dtos/RegisterDto";
+import { RegisterDto, RegisterDtoType } from "../dto/RegisterDto";
 
 const registerRoute = {
   schema: RegisterDto,

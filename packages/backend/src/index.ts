@@ -10,7 +10,6 @@ import fs from 'fs'
 import path from 'path'
 import fastifyPassport from '@fastify/passport'
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
-import { LoginDto, LoginDtoType } from "./auth/dtos/LoginDto";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import routes from "./routes";
