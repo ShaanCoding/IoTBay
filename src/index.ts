@@ -13,14 +13,13 @@ import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { LoginDto, LoginDtoType } from "./auth/dtos/LoginDto";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
+import routes from "./routes";
+import { bootstrap } from 'fastify-decorators';
 
 const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
-// setup an Authenticator instance which uses @fastify/session
-// const fastifyPassport = new Authenticator();
-
 server.register(fastifySecureSession, {
-  cookieName: "sessionid",
+  cookieName: "connect.sid",
   key: fs.readFileSync(new URL("../secret_key", import.meta.url)),
   cookie: {
     path: "/"
@@ -33,10 +32,7 @@ server.register(fastifySwaggerUi, {
     routePrefix: '/documentation'
 })
 
-
 server.get('/', (req, res) => {
-    console.log(req.user)
-
     res.send("Hello")
 })
 // server.register(fastifyCookie);
@@ -60,45 +56,10 @@ fastifyPassport.registerUserDeserializer(async (username: string, request) => {
   return user;
 });
 
-server.post<{ Body: LoginDtoType }>(
-  "/login",
-  {
-    preValidation: [fastifyPassport.authenticate("local", {
-      authInfo: false,
-      session: true,
-    })],
-    schema: {
-        body: LoginDto,
-    }
-  },
-  (req, res) => {
-    return res.status(200).send({
-      message: "Logged in",
-    });
-  }
-);
+export type FastifyRoute = Parameters<typeof server.route>[0];
 
-server.post("/register", async (req, res) => {
-  const { username, password } = req.body as {
-    username: string;
-    password: string;
-  };
-
-  const passwordHash = await argon2.hash(password);
-
-  const user = await prisma.user.create({
-    data: {
-      username,
-      password: passwordHash,
-    },
-    select: {
-      username: true,
-    },
-  });
-
-  return res.status(201).send({
-    message: `Successfully created user: ${user.username}`,
-  });
+routes.forEach(route => {
+  server.route(route)
 });
 
 const start = async () => {
