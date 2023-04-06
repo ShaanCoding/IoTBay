@@ -6,8 +6,8 @@ const registerRoute = {
   method: "POST",
   url: "/auth/register",
   handler: async (req, res) => {
-    const { username, password } = req.body as {
-      username: string;
+    const { email, password } = req.body as {
+      email: string;
       password: string;
     };
 
@@ -15,16 +15,17 @@ const registerRoute = {
 
     const user = await prisma.user.create({
       data: {
-        username,
+        email,
         password: passwordHash,
+        isStaff: false,
       },
       select: {
-        username: true,
+        email: true,
       },
     });
 
     return res.status(201).send({
-      message: `Successfully created user: ${user.username}`,
+      message: `Successfully created user: ${user.email}`,
     });
   },
 } satisfies FastifyRoute;

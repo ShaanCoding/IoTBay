@@ -54,13 +54,13 @@ server.register(fastifyPassport.secureSession());
 fastifyPassport.use("local", localStrategy); // you'd probably use some passport strategy f
 
 fastifyPassport.registerUserSerializer(
-  async (user: Omit<User, "password">, request) => user.username
+  async (user: Omit<User, "password">, request) => user.id
 );
 
 // ... and then a deserializer that will fetch that user from the database when a request with an id in the session arrives
-fastifyPassport.registerUserDeserializer(async (username: string, request) => {
+fastifyPassport.registerUserDeserializer(async (id: number, request) => {
   const { password, ...user } = await prisma.user.findUniqueOrThrow({
-    where: { username },
+    where: { id },
   });
   return user;
 });

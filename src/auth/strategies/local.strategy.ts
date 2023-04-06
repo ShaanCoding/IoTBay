@@ -1,8 +1,8 @@
 import { Strategy as LocalStrategy } from "passport-local";
 import prisma from "../../services/prisma";
 import argon2 from "argon2";
-export default new LocalStrategy(async (username, password, cb) => {
-  const user = await prisma.user.findUnique({ where: { username } });
+export default new LocalStrategy(async (email, password, cb) => {
+  const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
     return false;
   }
