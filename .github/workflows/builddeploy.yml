@@ -39,7 +39,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ghcr.io/isd-workshop-09-group-02/isdgroup2wrk9
+            ghcr.io/isd-workshop-09-group-02/backend
           # generate Docker tags based on the following events/attributes
           tags: |
             latest
