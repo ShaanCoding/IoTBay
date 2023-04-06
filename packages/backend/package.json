@@ -1,0 +1,38 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "Sebastian Pietschner <sebastian.pietschner@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@fastify/cookie": "^8.3.0",
+    "@fastify/cors": "^8.2.1",
+    "@fastify/passport": "^2.2.0",
+    "@fastify/secure-session": "^6.0.0",
+    "@fastify/session": "^10.2.0",
+    "@fastify/swagger": "^8.3.1",
+    "@fastify/swagger-ui": "^1.7.0",
+    "@fastify/type-provider-typebox": "^3.0.0",
+    "@prisma/client": "^4.12.0",
+    "@sinclair/typebox": "^0.26.8",
+    "argon2": "^0.30.3",
+    "fastify": "^4.15.0",
+    "fastify-decorators": "^3.15.0",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.3.46",
+    "@types/passport-local": "^1.0.35",
+    "prisma": "^4.12.0",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.3"
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "start": "node dist/index.js",
+    "generate": "prisma generate",
+    "generate-secret-key": "node ./node_modules/@fastify/secure-session/genkey.js > secret_key"
+  },
+  "type": "module"
+}
