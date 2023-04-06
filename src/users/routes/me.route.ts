@@ -8,7 +8,8 @@ export const meRoute: FastifyRoute = {
   preValidation: [],
   schema: {},
   handler: (req, res) => {
-    console.log(req.cookies)
+
+    console.log(req.session)
     if (!req.user) throw new Error("No user found");
 
     return req.user;
