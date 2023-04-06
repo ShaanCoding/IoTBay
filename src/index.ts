@@ -15,11 +15,20 @@ import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import routes from "./routes";
 import { bootstrap } from 'fastify-decorators';
-
+import fastifyCors from '@fastify/cors'
 const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
+// cors allow origin
+server.register(fastifyCors, {
+  origin: true,
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+})
+
+
 server.register(fastifySecureSession, {
-  cookieName: "connect.sid",
+  cookieName: "sessionid",
   key: fs.readFileSync(new URL("../secret_key", import.meta.url)),
   cookie: {
     path: "/"
