@@ -25,6 +25,10 @@ Authentication uses stateless sessions. Sessions are stored in the user's browse
 
 When a user logs in they send a username and password to the server which responds with a encrypted cookie containing the user's primary key. This allows the server to identify the user without storing any session data on the server.
 
+### How does authorization work?
+
+Before each query the server checks to see if the user is logged in and has the correct access level. If the user is not logged in or does not have the correct access level then the server will respond with a 401 error.
+
 ## Database
 
 The database is a local SQLite database containing all the tables specified in the `packages/backend/prisma/schema.prisma` file.
