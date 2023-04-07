@@ -47,7 +47,7 @@ model CouponsAndDiscounts {
 
 model RecentSearch {
   recentlySearchId String @id @default(cuid())
-  userId             String @unique
+  userId             String 
   user               User   @relation(fields: [userId], references: [userId])
   search             String // TODO: Recently Searched History
 }
