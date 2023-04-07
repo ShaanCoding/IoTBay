@@ -25,9 +25,13 @@ Passwords are stored in the database as a hash generated using the argon2 algori
 
 Using the same algorithm the server can verify that a password is correct without storing the password in plain text.
 
+### How do sessions work?
+
+Because it's difficult to setup and demo a full authentication system with a database, sessions are stored in the browser as an encrypted cookie. This means that even if the server is restarted the user will still be logged in and their session data will stay. The same applies for closing and opening the browser or browser window.
+
 ### How does authentication work?
 
-Authentication uses stateless sessions. Sessions are stored in the user's browser as an encrypted cookie and are signed with a secret key. 
+Authentication uses the stateless sessions described above by storing the user's primary key in the session cookie, meaning that the user can be retrieved from the database given the session cookie which is part of every request.
 
 When a user logs in they send a username and password to the server which responds with a encrypted cookie containing the user's primary key. This allows the server to identify the user without storing any session data on the server.
 
