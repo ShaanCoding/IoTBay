@@ -19,6 +19,12 @@ The last command above will serve the static files bundled with the project. If 
 
 ## Auth
 
+### How are passwords stored?
+
+Passwords are stored in the database as a hash generated using the argon2 algorithm. This means that even if the database is compromised the passwords cannot be recovered.
+
+Using the same algorithm the server can verify that a password is correct without storing the password in plain text.
+
 ### How does authentication work?
 
 Authentication uses stateless sessions. Sessions are stored in the user's browser as an encrypted cookie and are signed with a secret key. 
