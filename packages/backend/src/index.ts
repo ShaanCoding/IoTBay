@@ -21,7 +21,8 @@ import { UserDto, UserDtoType } from "../models/UserDto";
 import { ErrorDto, ErrorDtoType } from "./errors/ErrorDto";
 import fastifySensible from "@fastify/sensible";
 import {FastifyAuthFunction} from "@fastify/auth";
-import { UserCollectionDto } from "../models/UserCollection";
+import { UserCollectionDto, UserCollectionDtoType } from "../models/UserCollection";
+import fastifyAuth from '@fastify/auth'
 
 config();
 
@@ -57,6 +58,8 @@ const main = async () => {
   const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
   await server.register(fastifySensible);
+
+  await server.register(fastifyAuth)
 
   await server.register(fastifyCors, {
     origin: true,
@@ -191,7 +194,7 @@ const registerRoutes = async () => {
     schema: {
       response: {
         200: UserDto,
-        204: null,
+        // 204: null,
       },
     },
     method: "GET",
@@ -213,7 +216,7 @@ const registerRoutes = async () => {
   });
 
   // Get Users Route
-  server.route<{ Reply: UserDtoType[] }>({
+  server.route<{ Reply: UserCollectionDtoType }>({
     schema: {
       response: {
         200: UserCollectionDto,
@@ -223,7 +226,10 @@ const registerRoutes = async () => {
     url: "/api/auth/users",
     preValidation: [server.auth([
       isLoggedIn,
-    ])],
+      isStaff
+    ], {
+      relation: "and"
+    })],
     handler: async (req, res) => {
       const users = await prisma.user.findMany({
         select: {
