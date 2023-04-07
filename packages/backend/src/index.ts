@@ -19,6 +19,7 @@ import { config } from "dotenv";
 import prisma from "./prisma";
 import { UserDto, UserDtoType } from "./auth/dto/UserDto";
 import { ErrorDto, ErrorDtoType } from "./errors/ErrorDto";
+import fastifySensible from "@fastify/sensible";
 
 config();
 
@@ -28,6 +29,8 @@ const publicRoot = path.join(root, "public");
 // Register all the plugins
 const main = async () => {
   const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
+
+  server.register(fastifySensible);
 
   await server.register(fastifyCors, {
     origin: true,
