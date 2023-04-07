@@ -52,3 +52,13 @@ Fastify has the ability to manipulate sessions, get the currently logged in user
 ## Frontend
 
 Frontend is built using react and regularly sends data to the server using queries. 
+
+# Glossary
+
+- **Backend**: The server that handles all the requests from the frontend and the database.
+- **Frontend**: The client that the user interacts with.
+- **Database**: The database that stores all the data.
+- **Session**: A session is a way to store data on the client. This is used to store the user's primary key.
+- **Query**: A query is a request to the server to get data from the database.
+- **Mutation**: A mutation is a request to the server to change data in the database.
+- **Stateless Session**: A stateless session is a session that is stored on the client and not on the server. 
