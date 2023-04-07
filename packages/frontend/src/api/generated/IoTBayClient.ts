@@ -10,7 +10,7 @@ import { UsersService } from './services/UsersService';
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 
-export class BuiltView360Client {
+export class IoTBayClient {
 
     public readonly authentication: AuthenticationService;
     public readonly users: UsersService;
