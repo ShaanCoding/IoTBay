@@ -13,6 +13,8 @@
 - Run `yarn workspace backend prisma generate` to generate the Prisma client
 - Run `yarn workspace backend dev` to start the backend server
 
+You should now be able to access the app at `http://localhost:3000`.
+
 The last command above will serve the static files bundled with the project. If you want to change the frontend then you need to run `yarn workspace frontend build` and then `yarn workspace backend dev` again after you've made your changes.
 
 # FAQ
