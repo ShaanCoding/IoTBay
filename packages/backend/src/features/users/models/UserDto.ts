@@ -1,9 +1,11 @@
-import { Static, Type } from '@sinclair/typebox'
+import { Static, Type } from "@sinclair/typebox";
 
 export const UserDto = Type.Object({
-      id: Type.String({ format: "uuid" }),
-      email: Type.String({ format: "email" }),
-      isStaff: Type.Boolean(),
-})
+  userId: Type.String({ format: "uuid" }),
+  email: Type.String({ format: "email" }),
+  userType: Type.String({ enum: ["staff", "customer"] }),
+  shippingAddress: Type.Optional(Type.String()),
+  billingAddress: Type.Optional(Type.String()),
+});
 
-export type UserDtoType = Static<typeof UserDto>
+export type UserDtoType = Static<typeof UserDto>;

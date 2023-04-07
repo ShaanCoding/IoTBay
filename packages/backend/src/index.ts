@@ -62,13 +62,13 @@ fastifyPassport.use("local", localStrategy);
 
 // This is used to serialize the user into the session e.g. get userId and put it in the session
 fastifyPassport.registerUserSerializer(
-  async (user: Omit<User, "password">, request) => user.id
+  async (user: Omit<User, "password">, request) => user.userId
 );
 
 // This is used to deserialize the user from the session e.g. get userId from session and get user from database
-fastifyPassport.registerUserDeserializer(async (id: string, request) => {
+fastifyPassport.registerUserDeserializer(async (userId: string, request) => {
   const { password, ...user } = await prisma.user.findUniqueOrThrow({
-    where: { id },
+    where: { userId },
   });
   return user;
 });

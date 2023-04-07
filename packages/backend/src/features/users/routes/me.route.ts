@@ -18,10 +18,6 @@ export default {
 
     const { user } = req;
 
-    return res.status(200).send({
-      email: user.email,
-      id: user.id,
-      isStaff: user.isStaff,
-    });
+    return res.status(200).send(user);
   },
 } satisfies RouteHandler;

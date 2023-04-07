@@ -31,12 +31,13 @@ export default {
       data: {
         email,
         password: passwordHash,
-        isStaff: false,
       },
       select: {
+        userId: true,
         email: true,
-        id: true,
-        isStaff: true,
+        userType: true,
+        shippingAddress: true,
+        billingAddress: true,
       },
     });
 

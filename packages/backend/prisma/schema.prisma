@@ -9,8 +9,119 @@ datasource db {
 }
 
 model User {
-  id   String     @id @default(cuid())
-  email    String  @unique
-  password String
-  isStaff  Boolean
+  userId              String                @id @default(cuid())
+  email               String                @unique
+  password            String
+  name                String
+  phone               String
+  address             String
+  dob                 DateTime?
+  userType            String                @default("customer")
+  customerDetails     CustomerDetails?
+  shippingAddress     String?
+  billingAddress      String?
+  couponsAndDiscounts CouponsAndDiscounts[]
+  recentSearches      RecentlySearched[]
+  Order               Order[]
+  Payment             Payment[]
+  Shipment            Shipment[]
+  Invoice             Invoice[]
+  OrderLineItem       OrderLineItem[]
+}
+
+model CustomerDetails {
+  customerId    String          @id @default(cuid())
+  user          User            @relation(fields: [userId], references: [userId])
+  userId        String          @unique
+  isAnonymous   Boolean         @default(false)
+  sex           String
+}
+
+model CouponsAndDiscounts {
+  couponId   String  @id @default(cuid())
+  isUsed     Boolean @default(false)
+  couponCode String
+  userId     String
+  user       User    @relation(fields: [userId], references: [userId])
+}
+
+model RecentlySearched {
+  recentlySearchedId String @id @default(cuid())
+  userId             String @unique
+  user               User   @relation(fields: [userId], references: [userId])
+  search             String // TODO: Recently Searched History
+}
+
+model Product {
+  productId     String           @id @default(cuid())
+  name          String
+  price         Float
+  stock         Int
+  description   String
+  image         String
+  category      String
+  OrderLineItem OrderLineItem[]
+  Category      ProductCategory? @relation(fields: [categoryId], references: [categoryId])
+  categoryId    String?
+}
+
+model Order {
+  orderId                   String           @id @default(cuid())
+  date                      DateTime
+  total                     Float
+  userId                    String
+  user                      User             @relation(fields: [userId], references: [userId])
+  paymentId                 String
+  payment                   Payment?
+  shipmentId                String?
+  shipment                  Shipment?
+  invoiceId                 String?
+  invoice                   Invoice?         @relation(fields: [invoiceId], references: [invoiceId])
+  orderLineItem             OrderLineItem[]
+}
+
+model Payment {
+  paymentId                 String           @id @default(cuid())
+  success                   Boolean
+  orderId                   String           @unique
+  order                     Order            @relation(fields: [orderId], references: [orderId])
+  userId                    String
+  user                      User             @relation(fields: [userId], references: [userId])
+}
+
+model Shipment {
+  shipmentId                String           @id @default(cuid())
+  date                      DateTime
+  address                   String
+  orderId                   String           @unique
+  order                     Order            @relation(fields: [orderId], references: [orderId])
+  userId                    String
+  user                      User             @relation(fields: [userId], references: [userId])
+}
+
+model Invoice {
+  invoiceId                 String           @id @default(cuid())
+  date                      DateTime
+  total                     Float
+  userId                    String
+  user                      User             @relation(fields: [userId], references: [userId])
+  orderId                   String
+  order                     Order[]
+}
+
+model OrderLineItem {
+  orderLineItemId           String           @id @default(cuid())
+  orderId                   String
+  order                     Order            @relation(fields: [orderId], references: [orderId])
+  productId                 String
+  product                   Product          @relation(fields: [productId], references: [productId])
+  quantity                  Int
+  userId                    String
+  user                      User             @relation(fields: [userId], references: [userId])
+}
+
+model ProductCategory {
+  categoryId String    @id @default(cuid())
+  name       String
+  Product    Product[]
 }
