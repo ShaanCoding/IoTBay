@@ -115,12 +115,10 @@ usersRoutes.forEach((route) => {
 // Set the server to listen on port 3000
 await server.listen({ port: 3000, host: "0.0.0.0" });
 
-// await server.ready();
-
 // Log the server address
 console.log(
   `Server listening on ${server
     .addresses()
-    .map((address) => `${address.family} - ${address.address}:${address.port}`)
+    .map((address) => `\r\n ${address.family} - http://${address.address}:${address.port}`)
     .join("\n")}`
 );
