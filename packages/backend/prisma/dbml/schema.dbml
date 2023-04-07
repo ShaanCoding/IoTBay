@@ -1,0 +1,149 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  userId String [pk]
+  email String [unique, not null]
+  password String [not null]
+  name String [not null]
+  phone String [not null]
+  address String [not null]
+  dob DateTime
+  userType String [not null, default: 'customer']
+  customerDetails CustomerDetails
+  shippingAddress String
+  billingAddress String
+  couponsAndDiscounts CouponsAndDiscounts [not null]
+  recentSearches RecentSearch [not null]
+  Order Order [not null]
+  Payment Payment [not null]
+  Shipment Shipment [not null]
+  Invoice Invoice [not null]
+  OrderLineItem OrderLineItem [not null]
+}
+
+Table CustomerDetails {
+  customerId String [pk]
+  user User [not null]
+  userId String [unique, not null]
+  isAnonymous Boolean [not null, default: false]
+  sex String [not null]
+}
+
+Table CouponsAndDiscounts {
+  couponId String [pk]
+  isUsed Boolean [not null, default: false]
+  couponCode String [not null]
+  userId String [not null]
+  user User [not null]
+}
+
+Table RecentSearch {
+  recentlySearchId String [pk]
+  userId String [not null]
+  user User [not null]
+  search String [not null]
+}
+
+Table Product {
+  productId String [pk]
+  name String [not null]
+  price Float [not null]
+  stock Int [not null]
+  description String [not null]
+  image String [not null]
+  category String [not null]
+  OrderLineItem OrderLineItem [not null]
+  Category ProductCategory
+  categoryId String
+}
+
+Table Order {
+  orderId String [pk]
+  date DateTime [not null]
+  total Float [not null]
+  userId String [not null]
+  user User [not null]
+  paymentId String [not null]
+  payment Payment
+  shipmentId String
+  shipment Shipment
+  invoiceId String
+  invoice Invoice
+  orderLineItem OrderLineItem [not null]
+}
+
+Table Payment {
+  paymentId String [pk]
+  success Boolean [not null]
+  orderId String [unique, not null]
+  order Order [not null]
+  userId String [not null]
+  user User [not null]
+}
+
+Table Shipment {
+  shipmentId String [pk]
+  date DateTime [not null]
+  address String [not null]
+  orderId String [unique, not null]
+  order Order [not null]
+  userId String [not null]
+  user User [not null]
+}
+
+Table Invoice {
+  invoiceId String [pk]
+  date DateTime [not null]
+  total Float [not null]
+  userId String [not null]
+  user User [not null]
+  orderId String [not null]
+  order Order [not null]
+}
+
+Table OrderLineItem {
+  orderLineItemId String [pk]
+  orderId String [not null]
+  order Order [not null]
+  productId String [not null]
+  product Product [not null]
+  quantity Int [not null]
+  userId String [not null]
+  user User [not null]
+}
+
+Table ProductCategory {
+  categoryId String [pk]
+  name String [not null]
+  Product Product [not null]
+}
+
+Ref: CustomerDetails.userId - User.userId
+
+Ref: CouponsAndDiscounts.userId > User.userId
+
+Ref: RecentSearch.userId > User.userId
+
+Ref: Product.categoryId > ProductCategory.categoryId
+
+Ref: Order.userId > User.userId
+
+Ref: Order.invoiceId > Invoice.invoiceId
+
+Ref: Payment.orderId - Order.orderId
+
+Ref: Payment.userId > User.userId
+
+Ref: Shipment.orderId - Order.orderId
+
+Ref: Shipment.userId > User.userId
+
+Ref: Invoice.userId > User.userId
+
+Ref: OrderLineItem.orderId > Order.orderId
+
+Ref: OrderLineItem.productId > Product.productId
+
+Ref: OrderLineItem.userId > User.userId
