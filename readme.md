@@ -61,4 +61,13 @@ Frontend is built using react and regularly sends data to the server using queri
 - **Session**: A session is a way to store data on the client. This is used to store the user's primary key.
 - **Query**: A query is a request to the server to get data from the database.
 - **Mutation**: A mutation is a request to the server to change data in the database.
-- **Stateless Session**: A stateless session is a session that is stored on the client and not on the server which is typically how sessions work. 
+- **Stateless Session**: A stateless session is a session that is stored on the client and not on the server.
+- **Stateful Session**: A stateful session is a session that is stored on the server and not on the client which is typically how sessions work.
+- **Prisma**: Prisma is a database toolkit that allows you to easily connect to a database and send queries to it.
+- **Fastify**: Fastify is a web framework that uses the Request Response pattern.
+- **React**: React is a frontend framework that allows you to easily create components and send queries to the server.
+- **Yarn**: Yarn is a package manager that allows you to easily install dependencies.
+- **Node.js**: Node.js is a JavaScript runtime that allows you to run JavaScript outside of the browser.
+- **NPM**: NPM is a package manager that allows you to easily install dependencies.
+- **Cookie**: A cookie is a small piece of data that is stored on the client. Cookies are used to store session data.
+
