@@ -35,7 +35,9 @@
     "dev": "tsup --watch",
     "build": "tsup",
     "start": "node dist/index.js",
-    "generate-secret-key": "node ./node_modules/@fastify/secure-session/genkey.js > secret_key"
+    "generate": "prisma generate",
+    "generate-secret-key": "node ../../node_modules/@fastify/secure-session/genkey.js > secret_key",
+    "migrate:deploy": "npx prisma migrate deploy"
   },
   "type": "module"
 }
