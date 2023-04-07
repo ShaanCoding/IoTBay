@@ -1,4 +1,3 @@
-
 import fastifySecureSession from "@fastify/secure-session";
 import fastify from "fastify";
 import localStrategy from "./features/auth/strategies/local.strategy";
@@ -16,8 +15,7 @@ import prisma from "./services/prisma";
 import fastifySensible from "@fastify/sensible";
 
 import fastifyAuth from "@fastify/auth";
-import { authRoutes } from "./features/auth";
-import { usersRoutes } from "./features/users";
+import server from "./services/server";
 
 // Load environment variables
 config();
@@ -29,7 +27,7 @@ const root = path.join(fileURLToPath(import.meta.url), "../..");
 const publicRoot = path.join(root, "public");
 
 // Create the server
-const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
+
 
 // Register nice error messages
 await server.register(fastifySensible);
@@ -85,18 +83,33 @@ server.setNotFoundHandler((req, res) => {
   res.sendFile("index.html");
 });
 
+
+console.log("Loading routes...");
+const { authRoutes } = await import(`./features/auth`);
+const { usersRoutes } = await import(`./features/users`);
+console.log("Routes loaded");
+
 // Registers all the auth routes and prefixes them with /api/auth
 authRoutes.forEach((route) => {
-  server.register(() => route, { prefix: "/api/auth" });
+
+  const withPrefix = ["/api/auth", route.url].filter(url => url !== "/" && url !== "").join("/");
+  route.url = withPrefix;
+  server.route(route);
 });
 
 // Register all the user routes and prefix them with /api/users
 usersRoutes.forEach((route) => {
-  server.register(() => route, { prefix: "/api/users" });
+
+  const withPrefix = ["/api/users", route.url].filter(url => url !== "/" && url !== "").join("/");
+  route.url = withPrefix;
+  server.route(route);
 });
+
 
 // Set the server to listen on port 3000
 await server.listen({ port: 3000, host: "0.0.0.0" });
+
+// await server.ready();
 
 // Log the server address
 console.log(
@@ -107,4 +120,3 @@ console.log(
 );
 
 export type RouteHandler = Parameters<typeof server.route>[0];
-export default server;

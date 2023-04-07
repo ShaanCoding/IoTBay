@@ -3,7 +3,7 @@ import fetcher from "../utils/fetcher";
 
 
 const getMe = () =>
-  fetcher(`/api/auth/user`, {
+  fetcher(`/api/users/me`, {
     credentials: "include",
     headers: {
         "Content-Type": "application/json"

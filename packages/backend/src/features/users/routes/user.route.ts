@@ -1,5 +1,6 @@
-import server, { RouteHandler } from "../../..";
+import { RouteHandler } from "../../..";
 import prisma from "../../../services/prisma";
+import server from "../../../services/server";
 import { checkIsLoggedIn, checkIsStaff } from "../../auth";
 import { UserDto } from "../models/UserDto";
 

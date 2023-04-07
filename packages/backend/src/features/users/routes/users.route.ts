@@ -1,5 +1,6 @@
-import server, { RouteHandler } from "../../..";
+import { RouteHandler } from "../../..";
 import prisma from "../../../services/prisma";
+import server from "../../../services/server";
 import { checkIsLoggedIn, checkIsStaff } from "../../auth";
 import { UserCollectionDto } from "../models/UserCollection";
 
@@ -10,7 +11,7 @@ export default {
     },
   },
   method: "GET",
-  url: "/",
+  url: "",
   preValidation: [
     server.auth([checkIsLoggedIn, checkIsStaff], {
       relation: "and",
