@@ -14,7 +14,7 @@ export default {
   method: "POST",
   url: "register",
   handler: async (req, res) => {
-    const { email, password } = req.body as RegisterDtoType;
+    const { email, password, name, phone, address } = req.body as RegisterDtoType;
     const passwordHash = await argon2.hash(password);
 
     const userExists = await prisma.user.findUnique({
@@ -31,6 +31,9 @@ export default {
       data: {
         email,
         password: passwordHash,
+        name,
+        phone,
+        address,
       },
       select: {
         userId: true,

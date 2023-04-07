@@ -16,7 +16,7 @@ import useMe from "../hooks/useMe";
 
 export default function Navbar() {
 
-    const { data, isError} = useMe()
+    const { data, isError } = useMe()
 
   return (
     <Box>
@@ -36,8 +36,10 @@ export default function Navbar() {
             textAlign={useBreakpointValue({ base: "center", md: "left" })}
             fontFamily={"heading"}
             color={"white"}
+            as={Link}
+            to="/"
           >
-            IOTBay
+            IoTBay
           </Text>
         </Flex>
         <Stack

@@ -7,6 +7,7 @@ import {
   FormLabel,
   Input,
   Stack,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -14,8 +15,11 @@ import useRegister from "../hooks/useRegister";
 import { useNavigate } from "react-router-dom";
 
 interface LoginData {
+  name: string;
   email: string;
   password: string;
+  address: string;
+  phone: string;
 }
 
 export default function Register() {
@@ -56,6 +60,36 @@ export default function Register() {
   return (
     <Container maxW={"container.sm"}>
       <Stack as="form" onSubmit={handleSubmit(onSubmit)}>
+        <Text fontSize="3xl" fontWeight="bold">
+          Register
+        </Text>
+        <FormControl isInvalid={!!errors.address}>
+          <FormLabel>Address</FormLabel>
+          <Input  {...register("address", { required: true })} />
+          {errors.address ? (
+            <FormErrorMessage>{errors.address.message}</FormErrorMessage>
+          ) : (
+            <FormHelperText>Mailing address.</FormHelperText>
+          )}
+        </FormControl>
+        <FormControl isInvalid={!!errors.name}>
+          <FormLabel>Name</FormLabel>
+          <Input  {...register("name", { required: true })} />
+          {errors.name ? (
+            <FormErrorMessage>{errors.name.message}</FormErrorMessage>
+          ) : (
+            <FormHelperText>Name.</FormHelperText>
+          )}
+        </FormControl>
+        <FormControl isInvalid={!!errors.phone}>
+          <FormLabel>Phone</FormLabel>
+          <Input  {...register("phone", { required: true })} />
+          {errors.phone ? (
+            <FormErrorMessage>{errors.phone.message}</FormErrorMessage>
+          ) : (
+            <FormHelperText>Phone</FormHelperText>
+          )}
+        </FormControl>
         <FormControl isInvalid={!!errors.email}>
           <FormLabel>Email address</FormLabel>
           <Input type="email" {...register("email", { required: true })} />

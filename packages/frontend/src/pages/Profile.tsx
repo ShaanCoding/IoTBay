@@ -1,4 +1,4 @@
-import { Code, Container } from "@chakra-ui/react";
+import { Box, Code, Container, Stack, Text } from "@chakra-ui/react";
 import useMe from "../hooks/useMe";
 
 export default function Profile() {
@@ -6,9 +6,22 @@ export default function Profile() {
 
   return (
     <Container maxW={"container.sm"}>
-      <Code>
-        <pre>{JSON.stringify(me, null, 2)}</pre>
-      </Code>
+      <Stack spacing={2}>
+        <Text fontSize="3xl" fontWeight="bold">
+          Profile
+        </Text>
+        <Box py={2}>
+          {Object.entries(me).map(([key, value]) => (
+            <Box key={key} py={1}>
+              <Text as="span" fontWeight="bold">
+                {key}:
+              </Text>{" "}
+              <Code>{JSON.stringify(value)}</Code>
+            </Box>
+          ))}
+            
+        </Box>
+      </Stack>
     </Container>
   );
 }

@@ -6,6 +6,7 @@ export const UserDto = Type.Object({
   userType: Type.String({ enum: ["staff", "customer"] }),
   shippingAddress: Type.Optional(Type.String()),
   billingAddress: Type.Optional(Type.String()),
+  name: Type.String()
 });
 
 export type UserDtoType = Static<typeof UserDto>;

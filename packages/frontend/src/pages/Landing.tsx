@@ -30,7 +30,7 @@ export default function Landing() {
           </ButtonGroup>
         ) : 
             <Text textAlign={"center"} fontSize={"3xl"}>
-                Welcome, {data.email}
+                Welcome, {data.name}
             </Text>
         }
       </Stack>

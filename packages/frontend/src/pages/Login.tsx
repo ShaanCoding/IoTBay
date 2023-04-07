@@ -7,6 +7,7 @@ import {
   FormLabel,
   Input,
   Stack,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -59,6 +60,9 @@ export default function Login() {
   return (
     <Container maxW={"container.sm"}>
       <Stack as="form" onSubmit={handleSubmit(onSubmit)}>
+        <Text fontSize="3xl" fontWeight="bold">
+          Login
+        </Text>
         <FormControl isInvalid={!!errors.email}>
           <FormLabel>Email address</FormLabel>
           <Input type="email" {...register("email", { required: true })} />
