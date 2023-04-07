@@ -89,3 +89,5 @@ Frontend is built using react and regularly sends data to the server using queri
 - [Chakra UI](https://chakra-ui.com/)
 - [Argon2](https://en.wikipedia.org/wiki/Argon2)
 - [SQLite](https://www.sqlite.org/index.html)
+- [TypeScript](https://www.typescriptlang.org/)
+- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
