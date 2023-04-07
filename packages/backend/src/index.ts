@@ -27,7 +27,8 @@ await server.register(await import("@fastify/swagger"), {
   swagger: {
     info: {
       title: "Fastify API",
-      description: "Building a blazing fast REST API with Node.js, MongoDB, Fastify and Swagger",
+      description:
+        "Building a blazing fast REST API with Node.js, MongoDB, Fastify and Swagger",
       version: "0.1.0",
     },
     host: "localhost:3000",
@@ -40,10 +41,16 @@ await server.register(await import("@fastify/swagger"), {
         name: "sessionid",
         in: "cookie",
       },
-    }
+    },
   },
   openapi: {
-    servers: [{ url: "http://localhost:3000", description: "Development server" }],
+    servers: [
+      { url: "http://localhost:3000", description: "Development server" },
+      {
+        url: "https://isd.sebasptsch.dev",
+        description: "Production server",
+      },
+    ],
     components: {
       securitySchemes: {
         sessionid: {
@@ -51,20 +58,19 @@ await server.register(await import("@fastify/swagger"), {
           name: "sessionid",
           in: "cookie",
         },
-      }
+      },
     },
     info: {
       title: "IoTBay API",
       version: "0.1.0",
       description: "IoTBay API",
-    }
+    },
   },
 });
 
 await server.register(await import("@fastify/swagger-ui"), {
   routePrefix: "/docs",
 });
-
 
 // Register auth rule handler
 await server.register(await import("@fastify/auth"));
@@ -127,18 +133,18 @@ export type RouteHandler = Parameters<typeof server.route>[0];
  * @returns The route with the prefix
  */
 const prefixRoute = (prefix: string, route: RouteHandler) => {
-  const withPrefix = [prefix, route.url].filter(url => url !== "/" && url !== "").join("/");
+  const withPrefix = [prefix, route.url]
+    .filter((url) => url !== "/" && url !== "")
+    .join("/");
   route.url = withPrefix;
   return route;
-}
+};
 
 // Load all the routes from their folders
 console.log("Loading routes...");
 const { authRoutes } = await import(`./features/auth`);
 const { usersRoutes } = await import(`./features/users`);
 console.log("Routes loaded");
-
-
 
 // Register all the user routes and prefix them with /api/users
 usersRoutes.forEach((route) => {
@@ -152,7 +158,6 @@ authRoutes.forEach((route) => {
   server.route(withPrefix);
 });
 
-
 // Set the server to listen on port 3000
 await server.listen({ port: 3000, host: "0.0.0.0" });
 
@@ -160,6 +165,9 @@ await server.listen({ port: 3000, host: "0.0.0.0" });
 console.log(
   `Server listening on ${server
     .addresses()
-    .map((address) => `\r\n ${address.family} - http://${address.address}:${address.port}`)
+    .map(
+      (address) =>
+        `\r\n ${address.family} - http://${address.address}:${address.port}`
+    )
     .join("\n")}`
 );
