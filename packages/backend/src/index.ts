@@ -30,7 +30,9 @@ const publicRoot = path.join(root, "public");
 const main = async () => {
   const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
-  server.register(fastifySensible);
+  await server.register(fastifySensible);
+
+  await server.decorate
 
   await server.register(fastifyCors, {
     origin: true,
@@ -82,9 +84,14 @@ const registerRoutes = async () => {
   const server = await main();
 
   // Login Route
-  server.route<{ Body: LoginDtoType }>({
+  server.route<{ Body: LoginDtoType, Response: UserDtoType }>({
     method: "POST",
-    schema: LoginDto,
+    schema: {
+      body: LoginDto,
+      response: {
+        200: UserDto,
+      }
+    },
     url: "/api/auth/login",
     preValidation: [
       fastifyPassport.authenticate("local", {
@@ -96,9 +103,7 @@ const registerRoutes = async () => {
       const user = req.user;
 
       if (!user) {
-        return res.status(401).send({
-          message: "Invalid credentials",
-        });
+        return res.badRequest("Invalid credentials");
       }
 
 
@@ -107,21 +112,28 @@ const registerRoutes = async () => {
   });
 
   // Register Route
-  server.route<{ Body: RegisterDtoType; Reply: UserDtoType | ErrorDtoType }>({
+  server.route<{ Body: RegisterDtoType; Reply: UserDtoType }>({
     schema: {
       body: RegisterDto,
       response: {
         201: UserDto,
-        400: ErrorDto,
       },
     },
     method: "POST",
     url: "/api/auth/register",
     handler: async (req, res) => {
       const { email, password } = req.body;
-      console.log(req.body);
-      console.log(email, password);
       const passwordHash = await argon2.hash(password);
+
+      const userExists = await prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (userExists) {
+        return res.badRequest("User already exists");
+      }
 
       const user = await prisma.user.create({
         data: {
@@ -155,7 +167,7 @@ const registerRoutes = async () => {
     schema: {
       response: {
         200: UserDto,
-        401: ErrorDto,
+        204: null,
       },
     },
     method: "GET",
