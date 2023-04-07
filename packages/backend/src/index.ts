@@ -20,19 +20,43 @@ import prisma from "./prisma";
 import { UserDto, UserDtoType } from "../models/UserDto";
 import { ErrorDto, ErrorDtoType } from "./errors/ErrorDto";
 import fastifySensible from "@fastify/sensible";
+import {FastifyAuthFunction} from "@fastify/auth";
+import { UserCollectionDto } from "../models/UserCollection";
 
 config();
 
 const root = path.join(fileURLToPath(import.meta.url), "../..");
 const publicRoot = path.join(root, "public");
 
+/**
+ * Authentication function
+ * This checks to see if the user is logged in
+ */
+const isLoggedIn: FastifyAuthFunction = async (request, reply, done) => {
+  if (request.user) {
+    done()
+  } else {
+    reply.forbidden("You are not logged in")
+  }
+}
+
+/**
+ * Authentication function
+ * This checks to see if the user is a staff member
+ */
+const isStaff: FastifyAuthFunction = async (request, reply, done) => {
+  if (request.user && request.user.isStaff) {
+    done()
+  } else {
+    reply.forbidden("You are not a staff member")
+  }
+}
+
 // Register all the plugins
 const main = async () => {
   const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
   await server.register(fastifySensible);
-
-  await server.decorate
 
   await server.register(fastifyCors, {
     origin: true,
@@ -187,6 +211,32 @@ const registerRoutes = async () => {
       });
     },
   });
+
+  // Get Users Route
+  server.route<{ Reply: UserDtoType[] }>({
+    schema: {
+      response: {
+        200: UserCollectionDto,
+      },
+    },
+    method: "GET",
+    url: "/api/auth/users",
+    preValidation: [server.auth([
+      isLoggedIn,
+    ])],
+    handler: async (req, res) => {
+      const users = await prisma.user.findMany({
+        select: {
+          email: true,
+          id: true,
+          isStaff: true,
+        },
+      });
+
+      return res.status(200).send(users);
+    }
+  });
+
 
   return server;
 };
