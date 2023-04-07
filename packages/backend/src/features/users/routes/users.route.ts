@@ -19,11 +19,7 @@ export default {
   },
   method: "GET",
   url: "",
-  preValidation: server?.auth ? [
-    server.auth([checkIsLoggedIn, checkIsStaff], {
-      relation: "and",
-    }),
-  ]: [],
+  preValidation: [checkIsLoggedIn, checkIsStaff],
   handler: async (req, res) => {
     const users = await prisma.user.findMany({
       select: {

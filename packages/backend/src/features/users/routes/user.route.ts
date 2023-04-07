@@ -29,7 +29,7 @@ export default {
   },
   method: "GET",
   url: ":userId",
-  preValidation: server?.auth ? [server.auth([checkIsLoggedIn, checkIsStaff])] : [],
+  preValidation: [checkIsLoggedIn, checkIsStaff],
   handler: async (req, res) => {
     const { userId } = req.params as UserRouteParams;
 

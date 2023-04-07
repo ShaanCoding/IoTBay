@@ -1,10 +1,11 @@
 import { FastifyAuthFunction } from "@fastify/auth"
+import { FastifyRequest, FastifyReply } from 'fastify'
 
 /**
  * Authentication function
  * This checks to see if the user is logged in
  */
-const isLoggedIn: FastifyAuthFunction = async (request, reply, done) => {
+const isLoggedIn = async (request: FastifyRequest, reply: FastifyReply, done: () => void) => {
     if (request.user) {
       done()
     } else {
