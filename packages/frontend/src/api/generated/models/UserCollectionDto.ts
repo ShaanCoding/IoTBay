@@ -2,15 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { UserDto } from './UserDto';
+
 /**
  * UserCollectionDto
  */
-export type UserCollectionDto = Array<{
-userId: string;
-email: string;
-name: string;
-userType: 'staff' | 'customer';
-shippingAddress?: string;
-billingAddress?: string;
-dob?: string;
-}>;
+export type UserCollectionDto = Array<UserDto>;

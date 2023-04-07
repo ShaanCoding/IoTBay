@@ -1,7 +1,7 @@
 import { Static, Type } from '@sinclair/typebox'
-import { UserDto } from './UserDto'
+import { UserDto, UserDtoRef } from './UserDto'
 
-export const UserCollectionDto = Type.Array(UserDto, {
+export const UserCollectionDto = Type.Array(UserDtoRef, {
     description: 'UserCollectionDto',
     $id: 'UserCollectionDto',
     // $ref: 'UserCollectionDto',
