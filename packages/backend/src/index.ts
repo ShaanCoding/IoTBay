@@ -13,11 +13,11 @@ import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import fastifyStatic from "@fastify/static";
 import { fileURLToPath } from "node:url";
 import fastifyCors from "@fastify/cors";
-import { RegisterDto, RegisterDtoType } from "./auth/dto/RegisterDto";
-import { LoginDto, LoginDtoType } from "./auth/dto/LoginDto";
+import { RegisterDto, RegisterDtoType } from "../models/RegisterDto";
+import { LoginDto, LoginDtoType } from "../models/LoginDto";
 import { config } from "dotenv";
 import prisma from "./prisma";
-import { UserDto, UserDtoType } from "./auth/dto/UserDto";
+import { UserDto, UserDtoType } from "../models/UserDto";
 import { ErrorDto, ErrorDtoType } from "./errors/ErrorDto";
 import fastifySensible from "@fastify/sensible";
 

@@ -1258,6 +1258,14 @@
     ajv-formats "^2.1.1"
     fast-uri "^2.0.0"
 
+"@fastify/auth@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@fastify/auth/-/auth-4.2.0.tgz#decfa350092cac68ac3bfbe37a6fadff6d519848"
+  integrity sha512-wcovETbvNHsNQv1fzbjyAeG+ViNYMI0/gTmWUP77hQgbkwPJpYn1iBLAkMmHFKrS6Ap/l9QFZChwV9lJvwRTCA==
+  dependencies:
+    fastify-plugin "^4.0.0"
+    reusify "^1.0.4"
+
 "@fastify/cookie@^8.0.0", "@fastify/cookie@^8.3.0":
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/@fastify/cookie/-/cookie-8.3.0.tgz#7d3304fcf0d11ea64ae8e02d65ae217b01fe1cf4"
