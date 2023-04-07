@@ -8,12 +8,13 @@ export default function Logout() {
     const logoutMutation = useLogout();
     const navigate = useNavigate();
 
+    const logout = async () => {
+      await logoutMutation.mutateAsync();
+      navigate(`/`);
+ }
+
     useEffect(() => {
-        setTimeout(async () => {
-            await logoutMutation.mutateAsync();
-            navigate(`/`);
-        }
-        , 1000);
+        logout();
     }, [])
 
   return (
