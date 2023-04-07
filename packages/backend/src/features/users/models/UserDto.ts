@@ -10,7 +10,11 @@ export const UserDto = Type.Object({
   dob: Type.Optional(Type.String({ format: "date" })),
 }, {
   description: "UserDto",
+  $id: "UserDto",
+  // $ref: "UserDto",
 });
+
+export const UserDtoRef = Type.Ref(UserDto);
 
 
 /**

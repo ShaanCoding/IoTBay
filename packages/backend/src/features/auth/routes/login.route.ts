@@ -1,14 +1,14 @@
 import { RouteHandler } from "../../..";
-import { LoginDto } from "../models/LoginDto";
-import { UserDto } from "../../users/models/UserDto";
+import { LoginDto, LoginDtoRef } from "../models/LoginDto";
+import { UserDto, UserDtoRef } from "../../users/models/UserDto";
 import fastifyPassport from "@fastify/passport";
 
 export default {
   method: "POST",
   schema: {
-    body: LoginDto,
+    body: LoginDtoRef,
     response: {
-      200: UserDto,
+      200: UserDtoRef,
     },
     operationId: "login",
     tags: ["Authentication"],

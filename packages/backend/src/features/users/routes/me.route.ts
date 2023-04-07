@@ -1,10 +1,10 @@
 import { RouteHandler } from "../../..";
-import { UserDto } from "../models/UserDto";
+import { UserDto, UserDtoRef } from "../models/UserDto";
 
 export default {
   schema: {
     response: {
-      200: UserDto,
+      200: UserDtoRef,
       // 204: null,
     },
     operationId: "getMe",

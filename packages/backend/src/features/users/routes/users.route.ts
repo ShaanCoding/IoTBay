@@ -2,12 +2,12 @@ import { RouteHandler } from "../../..";
 import prisma from "../../../services/prisma";
 import server from "../../../services/server";
 import { checkIsLoggedIn, checkIsStaff } from "../../auth";
-import { UserCollectionDto } from "../models/UserCollection";
+import { UserCollectionDto, UserCollectionDtoRef } from "../models/UserCollection";
 
 export default {
   schema: {
     response: {
-      200: UserCollectionDto,
+      200: UserCollectionDtoRef,
     },
     operationId: "getUsers",
     tags: ["Users"],
@@ -19,11 +19,11 @@ export default {
   },
   method: "GET",
   url: "",
-  preValidation: [
+  preValidation: server?.auth ? [
     server.auth([checkIsLoggedIn, checkIsStaff], {
       relation: "and",
     }),
-  ],
+  ]: [],
   handler: async (req, res) => {
     const users = await prisma.user.findMany({
       select: {

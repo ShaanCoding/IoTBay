@@ -2,7 +2,7 @@ import { RouteHandler } from "../../..";
 import prisma from "../../../services/prisma";
 import server from "../../../services/server";
 import { checkIsLoggedIn, checkIsStaff } from "../../auth";
-import { UserDto } from "../models/UserDto";
+import { UserDto, UserDtoRef } from "../models/UserDto";
 
 interface UserRouteParams {
   userId: string;
@@ -11,7 +11,7 @@ interface UserRouteParams {
 export default {
   schema: {
     response: {
-      200: UserDto,
+      200: UserDtoRef,
     },
     params: {
       type: "object",
@@ -29,7 +29,7 @@ export default {
   },
   method: "GET",
   url: ":userId",
-  preValidation: [server.auth([checkIsLoggedIn, checkIsStaff])],
+  preValidation: server?.auth ? [server.auth([checkIsLoggedIn, checkIsStaff])] : [],
   handler: async (req, res) => {
     const { userId } = req.params as UserRouteParams;
 

@@ -1,14 +1,14 @@
-import { RegisterDto, RegisterDtoType } from "../models/RegisterDto";
-import { UserDto } from "../../users/models/UserDto";
+import { RegisterDto, RegisterDtoRef, RegisterDtoType } from "../models/RegisterDto";
+import { UserDto, UserDtoRef } from "../../users/models/UserDto";
 import prisma from "../../../services/prisma";
 import argon2 from "argon2";
 import { RouteHandler } from "../../..";
 
 export default {
   schema: {
-    body: RegisterDto,
+    body: RegisterDtoRef,
     response: {
-      201: UserDto,
+      201: UserDtoRef,
     },
     operationId: "register",
     tags: ["Authentication"],

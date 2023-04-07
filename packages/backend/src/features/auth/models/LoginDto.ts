@@ -5,5 +5,10 @@ export const LoginDto = Type.Object({
   password: Type.String(),
 }, {
   description: 'LoginDto',
+  $id: 'LoginDto',
+  // $ref: 'LoginDto',
 })
+
+export const LoginDtoRef = Type.Ref(LoginDto)
+
 export type LoginDtoType = Static<typeof LoginDto>

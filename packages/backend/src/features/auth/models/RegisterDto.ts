@@ -8,6 +8,10 @@ export const RegisterDto = Type.Object({
   address: Type.String(),
 }, {
   description: 'RegisterDto',
+  $id: 'RegisterDto',
+  // $ref: 'RegisterDto',
 })
+
+export const RegisterDtoRef = Type.Ref(RegisterDto)
 
 export type RegisterDtoType = Static<typeof RegisterDto>

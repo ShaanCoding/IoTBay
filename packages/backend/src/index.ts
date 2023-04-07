@@ -9,6 +9,10 @@ import { config } from "dotenv";
 import prisma from "./services/prisma";
 
 import server from "./services/server";
+import { UserCollectionDto, UserDto } from "./features/users";
+import { LoginDto } from "./features/auth/models/LoginDto";
+import { RegisterDto } from "./features/auth/models/RegisterDto";
+import fastify from "fastify";
 
 // Load environment variables
 config();
@@ -24,25 +28,6 @@ await server.register(await import("@fastify/sensible"));
 
 // Register swagger
 await server.register(await import("@fastify/swagger"), {
-  swagger: {
-    info: {
-      title: "Fastify API",
-      description:
-        "Building a blazing fast REST API with Node.js, MongoDB, Fastify and Swagger",
-      version: "0.1.0",
-    },
-    host: "localhost:3000",
-    schemes: ["http"],
-    consumes: ["application/json"],
-    produces: ["application/json"],
-    securityDefinitions: {
-      sessionid: {
-        type: "apiKey",
-        name: "sessionid",
-        in: "cookie",
-      },
-    },
-  },
   openapi: {
     servers: [
       { url: "http://localhost:3000", description: "Development server" },
@@ -59,14 +44,31 @@ await server.register(await import("@fastify/swagger"), {
           in: "cookie",
         },
       },
+      schemas: {
+        UserDto,
+        UserCollectionDto,
+        LoginDto,
+        RegisterDto
+      },
     },
     info: {
       title: "IoTBay API",
       version: "0.1.0",
       description: "IoTBay API",
     },
+
   },
+  refResolver: {
+    buildLocalReference (json, baseUri, fragment, i) {
+      return json.$id?.toString() || `my-fragment-${i}`
+    }
+  }
 });
+
+server.addSchema(UserDto);
+server.addSchema(UserCollectionDto);
+server.addSchema(LoginDto);
+server.addSchema(RegisterDto);
 
 await server.register(await import("@fastify/swagger-ui"), {
   routePrefix: "/docs",
