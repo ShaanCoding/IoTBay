@@ -61,4 +61,4 @@ Frontend is built using react and regularly sends data to the server using queri
 - **Session**: A session is a way to store data on the client. This is used to store the user's primary key.
 - **Query**: A query is a request to the server to get data from the database.
 - **Mutation**: A mutation is a request to the server to change data in the database.
-- **Stateless Session**: A stateless session is a session that is stored on the client and not on the server. 
+- **Stateless Session**: A stateless session is a session that is stored on the client and not on the server which is typically how sessions work. 
