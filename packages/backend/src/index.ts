@@ -83,7 +83,22 @@ server.setNotFoundHandler((req, res) => {
   res.sendFile("index.html");
 });
 
+/** Used to type up routes */
+export type RouteHandler = Parameters<typeof server.route>[0];
 
+/**
+ * Prefixes a route with a prefix
+ * @param prefix The prefix to add to the route e.g. /api/auth
+ * @param route The route to prefix
+ * @returns The route with the prefix
+ */
+const prefixRoute = (prefix: string, route: RouteHandler) => {
+  const withPrefix = [prefix, route.url].filter(url => url !== "/" && url !== "").join("/");
+  route.url = withPrefix;
+  return route;
+}
+
+// Load all the routes from their folders
 console.log("Loading routes...");
 const { authRoutes } = await import(`./features/auth`);
 const { usersRoutes } = await import(`./features/users`);
@@ -91,18 +106,14 @@ console.log("Routes loaded");
 
 // Registers all the auth routes and prefixes them with /api/auth
 authRoutes.forEach((route) => {
-
-  const withPrefix = ["/api/auth", route.url].filter(url => url !== "/" && url !== "").join("/");
-  route.url = withPrefix;
-  server.route(route);
+  const withPrefix = prefixRoute("/api/auth", route);
+  server.route(withPrefix);
 });
 
 // Register all the user routes and prefix them with /api/users
 usersRoutes.forEach((route) => {
-
-  const withPrefix = ["/api/users", route.url].filter(url => url !== "/" && url !== "").join("/");
-  route.url = withPrefix;
-  server.route(route);
+  const withPrefix = prefixRoute("/api/users", route);
+  server.route(withPrefix);
 });
 
 
@@ -119,4 +130,7 @@ console.log(
     .join("\n")}`
 );
 
-export type RouteHandler = Parameters<typeof server.route>[0];
+
+  
+
+
