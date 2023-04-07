@@ -7,9 +7,11 @@ import {
   FormLabel,
   Input,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useLogin from "../hooks/useLogin";
+import { useNavigate } from "react-router-dom";
 
 interface LoginData {
   email: string;
@@ -18,6 +20,8 @@ interface LoginData {
 
 export default function Login() {
   const loginMutation = useLogin();
+  const toast = useToast();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -25,8 +29,32 @@ export default function Login() {
     formState: { errors, isSubmitting },
   } = useForm<LoginData>();
 
-  const onSubmit: SubmitHandler<LoginData> = (data) =>
-    loginMutation.mutateAsync({ username: data.email, password: data.password });
+  const onSubmit: SubmitHandler<LoginData> = async (data) => {
+    try {
+      const res = await loginMutation.mutateAsync({
+        username: data.email,
+        password: data.password,
+      });
+      console.log(res);
+      toast({
+        title: "Login successful",
+        description: "You have been logged in.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate(`/profile`)
+    } catch (error) {
+      toast({
+        title: "Login failed",
+        description: "Please check your credentials.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+   
+  };
 
   return (
     <Container maxW={"container.sm"}>

@@ -1,15 +1,15 @@
-import { useMutation } from "@tanstack/react-query";
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import fetcher from "../utils/fetcher";
 
 
 const login = ({username, password}: LoginArgs) =>
-  fetch(`/api/auth/login`, {
+  fetcher(`/api/auth/login`, {
     method: "POST",
     body: JSON.stringify({ username, password }),
     headers: {
         "Content-Type": "application/json"
     }
-  }).then(res => res.json());
+  })
 
 interface LoginArgs {
     username: string;
@@ -17,7 +17,12 @@ interface LoginArgs {
 }
 
 export default function useLogin() {
+  const queryClient = useQueryClient();
+
   return useMutation<unknown, unknown, LoginArgs>({
     mutationFn: login,
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData(["me"], data);
+    }
   });
 }

@@ -17,8 +17,10 @@ import { RegisterDto, RegisterDtoType } from "./auth/dto/RegisterDto";
 import { LoginDto, LoginDtoType } from "./auth/dto/LoginDto";
 import { config } from "dotenv";
 import prisma from "./prisma";
+import { UserDto, UserDtoType } from "./auth/dto/UserDto";
+import { ErrorDto, ErrorDtoType } from "./errors/ErrorDto";
 
-config()
+config();
 
 const root = path.join(fileURLToPath(import.meta.url), "../..");
 const publicRoot = path.join(root, "public");
@@ -55,12 +57,12 @@ const main = async () => {
   fastifyPassport.use("local", localStrategy);
 
   fastifyPassport.registerUserSerializer(
-    async (user: Omit<User, "password">, request) => user.id.toString()
+    async (user: Omit<User, "password">, request) => user.id
   );
 
   fastifyPassport.registerUserDeserializer(async (id: string, request) => {
     const { password, ...user } = await prisma.user.findUniqueOrThrow({
-      where: { id: parseInt(id) },
+      where: { id },
     });
     return user;
   });
@@ -88,42 +90,50 @@ const registerRoutes = async () => {
       }),
     ],
     handler: (req, res) => {
-      return res.status(200).send({
-        message: "Logged in",
-      });
+      const user = req.user;
+
+      if (!user) {
+        return res.status(401).send({
+          message: "Invalid credentials",
+        });
+      }
+
+
+      return res.status(200).send(user);
     },
   });
 
   // Register Route
-  server.route<{ Body: RegisterDtoType }>({
-    schema: RegisterDto,
+  server.route<{ Body: RegisterDtoType; Reply: UserDtoType | ErrorDtoType }>({
+    schema: {
+      body: RegisterDto,
+      response: {
+        201: UserDto,
+        400: ErrorDto,
+      },
+    },
     method: "POST",
     url: "/api/auth/register",
     handler: async (req, res) => {
-      try {
-        if (!req.body) return res.status(400).send({ message: "Bad request" });
-        const { email, password } = req.body;
-        console.log(req.body)
-        console.log(email, password);
-        const passwordHash = await argon2.hash(password);
+      const { email, password } = req.body;
+      console.log(req.body);
+      console.log(email, password);
+      const passwordHash = await argon2.hash(password);
 
-        const user = await prisma.user.create({
-          data: {
-            email,
-            password: passwordHash,
-            isStaff: false,
-          },
-          select: {
-            email: true,
-          },
-        });
+      const user = await prisma.user.create({
+        data: {
+          email,
+          password: passwordHash,
+          isStaff: false,
+        },
+        select: {
+          email: true,
+          id: true,
+          isStaff: true,
+        },
+      });
 
-        return res.status(201).send({
-          message: `Successfully created user: ${user.email}`,
-        });
-      } catch (error) {
-        console.log(error);
-      }
+      return res.status(201).send(user);
     },
   });
 
@@ -131,24 +141,34 @@ const registerRoutes = async () => {
   server.route({
     method: "POST",
     url: "/api/auth/logout",
-    preValidation: [fastifyPassport.authenticate("local", { session: true })],
-    handler: (req, res) => {
-      req.logOut();
-      return res.status(200).send({
-        message: "Logged out",
-      });
+    handler: async (req, res) => {
+      await req.logOut();
+      return res.status(200).send({ message: "Logged out" });
     },
   });
 
   // Get User Route
-  server.route({
+  server.route<{ Reply: null | UserDtoType }>({
+    schema: {
+      response: {
+        200: UserDto,
+        401: ErrorDto,
+      },
+    },
     method: "GET",
     url: "/api/auth/user",
     // preValidation: [fastifyPassport.authenticate("local", { session: true })],
-    handler: (req, res) => {
+    handler: async (req, res) => {
+      if (!req.user) {
+        return res.status(204).send(null);
+      }
+
+      const { user } = req;
+
       return res.status(200).send({
-        message: "User",
-        user: req.user,
+        email: user.email,
+        id: user.id,
+        isStaff: user.isStaff,
       });
     },
   });
@@ -164,7 +184,9 @@ const start = async () => {
   console.log(
     `Server listening on ${server
       .addresses()
-      .map((address) => `${address.family} - ${address.address}:${address.port}`)
+      .map(
+        (address) => `${address.family} - ${address.address}:${address.port}`
+      )
       .join("\n")}`
   );
 };

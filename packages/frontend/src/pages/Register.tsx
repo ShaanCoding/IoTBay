@@ -1,5 +1,5 @@
 import {
-    Button,
+  Button,
   Container,
   FormControl,
   FormErrorMessage,
@@ -7,9 +7,11 @@ import {
   FormLabel,
   Input,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useRegister from "../hooks/useRegister";
+import { useNavigate } from "react-router-dom";
 
 interface LoginData {
   email: string;
@@ -17,7 +19,7 @@ interface LoginData {
 }
 
 export default function Register() {
-    const registerMutation = useRegister()
+  const registerMutation = useRegister();
 
   const {
     register,
@@ -25,7 +27,31 @@ export default function Register() {
     formState: { errors, isSubmitting },
   } = useForm<LoginData>();
 
-  const onSubmit: SubmitHandler<LoginData> = (data) => registerMutation.mutateAsync(data);
+  const navigate = useNavigate();
+
+  const toast = useToast();
+
+  const onSubmit: SubmitHandler<LoginData> = async (data) => {
+    try {
+      await registerMutation.mutateAsync(data);
+      toast({
+        title: "Registration successful",
+        description: "You have been registered.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate(`/login`);
+    } catch (error) {
+      toast({
+        title: "Registration failed",
+        description: "Please check your credentials.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Container maxW={"container.sm"}>
@@ -40,19 +66,19 @@ export default function Register() {
           )}
         </FormControl>
         <FormControl isInvalid={!!errors.password}>
-            <FormLabel>Password</FormLabel>
-            <Input type="password" {...register("password", { required: true })} />
-            {errors.password ? (
-                <FormErrorMessage>{errors.password.message}</FormErrorMessage>
-            ) : (
-                <FormHelperText>Enter your password.</FormHelperText>
-            )}
+          <FormLabel>Password</FormLabel>
+          <Input
+            type="password"
+            {...register("password", { required: true })}
+          />
+          {errors.password ? (
+            <FormErrorMessage>{errors.password.message}</FormErrorMessage>
+          ) : (
+            <FormHelperText>Enter your password.</FormHelperText>
+          )}
         </FormControl>
-        <Button
-            type="submit"
-            isLoading={isSubmitting}
-        >
-            Submit
+        <Button type="submit" isLoading={isSubmitting}>
+          Submit
         </Button>
       </Stack>
     </Container>

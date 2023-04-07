@@ -1,15 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
+import fetcher from "../utils/fetcher";
 
 
 
 const register = ({email, password}: RegisterArgs) =>
-  fetch(`/api/auth/register`, {
+  fetcher(`/api/auth/register`, {
     method: "POST",
     body: JSON.stringify({ email, password }),
     headers: {
       "Content-Type": "application/json",
     }
-  }).then(res => res.json());
+  })
 
 interface RegisterArgs {
     email: string;
