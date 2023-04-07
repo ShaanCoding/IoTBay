@@ -73,3 +73,19 @@ Frontend is built using react and regularly sends data to the server using queri
 - **NPM**: NPM is a package manager that allows you to easily install dependencies.
 - **Cookie**: A cookie is a small piece of data that is stored on the client. Cookies are used to store session data.
 
+# Resources
+
+- [Fastify](https://www.fastify.io/)
+- [Prisma](https://www.prisma.io/)
+- [React](https://reactjs.org/)
+- [Yarn](https://yarnpkg.com/)
+- [Node.js](https://nodejs.org/en/)
+- [NPM](https://www.npmjs.com/)
+- [Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies)
+- [Request Response](https://en.wikipedia.org/wiki/Request%E2%80%93response)
+- [React Router](https://reactrouter.com/)
+- [React Query](https://tanstack.com/query)
+- [React Hook Form](https://react-hook-form.com/)
+- [Chakra UI](https://chakra-ui.com/)
+- [Argon2](https://en.wikipedia.org/wiki/Argon2)
+- [SQLite](https://www.sqlite.org/index.html)
