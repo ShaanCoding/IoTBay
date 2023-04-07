@@ -10,6 +10,9 @@ export default {
     response: {
       200: UserDto,
     },
+    operationId: "login",
+    tags: ["Authentication"],
+    
   },
   url: "login",
   preValidation: [

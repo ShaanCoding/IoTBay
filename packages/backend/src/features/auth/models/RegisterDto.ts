@@ -6,6 +6,8 @@ export const RegisterDto = Type.Object({
   name: Type.String(),
   phone: Type.String(),
   address: Type.String(),
+}, {
+  description: 'RegisterDto',
 })
 
 export type RegisterDtoType = Static<typeof RegisterDto>

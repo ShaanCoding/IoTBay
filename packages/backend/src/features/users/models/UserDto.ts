@@ -8,6 +8,8 @@ export const UserDto = Type.Object({
   shippingAddress: Type.Optional(Type.String()),
   billingAddress: Type.Optional(Type.String()),
   dob: Type.Optional(Type.String({ format: "date" })),
+}, {
+  description: "UserDto",
 });
 
 

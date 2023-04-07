@@ -9,6 +9,13 @@ export default {
     response: {
       200: UserCollectionDto,
     },
+    operationId: "getUsers",
+    tags: ["Users"],
+    security: [
+      {
+        "sessionid": [],
+      },
+    ]
   },
   method: "GET",
   url: "",

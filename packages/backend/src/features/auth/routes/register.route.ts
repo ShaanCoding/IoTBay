@@ -10,6 +10,8 @@ export default {
     response: {
       201: UserDto,
     },
+    operationId: "register",
+    tags: ["Authentication"],
   },
   method: "POST",
   url: "register",

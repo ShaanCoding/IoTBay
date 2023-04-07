@@ -7,6 +7,8 @@ export default {
       200: UserDto,
       // 204: null,
     },
+    operationId: "getMe",
+    tags: ["Users"],
   },
   method: "GET",
   url: "me",

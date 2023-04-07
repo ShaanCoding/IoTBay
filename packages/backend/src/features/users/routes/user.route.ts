@@ -16,9 +16,16 @@ export default {
     params: {
       type: "object",
       properties: {
-        id: { type: "string" },
+        userId: { type: "string" },
       },
     },
+    operationId: "getUser",
+    tags: ["Users"],
+    security: [
+      {
+        "sessionid": [],
+      },
+    ]
   },
   method: "GET",
   url: ":userId",

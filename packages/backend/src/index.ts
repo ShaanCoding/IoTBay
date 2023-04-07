@@ -1,18 +1,13 @@
-import fastifySecureSession from "@fastify/secure-session";
 import localStrategy from "./features/auth/strategies/local.strategy";
 import { User } from "@prisma/client";
 
 import fs from "fs";
 import path from "path";
 import fastifyPassport from "@fastify/passport";
-import fastifyStatic from "@fastify/static";
 import { fileURLToPath } from "node:url";
-import fastifyCors from "@fastify/cors";
 import { config } from "dotenv";
 import prisma from "./services/prisma";
-import fastifySensible from "@fastify/sensible";
 
-import fastifyAuth from "@fastify/auth";
 import server from "./services/server";
 
 // Load environment variables
@@ -25,13 +20,52 @@ const root = path.join(fileURLToPath(import.meta.url), "../..");
 const publicRoot = path.join(root, "public");
 
 // Register nice error messages
-await server.register(fastifySensible);
+await server.register(await import("@fastify/sensible"));
+
+// Register swagger
+await server.register(await import("@fastify/swagger"), {
+  swagger: {
+    info: {
+      title: "Fastify API",
+      description: "Building a blazing fast REST API with Node.js, MongoDB, Fastify and Swagger",
+      version: "0.1.0",
+    },
+    host: "localhost:3000",
+    schemes: ["http"],
+    consumes: ["application/json"],
+    produces: ["application/json"],
+    securityDefinitions: {
+      sessionid: {
+        type: "apiKey",
+        name: "sessionid",
+        in: "cookie",
+      },
+    }
+  },
+  openapi: {
+    servers: [{ url: "http://localhost:3000", description: "Development server" }],
+    components: {
+      securitySchemes: {
+        sessionid: {
+          type: "apiKey",
+          name: "sessionid",
+          in: "cookie",
+        },
+      }
+    }
+  },
+});
+
+await server.register(await import("@fastify/swagger-ui"), {
+  routePrefix: "/docs",
+});
+
 
 // Register auth rule handler
-await server.register(fastifyAuth);
+await server.register(await import("@fastify/auth"));
 
 // Setup CORS rules
-await server.register(fastifyCors, {
+await server.register(await import("@fastify/cors"), {
   origin: true,
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -39,7 +73,7 @@ await server.register(fastifyCors, {
 });
 
 // Setup Session
-await server.register(fastifySecureSession, {
+await server.register(await import("@fastify/secure-session"), {
   cookieName: "sessionid",
   key: fs.readFileSync(new URL("../secret_key", import.meta.url)),
   cookie: {
@@ -48,7 +82,7 @@ await server.register(fastifySecureSession, {
 });
 
 // Serve Static Files (Client)
-await server.register(fastifyStatic, {
+await server.register(await import("@fastify/static"), {
   root: publicRoot,
   wildcard: false,
 });
@@ -99,15 +133,17 @@ const { authRoutes } = await import(`./features/auth`);
 const { usersRoutes } = await import(`./features/users`);
 console.log("Routes loaded");
 
-// Registers all the auth routes and prefixes them with /api/auth
-authRoutes.forEach((route) => {
-  const withPrefix = prefixRoute("/api/auth", route);
-  server.route(withPrefix);
-});
+
 
 // Register all the user routes and prefix them with /api/users
 usersRoutes.forEach((route) => {
   const withPrefix = prefixRoute("/api/users", route);
+  server.route(withPrefix);
+});
+
+// Registers all the auth routes and prefixes them with /api/auth
+authRoutes.forEach((route) => {
+  const withPrefix = prefixRoute("/api/auth", route);
   server.route(withPrefix);
 });
 
