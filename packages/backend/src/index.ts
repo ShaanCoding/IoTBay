@@ -124,8 +124,3 @@ console.log(
     .map((address) => `${address.family} - ${address.address}:${address.port}`)
     .join("\n")}`
 );
-
-
-  
-
-
