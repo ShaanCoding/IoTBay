@@ -52,6 +52,11 @@ await server.register(await import("@fastify/swagger"), {
           in: "cookie",
         },
       }
+    },
+    info: {
+      title: "IoTBay API",
+      version: "0.1.0",
+      description: "IoTBay API",
     }
   },
 });
