@@ -1,11 +1,9 @@
-import { Authenticator } from "@fastify/passport";
-import fastifyCookie from "@fastify/cookie";
+
 import fastifySecureSession from "@fastify/secure-session";
 import fastify from "fastify";
-import localStrategy from "./auth/strategies/local.strategy";
+import localStrategy from "./features/auth/strategies/local.strategy";
 import { User } from "@prisma/client";
 
-import argon2 from "argon2";
 import fs from "fs";
 import path from "path";
 import fastifyPassport from "@fastify/passport";
@@ -13,253 +11,100 @@ import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import fastifyStatic from "@fastify/static";
 import { fileURLToPath } from "node:url";
 import fastifyCors from "@fastify/cors";
-import { RegisterDto, RegisterDtoType } from "../models/RegisterDto";
-import { LoginDto, LoginDtoType } from "../models/LoginDto";
 import { config } from "dotenv";
-import prisma from "./prisma";
-import { UserDto, UserDtoType } from "../models/UserDto";
-import { ErrorDto, ErrorDtoType } from "./errors/ErrorDto";
+import prisma from "./services/prisma";
 import fastifySensible from "@fastify/sensible";
-import {FastifyAuthFunction} from "@fastify/auth";
-import { UserCollectionDto, UserCollectionDtoType } from "../models/UserCollection";
-import fastifyAuth from '@fastify/auth'
 
+import fastifyAuth from "@fastify/auth";
+import { authRoutes } from "./features/auth";
+import { usersRoutes } from "./features/users";
+
+// Load environment variables
 config();
 
+// Get the root folder of the project
 const root = path.join(fileURLToPath(import.meta.url), "../..");
+
+// Get the public folder where the client is
 const publicRoot = path.join(root, "public");
 
-/**
- * Authentication function
- * This checks to see if the user is logged in
- */
-const isLoggedIn: FastifyAuthFunction = async (request, reply, done) => {
-  if (request.user) {
-    done()
-  } else {
-    reply.forbidden("You are not logged in")
-  }
-}
+// Create the server
+const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
-/**
- * Authentication function
- * This checks to see if the user is a staff member
- */
-const isStaff: FastifyAuthFunction = async (request, reply, done) => {
-  if (request.user && request.user.isStaff) {
-    done()
-  } else {
-    reply.forbidden("You are not a staff member")
-  }
-}
+// Register nice error messages
+await server.register(fastifySensible);
 
-// Register all the plugins
-const main = async () => {
-  const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
+// Register auth rule handler
+await server.register(fastifyAuth);
 
-  await server.register(fastifySensible);
+// Setup CORS rules
+await server.register(fastifyCors, {
+  origin: true,
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+});
 
-  await server.register(fastifyAuth)
+// Setup Session
+await server.register(fastifySecureSession, {
+  cookieName: "sessionid",
+  key: fs.readFileSync(new URL("../secret_key", import.meta.url)),
+  cookie: {
+    path: "/",
+  },
+});
 
-  await server.register(fastifyCors, {
-    origin: true,
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+// Serve Static Files (Client)
+await server.register(fastifyStatic, {
+  root: publicRoot,
+  wildcard: false,
+});
+
+// Initialise Passport for Authentication
+await server.register(fastifyPassport.initialize());
+await server.register(fastifyPassport.secureSession());
+
+// Register the local strategy (username and password)
+fastifyPassport.use("local", localStrategy);
+
+// This is used to serialize the user into the session e.g. get userId and put it in the session
+fastifyPassport.registerUserSerializer(
+  async (user: Omit<User, "password">, request) => user.id
+);
+
+// This is used to deserialize the user from the session e.g. get userId from session and get user from database
+fastifyPassport.registerUserDeserializer(async (id: string, request) => {
+  const { password, ...user } = await prisma.user.findUniqueOrThrow({
+    where: { id },
   });
+  return user;
+});
 
-  await server.register(fastifySecureSession, {
-    cookieName: "sessionid",
-    key: fs.readFileSync(new URL("../secret_key", import.meta.url)),
-    cookie: {
-      path: "/",
-    },
-  });
+// If there's no route, send the index.html file
+server.setNotFoundHandler((req, res) => {
+  res.sendFile("index.html");
+});
 
-  // Serve Static Files (Client)
-  server.register(fastifyStatic, {
-    root: publicRoot,
-    wildcard: false,
-  });
+// Registers all the auth routes and prefixes them with /api/auth
+authRoutes.forEach((route) => {
+  server.register(() => route, { prefix: "/api/auth" });
+});
 
-  // Initialise Passport for Authentication
-  await server.register(fastifyPassport.initialize());
-  await server.register(fastifyPassport.secureSession());
+// Register all the user routes and prefix them with /api/users
+usersRoutes.forEach((route) => {
+  server.register(() => route, { prefix: "/api/users" });
+});
 
-  fastifyPassport.use("local", localStrategy);
+// Set the server to listen on port 3000
+await server.listen({ port: 3000, host: "0.0.0.0" });
 
-  fastifyPassport.registerUserSerializer(
-    async (user: Omit<User, "password">, request) => user.id
-  );
+// Log the server address
+console.log(
+  `Server listening on ${server
+    .addresses()
+    .map((address) => `${address.family} - ${address.address}:${address.port}`)
+    .join("\n")}`
+);
 
-  fastifyPassport.registerUserDeserializer(async (id: string, request) => {
-    const { password, ...user } = await prisma.user.findUniqueOrThrow({
-      where: { id },
-    });
-    return user;
-  });
-
-  server.setNotFoundHandler((req, res) => {
-    res.sendFile("index.html");
-  });
-
-  return server;
-};
-
-const registerRoutes = async () => {
-  // Wait for the server to be ready
-  const server = await main();
-
-  // Login Route
-  server.route<{ Body: LoginDtoType, Response: UserDtoType }>({
-    method: "POST",
-    schema: {
-      body: LoginDto,
-      response: {
-        200: UserDto,
-      }
-    },
-    url: "/api/auth/login",
-    preValidation: [
-      fastifyPassport.authenticate("local", {
-        authInfo: false,
-        session: true,
-      }),
-    ],
-    handler: (req, res) => {
-      const user = req.user;
-
-      if (!user) {
-        return res.badRequest("Invalid credentials");
-      }
-
-
-      return res.status(200).send(user);
-    },
-  });
-
-  // Register Route
-  server.route<{ Body: RegisterDtoType; Reply: UserDtoType }>({
-    schema: {
-      body: RegisterDto,
-      response: {
-        201: UserDto,
-      },
-    },
-    method: "POST",
-    url: "/api/auth/register",
-    handler: async (req, res) => {
-      const { email, password } = req.body;
-      const passwordHash = await argon2.hash(password);
-
-      const userExists = await prisma.user.findUnique({
-        where: {
-          email,
-        },
-      });
-
-      if (userExists) {
-        return res.badRequest("User already exists");
-      }
-
-      const user = await prisma.user.create({
-        data: {
-          email,
-          password: passwordHash,
-          isStaff: false,
-        },
-        select: {
-          email: true,
-          id: true,
-          isStaff: true,
-        },
-      });
-
-      return res.status(201).send(user);
-    },
-  });
-
-  // Logout Route
-  server.route({
-    method: "POST",
-    url: "/api/auth/logout",
-    handler: async (req, res) => {
-      await req.logOut();
-      return res.status(200).send({ message: "Logged out" });
-    },
-  });
-
-  // Get User Route
-  server.route<{ Reply: null | UserDtoType }>({
-    schema: {
-      response: {
-        200: UserDto,
-        // 204: null,
-      },
-    },
-    method: "GET",
-    url: "/api/auth/user",
-    // preValidation: [fastifyPassport.authenticate("local", { session: true })],
-    handler: async (req, res) => {
-      if (!req.user) {
-        return res.status(204).send(null);
-      }
-
-      const { user } = req;
-
-      return res.status(200).send({
-        email: user.email,
-        id: user.id,
-        isStaff: user.isStaff,
-      });
-    },
-  });
-
-  // Get Users Route
-  server.route<{ Reply: UserCollectionDtoType }>({
-    schema: {
-      response: {
-        200: UserCollectionDto,
-      },
-    },
-    method: "GET",
-    url: "/api/auth/users",
-    preValidation: [server.auth([
-      isLoggedIn,
-      isStaff
-    ], {
-      relation: "and"
-    })],
-    handler: async (req, res) => {
-      const users = await prisma.user.findMany({
-        select: {
-          email: true,
-          id: true,
-          isStaff: true,
-        },
-      });
-
-      return res.status(200).send(users);
-    }
-  });
-
-
-  return server;
-};
-
-const start = async () => {
-  const server = await registerRoutes();
-
-  await server.listen({ port: 3000, host: "0.0.0.0" });
-
-  console.log(
-    `Server listening on ${server
-      .addresses()
-      .map(
-        (address) => `${address.family} - ${address.address}:${address.port}`
-      )
-      .join("\n")}`
-  );
-};
-
-start();
+export type RouteHandler = Parameters<typeof server.route>[0];
+export default server;
