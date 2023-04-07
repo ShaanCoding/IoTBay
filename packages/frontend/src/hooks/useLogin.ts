@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 
 
 const login = ({username, password}: LoginArgs) =>
-  fetch(`http://localhost:3000/auth/login`, {
+  fetch(`/api/auth/login`, {
     method: "POST",
     body: JSON.stringify({ username, password }),
     headers: {

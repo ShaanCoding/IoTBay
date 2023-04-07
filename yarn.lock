@@ -1325,7 +1325,7 @@
     fastify-plugin "^4.0.0"
     safe-stable-stringify "^2.3.1"
 
-"@fastify/static@^6.0.0":
+"@fastify/static@^6.0.0", "@fastify/static@^6.10.0":
   version "6.10.0"
   resolved "https://registry.yarnpkg.com/@fastify/static/-/static-6.10.0.tgz#cdb6a5ddcc3ea8691c79aad0c846bc986a4bc721"
   integrity sha512-TGruNm6ZabkQz2oRNoarPnY2BvS9i9DNf8Nn1aDcZp+WjOQRPCq0Wy2ko78yGB5JHytdCWoHpprc128QtLl8hw==
@@ -2135,6 +2135,11 @@ dir-glob@^3.0.1:
   integrity sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==
   dependencies:
     path-type "^4.0.0"
+
+dotenv@^16.0.3:
+  version "16.0.3"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.3.tgz#115aec42bac5053db3c456db30cc243a5a836a07"
+  integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
 
 electron-to-chromium@^1.4.284:
   version "1.4.355"

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 
 const getMe = () =>
-  fetch(`http://localhost:3000/users/me`, {
+  fetch(`/api/auth/user`, {
     credentials: "include",
     headers: {
         "Content-Type": "application/json"
