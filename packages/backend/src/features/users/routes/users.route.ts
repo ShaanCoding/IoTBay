@@ -29,6 +29,7 @@ export default {
       select: {
         userId: true,
         email: true,
+        name: true,
         userType: true,
         shippingAddress: true,
         billingAddress: true,
