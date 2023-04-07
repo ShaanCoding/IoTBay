@@ -97,11 +97,11 @@ export default function Navbar() {
                 </>
             )}
           <Button
-            as={Link}
+            as={"a"}
             fontSize={"sm"}
             fontWeight={400}
             variant={"link"}
-            to="/login"
+            href="/docs"
           >
             Docs
           </Button>
