@@ -1,12 +1,10 @@
 import fastifySecureSession from "@fastify/secure-session";
-import fastify from "fastify";
 import localStrategy from "./features/auth/strategies/local.strategy";
 import { User } from "@prisma/client";
 
 import fs from "fs";
 import path from "path";
 import fastifyPassport from "@fastify/passport";
-import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import fastifyStatic from "@fastify/static";
 import { fileURLToPath } from "node:url";
 import fastifyCors from "@fastify/cors";
@@ -25,9 +23,6 @@ const root = path.join(fileURLToPath(import.meta.url), "../..");
 
 // Get the public folder where the client is
 const publicRoot = path.join(root, "public");
-
-// Create the server
-
 
 // Register nice error messages
 await server.register(fastifySensible);
