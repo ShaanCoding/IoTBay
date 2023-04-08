@@ -12,7 +12,6 @@ import server from "./services/server";
 import { UserCollectionDto, UserDto } from "./features/users";
 import { LoginDto } from "./features/auth/models/LoginDto";
 import { RegisterDto } from "./features/auth/models/RegisterDto";
-import fastify from "fastify";
 
 // Load environment variables
 config();
@@ -72,17 +71,6 @@ server.addSchema(RegisterDto);
 
 await server.register(await import("@fastify/swagger-ui"), {
   routePrefix: "/docs",
-});
-
-// Register auth rule handler
-await server.register(await import("@fastify/auth"));
-
-// Setup CORS rules
-await server.register(await import("@fastify/cors"), {
-  origin: true,
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 });
 
 // Setup Session
