@@ -10,9 +10,8 @@ export const LoginSchema = Type.Object(
     password: Type.String(),
   },
   {
-    description: "LoginDto",
-    $id: "LoginDto",
-    // $ref: 'LoginDto',
+    description: "LoginSchema",
+    $id: "LoginSchema",
   }
 );
 
@@ -29,9 +28,8 @@ export const RegisterSchema = Type.Object(
     address: Type.String(),
   },
   {
-    description: "RegisterDto",
-    $id: "RegisterDto",
-    // $ref: 'RegisterDto',
+    description: "RegisterSchema",
+    $id: "RegisterSchema",
   }
 );
 

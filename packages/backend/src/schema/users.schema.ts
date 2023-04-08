@@ -9,9 +9,8 @@ export const UserSchema = Type.Object({
   billingAddress: Type.Optional(Type.String()),
   dob: Type.Optional(Type.String({ format: "date" })),
 }, {
-  description: "UserDto",
-  $id: "UserDto",
-  // $ref: "UserDto",
+  description: "UserSchema",
+  $id: "UserSchema",
 });
 
 export const UserSchemaRef = Type.Ref(UserSchema);
@@ -19,9 +18,8 @@ export const UserSchemaRef = Type.Ref(UserSchema);
 export type UserSchemaType = Static<typeof UserSchema>;
 
 export const UserCollectionSchema = Type.Array(UserSchemaRef, {
-    description: 'UserCollectionDto',
-    $id: 'UserCollectionDto',
-    // $ref: 'UserCollectionDto',
+    description: 'UserCollectionSchema',
+    $id: 'UserCollectionSchema',
 })
 
 export const UserCollectionSchemaRef = Type.Ref(UserCollectionSchema)

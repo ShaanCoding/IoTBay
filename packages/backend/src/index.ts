@@ -47,10 +47,10 @@ await server.register(await import("@fastify/swagger"), {
         },
       },
       schemas: {
-        UserSchema: UserSchema,
-        UserCollectionSchema: UserCollectionSchema,
-        LoginSchema: LoginSchema,
-        RegisterSchema: RegisterSchema
+        UserSchema,
+        UserCollectionSchema,
+        LoginSchema,
+        RegisterSchema
       },
     },
     info: {
