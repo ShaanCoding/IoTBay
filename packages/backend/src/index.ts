@@ -1,4 +1,4 @@
-import localStrategy from "./features/auth/strategies/local.strategy";
+import localStrategy from "./strategies/local.strategy";
 import { User } from "@prisma/client";
 
 import fs from "fs";
@@ -8,11 +8,14 @@ import { fileURLToPath } from "node:url";
 import { config } from "dotenv";
 import prisma from "./services/prisma";
 
-import server from "./services/server";
-import { UserCollectionDto, UserDto } from "./features/users";
-import { LoginDto } from "./features/auth/models/LoginDto";
-import { RegisterDto } from "./features/auth/models/RegisterDto";
-
+import { LoginDto } from "./schema/LoginDto";
+import { RegisterDto } from "./schema/RegisterDto";
+import authRouter from "./routes/auth.router";
+import usersRouter from "./routes/users.router";
+import { UserCollectionDto } from "./schema/UserCollectionDto";
+import { UserDto } from "./schema/UserDto";
+import fastify from 'fastify'
+import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 // Load environment variables
 config();
 
@@ -21,6 +24,8 @@ const root = path.join(fileURLToPath(import.meta.url), "../..");
 
 // Get the public folder where the client is
 const publicRoot = path.join(root, "public");
+
+const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
 // Register nice error messages
 await server.register(await import("@fastify/sensible"));
@@ -113,40 +118,11 @@ server.setNotFoundHandler((req, res) => {
   res.sendFile("index.html");
 });
 
-/** Used to type up routes */
-export type RouteHandler = Parameters<typeof server.route>[0];
+// Register the auth router
+await server.register(authRouter, { prefix: "/api/auth" });
 
-/**
- * Prefixes a route with a prefix
- * @param prefix The prefix to add to the route e.g. /api/auth
- * @param route The route to prefix
- * @returns The route with the prefix
- */
-const prefixRoute = (prefix: string, route: RouteHandler) => {
-  const withPrefix = [prefix, route.url]
-    .filter((url) => url !== "/" && url !== "")
-    .join("/");
-  route.url = withPrefix;
-  return route;
-};
-
-// Load all the routes from their folders
-console.log("Loading routes...");
-const { authRoutes } = await import(`./features/auth`);
-const { usersRoutes } = await import(`./features/users`);
-console.log("Routes loaded");
-
-// Register all the user routes and prefix them with /api/users
-usersRoutes.forEach((route) => {
-  const withPrefix = prefixRoute("/api/users", route);
-  server.route(withPrefix);
-});
-
-// Registers all the auth routes and prefixes them with /api/auth
-authRoutes.forEach((route) => {
-  const withPrefix = prefixRoute("/api/auth", route);
-  server.route(withPrefix);
-});
+// Register the users router
+await server.register(usersRouter, {prefix: "/api/users"});
 
 // Set the server to listen on port 3000
 await server.listen({ port: 3000, host: "0.0.0.0" });

@@ -1,6 +1,6 @@
 import { Strategy as LocalStrategy } from "passport-local";
 import argon2 from "argon2";
-import prisma from "../../../services/prisma";
+import prisma from "../services/prisma";
 
 /**
  * Used to authenticate a user using a username and password.
