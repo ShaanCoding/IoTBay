@@ -11,14 +11,14 @@ export default function Profile() {
           Profile
         </Text>
         <Box py={2}>
-          {Object.entries(me).map(([key, value]) => (
+          {me ? Object.entries(me).map(([key, value]) => (
             <Box key={key} py={1}>
               <Text as="span" fontWeight="bold">
                 {key}:
               </Text>{" "}
               <Code>{JSON.stringify(value)}</Code>
             </Box>
-          ))}
+          )): null}
             
         </Box>
       </Stack>
