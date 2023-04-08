@@ -22,12 +22,13 @@ const root = path.join(fileURLToPath(import.meta.url), "../..");
 // Get the public folder where the client is
 const publicRoot = path.join(root, "public");
 
+// declare the server
 const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
 
 // Register nice error messages
 await server.register(await import("@fastify/sensible"));
 
-// Register swagger
+// Register swagger (api viewer)
 await server.register(await import("@fastify/swagger"), {
   openapi: {
     servers: [
@@ -66,6 +67,7 @@ await server.register(await import("@fastify/swagger"), {
   }
 });
 
+// Register schemas to swagger
 server.addSchema(UserSchema);
 server.addSchema(UserCollectionSchema);
 server.addSchema(LoginSchema);
