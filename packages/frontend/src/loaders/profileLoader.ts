@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { LoaderFunctionArgs } from "react-router-dom";
+import { LoaderFunctionArgs, redirect } from "react-router-dom";
 import api from "../services/api";
 import { ApiError, UserDto } from "../api/generated";
 
@@ -9,10 +9,14 @@ import { ApiError, UserDto } from "../api/generated";
  */
 const profileLoader = (queryClient: QueryClient) => async ({ request }: LoaderFunctionArgs) => {
     if (!queryClient.getQueryData(["me"])) {
-        await queryClient.fetchQuery<UserDto, ApiError>({
+        const result = await queryClient.fetchQuery<UserDto | undefined, ApiError>({
             queryKey: ["me"],
             queryFn: () => api.users.getMe()
         })
+
+        if (!result) {
+            return redirect("/login")
+        }
     }
 
     return null
