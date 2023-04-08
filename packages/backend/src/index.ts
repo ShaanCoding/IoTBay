@@ -83,6 +83,9 @@ await server.register(await import("@fastify/secure-session"), {
   key: fs.readFileSync(new URL("../secret_key", import.meta.url)),
   cookie: {
     path: "/",
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+    httpOnly: true,
   },
 });
 
@@ -122,10 +125,6 @@ await server.register(usersRouter, {prefix: "/api/users"});
 await server.setNotFoundHandler((req, res) => {
   res.sendFile("index.html");
 });
-
-
-
-console.log(server.printRoutes())
 
 // Set the server to listen on port 3000
 await server.listen({ port: 3000, host: "0.0.0.0" });
