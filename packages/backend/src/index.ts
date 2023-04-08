@@ -77,10 +77,12 @@ await server.register(await import("@fastify/swagger-ui"), {
   routePrefix: "/docs",
 });
 
+await server.register(await import("@fastify/cookie"));
+
 // Setup Session
 await server.register(await import("@fastify/session"), {
   cookieName: "sessionid",
-  secret: env.getOrThrow("SESSION_SECRET"),
+  secret: env.getOrThrow<string>("SESSION_SECRET"),
   // key: fs.readFileSync(new URL("../secret_key", import.meta.url)),
   cookie: {
     path: "/",
