@@ -3,6 +3,7 @@ import { UserDto, UserDtoRef } from "../../users/models/UserDto";
 import prisma from "../../../services/prisma";
 import argon2 from "argon2";
 import { RouteHandler } from "../../..";
+import fastifySensible from "@fastify/sensible";
 
 export default {
   schema: {
