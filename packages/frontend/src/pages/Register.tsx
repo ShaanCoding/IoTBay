@@ -13,6 +13,7 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import useRegister from "../hooks/useRegister";
 import { useNavigate } from "react-router-dom";
+import { ApiError } from "../api/generated";
 
 interface LoginData {
   name: string;
@@ -47,13 +48,23 @@ export default function Register() {
       });
       navigate(`/login`);
     } catch (error) {
-      toast({
-        title: "Registration failed",
-        description: "Please check your credentials.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      if (error instanceof ApiError) {
+        toast({
+          title: "Login failed",
+          description: error.body?.message ?? "Unknown error",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Login failed",
+          description: "Unknown error",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
     }
   };
 

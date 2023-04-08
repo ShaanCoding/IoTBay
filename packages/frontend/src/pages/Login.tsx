@@ -13,6 +13,7 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import useLogin from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
+import { ApiError } from "../api/generated";
 
 interface LoginData {
   email: string;
@@ -32,7 +33,7 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<LoginData> = async (data) => {
     try {
-      const res = await loginMutation.mutateAsync({
+      await loginMutation.mutateAsync({
         username: data.email,
         password: data.password,
       });
@@ -46,13 +47,24 @@ export default function Login() {
       });
       navigate(`/profile`)
     } catch (error) {
-      toast({
-        title: "Login failed",
-        description: "Please check your credentials.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      if (error instanceof ApiError) {
+        toast({
+          title: "Login failed",
+          description: error.body?.message ?? "Unknown error",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Login failed",
+          description: "Unknown error",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+      
     }
    
   };
