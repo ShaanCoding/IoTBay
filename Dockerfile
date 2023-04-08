@@ -45,4 +45,4 @@ COPY --from=buildbackend /app/packages/backend/secret_key packages/backend/secre
 # COPY --from=build /app/prisma prisma
 EXPOSE 3000
 RUN yarn install --production --frozen-lockfile
-CMD yarn workspace backend migrate:deploy && yarn workspace backend start
+CMD yarn workspace backend migrate && yarn workspace backend start
