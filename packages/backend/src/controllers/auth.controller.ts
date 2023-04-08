@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { RegisterDtoType } from '../schema/RegisterDto';
+import { RegisterSchemaType } from '../schema/register.schema';
 import argon2 from 'argon2';
-import prisma from '../services/prisma';
+import prisma from '../services/prisma.service';
 
 export const login = async (request: FastifyRequest, reply: FastifyReply) => {
     const user = request.user;
@@ -18,8 +18,8 @@ export const logout = async (request: FastifyRequest, reply: FastifyReply) => {
     return reply.status(200).send({ message: "Logged out" });
 }
 
-export const register = async (request: FastifyRequest<{ Body: RegisterDtoType }>, reply: FastifyReply) => {
-    const { email, password, name, phone, address } = request.body as RegisterDtoType;
+export const register = async (request: FastifyRequest<{ Body: RegisterSchemaType }>, reply: FastifyReply) => {
+    const { email, password, name, phone, address } = request.body as RegisterSchemaType;
     const passwordHash = await argon2.hash(password);
 
     const userExists = await prisma.user.findUnique({

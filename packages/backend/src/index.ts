@@ -6,14 +6,14 @@ import path from "path";
 import fastifyPassport from "@fastify/passport";
 import { fileURLToPath } from "node:url";
 import { config } from "dotenv";
-import prisma from "./services/prisma";
+import prisma from "./services/prisma.service";
 
-import { LoginDto } from "./schema/LoginDto";
-import { RegisterDto } from "./schema/RegisterDto";
+import { LoginSchema } from "./schema/login.schema";
+import { RegisterSchema } from "./schema/register.schema";
 import authRouter from "./routes/auth.router";
 import usersRouter from "./routes/users.router";
-import { UserCollectionDto } from "./schema/UserCollectionDto";
-import { UserDto } from "./schema/UserDto";
+import { UserCollectionSchema } from "./schema/userCollection.schema";
+import { UserSchema } from "./schema/user.schema";
 import fastify from 'fastify'
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 // Load environment variables
@@ -49,10 +49,10 @@ await server.register(await import("@fastify/swagger"), {
         },
       },
       schemas: {
-        UserDto,
-        UserCollectionDto,
-        LoginDto,
-        RegisterDto
+        UserDto: UserSchema,
+        UserCollectionDto: UserCollectionSchema,
+        LoginDto: LoginSchema,
+        RegisterDto: RegisterSchema
       },
     },
     info: {
@@ -69,10 +69,10 @@ await server.register(await import("@fastify/swagger"), {
   }
 });
 
-server.addSchema(UserDto);
-server.addSchema(UserCollectionDto);
-server.addSchema(LoginDto);
-server.addSchema(RegisterDto);
+server.addSchema(UserSchema);
+server.addSchema(UserCollectionSchema);
+server.addSchema(LoginSchema);
+server.addSchema(RegisterSchema);
 
 await server.register(await import("@fastify/swagger-ui"), {
   routePrefix: "/docs",

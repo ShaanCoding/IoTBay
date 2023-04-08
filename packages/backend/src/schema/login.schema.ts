@@ -1,6 +1,6 @@
 import { Static, Type } from '@sinclair/typebox'
 
-export const LoginDto = Type.Object({
+export const LoginSchema = Type.Object({
   username: Type.String(),
   password: Type.String(),
 }, {
@@ -9,6 +9,6 @@ export const LoginDto = Type.Object({
   // $ref: 'LoginDto',
 })
 
-export const LoginDtoRef = Type.Ref(LoginDto)
+export const LoginSchemaRef = Type.Ref(LoginSchema)
 
-export type LoginDtoType = Static<typeof LoginDto>
+export type LoginSchemaType = Static<typeof LoginSchema>

@@ -1,6 +1,6 @@
 import { Static, Type } from "@sinclair/typebox";
 
-export const UserDto = Type.Object({
+export const UserSchema = Type.Object({
   userId: Type.String({ format: "uuid" }),
   email: Type.String({ format: "email" }),
   name: Type.String(),
@@ -14,7 +14,7 @@ export const UserDto = Type.Object({
   // $ref: "UserDto",
 });
 
-export const UserDtoRef = Type.Ref(UserDto);
+export const UserSchemaRef = Type.Ref(UserSchema);
 
 
 /**
@@ -29,4 +29,4 @@ export const UserDtoRef = Type.Ref(UserDto);
   shippingAddress: string | null
   billingAddress: string | null
  */
-export type UserDtoType = Static<typeof UserDto>;
+export type UserSchemaType = Static<typeof UserSchema>;

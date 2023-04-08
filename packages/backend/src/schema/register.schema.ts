@@ -1,6 +1,6 @@
 import { Static, Type } from '@sinclair/typebox'
 
-export const RegisterDto = Type.Object({
+export const RegisterSchema = Type.Object({
   email: Type.String({ format: "email"}),
   password: Type.String(),
   name: Type.String(),
@@ -12,6 +12,6 @@ export const RegisterDto = Type.Object({
   // $ref: 'RegisterDto',
 })
 
-export const RegisterDtoRef = Type.Ref(RegisterDto)
+export const RegisterSchemaRef = Type.Ref(RegisterSchema)
 
-export type RegisterDtoType = Static<typeof RegisterDto>
+export type RegisterSchemaType = Static<typeof RegisterSchema>

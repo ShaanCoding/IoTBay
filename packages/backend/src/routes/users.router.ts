@@ -1,14 +1,14 @@
 import { FastifyInstance } from "fastify";
 import * as controllers from "../controllers";
-import { UserDtoRef } from "../schema/UserDto";
+import { UserSchemaRef } from "../schema/user.schema";
 import { isLoggedIn, isStaff } from "../helpers/auth";
-import { UserCollectionDtoRef } from "../schema/UserCollectionDto";
+import { UserCollectionSchemaRef } from "../schema/userCollection.schema";
 
 export default async function usersRouter(fastify: FastifyInstance) {
   fastify.route({
     schema: {
       response: {
-        200: UserDtoRef,
+        200: UserSchemaRef,
         // 204: null,
       },
       operationId: "getMe",
@@ -22,7 +22,7 @@ export default async function usersRouter(fastify: FastifyInstance) {
   fastify.route({
     schema: {
       response: {
-        200: UserDtoRef,
+        200: UserSchemaRef,
       },
       params: {
         type: "object",
@@ -47,7 +47,7 @@ export default async function usersRouter(fastify: FastifyInstance) {
   fastify.route({
     schema: {
       response: {
-        200: UserCollectionDtoRef,
+        200: UserCollectionSchemaRef,
       },
       operationId: "getUsers",
       tags: ["Users"],

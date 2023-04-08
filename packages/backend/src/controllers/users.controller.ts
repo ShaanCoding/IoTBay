@@ -1,4 +1,4 @@
-import prisma from "../services/prisma";
+import prisma from "../services/prisma.service";
 
 import { FastifyRequest, FastifyReply } from "fastify";
 
