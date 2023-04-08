@@ -28,7 +28,6 @@ RUN yarn workspace backend install --frozen-lockfile
 COPY packages/backend/src ./packages/backend/src
 COPY --from=buildfrontend /app/packages/frontend/dist ./packages/backend/public
 RUN yarn workspace backend generate
-RUN yarn workspace backend generate-secret-key
 RUN yarn workspace backend build
 
 # Runner
@@ -40,7 +39,6 @@ ENV DATABASE_URL="file:/app/config/db.sqlite"
 COPY --from=buildbackend /app/node_modules/.prisma /app/node_modules/.prisma
 COPY --from=buildbackend /app/packages/backend/dist packages/backend/dist
 COPY --from=buildbackend /app/packages/backend/public packages/backend/public
-COPY --from=buildbackend /app/packages/backend/secret_key packages/backend/secret_key 
 # TODO: the above key changes on every build, so we need to find a way to persist it
 # COPY --from=build /app/prisma prisma
 EXPOSE 3000

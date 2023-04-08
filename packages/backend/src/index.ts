@@ -83,7 +83,6 @@ await server.register(await import("@fastify/cookie"));
 await server.register(await import("@fastify/session"), {
   cookieName: "sessionid",
   secret: env.getOrThrow<string>("SESSION_SECRET"),
-  // key: fs.readFileSync(new URL("../secret_key", import.meta.url)),
   cookie: {
     path: "/",
     sameSite: "strict",
