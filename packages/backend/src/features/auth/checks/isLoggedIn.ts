@@ -1,4 +1,3 @@
-import { FastifyAuthFunction } from "@fastify/auth"
 import { FastifyRequest, FastifyReply } from 'fastify'
 
 /**
