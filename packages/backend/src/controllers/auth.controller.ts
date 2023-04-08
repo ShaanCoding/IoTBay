@@ -3,6 +3,12 @@ import argon2 from "argon2";
 import prisma from "../services/prisma.service";
 import { LoginSchemaType, RegisterSchemaType } from "../schema";
 
+/**
+ * Given the user successfully logged in, this function will return the user
+ * @param request Fastify request
+ * @param reply Fastify reply
+ * @returns User
+ */
 export const login = async (
   request: FastifyRequest<{ Body: LoginSchemaType }>,
   reply: FastifyReply
@@ -16,11 +22,23 @@ export const login = async (
   return reply.status(200).send(user);
 };
 
+/**
+ * If a user is logged in, this function will log them out
+ * @param request Fastify request
+ * @param reply Fastify reply
+ * @returns an object containing a message
+ */
 export const logout = async (request: FastifyRequest, reply: FastifyReply) => {
   await request.logOut();
   return reply.status(200).send({ message: "Logged out" });
 };
 
+/**
+ * Register a new user given their details
+ * @param request Fastify request
+ * @param reply Fastify reply
+ * @returns User and signs them in
+ */
 export const register = async (
   request: FastifyRequest<{ Body: RegisterSchemaType }>,
   reply: FastifyReply
