@@ -46,6 +46,8 @@ export default {
       },
     });
 
+    req.session.set("passport", user.userId);
+
     return res.status(201).send(user);
   },
 } satisfies RouteHandler;
