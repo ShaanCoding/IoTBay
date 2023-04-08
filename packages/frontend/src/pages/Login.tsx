@@ -36,7 +36,7 @@ export default function Login() {
         username: data.email,
         password: data.password,
       });
-      console.log(res);
+      // console.log(res);
       toast({
         title: "Login successful",
         description: "You have been logged in.",
