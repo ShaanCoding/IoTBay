@@ -1,7 +1,6 @@
 import localStrategy from "./strategies/local.strategy";
 import { User } from "@prisma/client";
 
-import fs from "fs";
 import path from "path";
 import fastifyPassport from "@fastify/passport";
 import { fileURLToPath } from "node:url";
@@ -13,6 +12,7 @@ import usersRouter from "./routes/users.router";
 import fastify from 'fastify'
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { LoginSchema, RegisterSchema, UserCollectionSchema, UserSchema } from "./schema";
+import { env } from "./utils";
 // Load environment variables
 config();
 
@@ -78,9 +78,10 @@ await server.register(await import("@fastify/swagger-ui"), {
 });
 
 // Setup Session
-await server.register(await import("@fastify/secure-session"), {
+await server.register(await import("@fastify/session"), {
   cookieName: "sessionid",
-  key: fs.readFileSync(new URL("../secret_key", import.meta.url)),
+  secret: env.getOrThrow("SESSION_SECRET"),
+  // key: fs.readFileSync(new URL("../secret_key", import.meta.url)),
   cookie: {
     path: "/",
     sameSite: "strict",
