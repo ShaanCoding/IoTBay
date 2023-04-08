@@ -94,7 +94,7 @@ await server.register(await import("@fastify/static"), {
 await server.register(fastifyPassport.initialize());
 await server.register(fastifyPassport.secureSession());
 
-// Register the local strategy (username and password)
+// Register the local strategy (username and password) login
 fastifyPassport.use("local", localStrategy);
 
 // This is used to serialize the user into the session e.g. get userId and put it in the session
