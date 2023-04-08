@@ -20,6 +20,7 @@
     "build:frontend": "yarn workspace frontend build",
     "build:backend": "yarn workspace backend build",
     "build": "yarn build:frontend && yarn build:backend",
-    "build:run": "yarn build && yarn workspace backend start"
+    "build:run": "yarn build && yarn workspace backend start",
+    "migrate": "yarn workspace backend migrate"
   }
 }

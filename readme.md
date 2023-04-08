@@ -9,13 +9,10 @@
 - Run `yarn install` to install dependencies
 
 ## Running the app
-- Run `yarn workspace backend prisma migrate deploy` to deploy the database schema
-- Run `yarn workspace backend prisma generate` to generate the Prisma client
-- Run `yarn workspace backend dev` to start the backend server
+- Run `yarn migrate` to migrate the database
+- Run `yarn dev` to start the app (backend and frontend)
 
-You should now be able to access the app at `http://localhost:3000`.
-
-The last command above will serve the static files bundled with the project. If you want to change the frontend then you need to run `yarn workspace frontend build` and then `yarn workspace backend dev` again after you've made your changes.
+You should now be able to access the app at `http://localhost:5173`.
 
 # FAQ
 
