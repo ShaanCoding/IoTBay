@@ -1,20 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import fetcher from "../utils/fetcher";
+import api from "../services/api";
+import { ApiError, UserDto } from "../api/generated";
 
 
-const getMe = () =>
-  fetcher(`/api/users/me`, {
-    credentials: "include",
-    headers: {
-        "Content-Type": "application/json"
-    }
-  })
+
 
 const meQueryKey = ["me"];
 
 export default function useMe() {
-  return useQuery({
-    queryFn: getMe,
+  return useQuery<UserDto, ApiError>({
+    queryFn: () => api.users.getMe(),
     queryKey: meQueryKey,
   });
 }

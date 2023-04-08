@@ -1,27 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import fetcher from "../utils/fetcher";
+import api from "../services/api";
+import { ApiError, RegisterDto, UserDto } from "../api/generated";
 
 
 
-const register = (data: RegisterData) =>
-  fetcher(`/api/auth/register`, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json",
-    }
-  })
 
-  interface RegisterData {
-    name: string;
-    email: string;
-    password: string;
-    address: string;
-    phone: string;
-  }
 
 export default function useRegister() {
-  return useMutation<unknown, unknown, RegisterData>({
-    mutationFn: register,
+  return useMutation<UserDto, ApiError, RegisterDto>({
+    mutationFn: (data) => api.authentication.register(data),
   });
 }
