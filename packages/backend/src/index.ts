@@ -117,9 +117,9 @@ await server.register(authRouter, { prefix: "/api/auth" });
 await server.register(usersRouter, {prefix: "/api/users"});
 
 // If there's no route, send the index.html file
-// await server.setNotFoundHandler((req, res) => {
-//   res.sendFile("index.html");
-// });
+await server.setNotFoundHandler((req, res) => {
+  res.sendFile("index.html");
+});
 
 
 
