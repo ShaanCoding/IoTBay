@@ -110,16 +110,20 @@ fastifyPassport.registerUserDeserializer(async (userId: string, request) => {
   return user;
 });
 
-// If there's no route, send the index.html file
-server.setNotFoundHandler((req, res) => {
-  res.sendFile("index.html");
-});
-
 // Register the auth router
 await server.register(authRouter, { prefix: "/api/auth" });
 
 // Register the users router
 await server.register(usersRouter, {prefix: "/api/users"});
+
+// If there's no route, send the index.html file
+// await server.setNotFoundHandler((req, res) => {
+//   res.sendFile("index.html");
+// });
+
+
+
+console.log(server.printRoutes())
 
 // Set the server to listen on port 3000
 await server.listen({ port: 3000, host: "0.0.0.0" });

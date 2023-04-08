@@ -14,7 +14,7 @@ export default async function authRouter(fastify: FastifyInstance) {
       operationId: "login",
       tags: ["Authentication"],
     },
-    url: "login",
+    url: "/login",
     preValidation: [
       fastifyPassport.authenticate("local", {
         authInfo: false,
@@ -26,7 +26,7 @@ export default async function authRouter(fastify: FastifyInstance) {
 
   fastify.route({
     method: "POST",
-    url: "logout",
+    url: "/logout",
     schema: {
       operationId: "logout",
       tags: ["Authentication"],
@@ -49,7 +49,7 @@ export default async function authRouter(fastify: FastifyInstance) {
       tags: ["Authentication"],
     },
     method: "POST",
-    url: "register",
+    url: "/register",
     handler: controllers.register,
   });
 }
