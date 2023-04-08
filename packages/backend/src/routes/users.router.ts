@@ -8,7 +8,6 @@ export default async function usersRouter(fastify: FastifyInstance) {
     schema: {
       response: {
         200: UserSchemaRef,
-        // 204: null,
       },
       operationId: "getMe",
       tags: ["Users"],
