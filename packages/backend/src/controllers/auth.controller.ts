@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { RegisterSchemaType } from '../schema/register.schema';
 import argon2 from 'argon2';
 import prisma from '../services/prisma.service';
+import { RegisterSchemaType } from '../schema';
 
 export const login = async (request: FastifyRequest, reply: FastifyReply) => {
     const user = request.user;
@@ -19,7 +19,7 @@ export const logout = async (request: FastifyRequest, reply: FastifyReply) => {
 }
 
 export const register = async (request: FastifyRequest<{ Body: RegisterSchemaType }>, reply: FastifyReply) => {
-    const { email, password, name, phone, address } = request.body as RegisterSchemaType;
+    const { email, password, name, phone, address } = request.body;
     const passwordHash = await argon2.hash(password);
 
     const userExists = await prisma.user.findUnique({

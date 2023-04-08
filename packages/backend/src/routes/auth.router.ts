@@ -1,9 +1,7 @@
 import { FastifyInstance } from "fastify";
-import { LoginSchemaRef } from "../schema/login.schema";
-import { UserSchemaRef } from "../schema/user.schema";
 import fastifyPassport from "@fastify/passport";
 import * as controllers from "../controllers";
-import { RegisterSchemaRef } from "../schema/register.schema";
+import { LoginSchemaRef, RegisterSchemaRef, UserSchemaRef } from "../schema";
 
 export default async function authRouter(fastify: FastifyInstance) {
   fastify.route({

@@ -8,14 +8,11 @@ import { fileURLToPath } from "node:url";
 import { config } from "dotenv";
 import prisma from "./services/prisma.service";
 
-import { LoginSchema } from "./schema/login.schema";
-import { RegisterSchema } from "./schema/register.schema";
 import authRouter from "./routes/auth.router";
 import usersRouter from "./routes/users.router";
-import { UserCollectionSchema } from "./schema/userCollection.schema";
-import { UserSchema } from "./schema/user.schema";
 import fastify from 'fastify'
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import { LoginSchema, RegisterSchema, UserCollectionSchema, UserSchema } from "./schema";
 // Load environment variables
 config();
 
@@ -49,10 +46,10 @@ await server.register(await import("@fastify/swagger"), {
         },
       },
       schemas: {
-        UserDto: UserSchema,
-        UserCollectionDto: UserCollectionSchema,
-        LoginDto: LoginSchema,
-        RegisterDto: RegisterSchema
+        UserSchema: UserSchema,
+        UserCollectionSchema: UserCollectionSchema,
+        LoginSchema: LoginSchema,
+        RegisterSchema: RegisterSchema
       },
     },
     info: {

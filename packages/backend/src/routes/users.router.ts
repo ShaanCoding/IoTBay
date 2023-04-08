@@ -1,8 +1,7 @@
 import { FastifyInstance } from "fastify";
 import * as controllers from "../controllers";
-import { UserSchemaRef } from "../schema/user.schema";
 import { isLoggedIn, isStaff } from "../helpers/auth";
-import { UserCollectionSchemaRef } from "../schema/userCollection.schema";
+import { UserCollectionSchemaRef, UserSchemaRef } from "../schema";
 
 export default async function usersRouter(fastify: FastifyInstance) {
   fastify.route({

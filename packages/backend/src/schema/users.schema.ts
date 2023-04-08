@@ -16,17 +16,14 @@ export const UserSchema = Type.Object({
 
 export const UserSchemaRef = Type.Ref(UserSchema);
 
-
-/**
- * userId: string
-  email: string
-  password: string
-  name: string
-  phone: string
-  address: string
-  dob: Date | null
-  userType: string
-  shippingAddress: string | null
-  billingAddress: string | null
- */
 export type UserSchemaType = Static<typeof UserSchema>;
+
+export const UserCollectionSchema = Type.Array(UserSchemaRef, {
+    description: 'UserCollectionDto',
+    $id: 'UserCollectionDto',
+    // $ref: 'UserCollectionDto',
+})
+
+export const UserCollectionSchemaRef = Type.Ref(UserCollectionSchema)
+
+export type UserCollectionSchemaType = Static<typeof UserCollectionSchema>
