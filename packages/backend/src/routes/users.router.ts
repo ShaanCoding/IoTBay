@@ -56,7 +56,7 @@ export default async function usersRouter(fastify: FastifyInstance) {
       ],
     },
     method: "GET",
-    url: "/",
+    url: "",
     preValidation: [isLoggedIn, isStaff],
     handler: controllers.users,
   });
