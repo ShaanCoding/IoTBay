@@ -7,7 +7,7 @@ const generate = async () => {
     exportCore: true,
     exportSchemas: false,
     exportServices: true,
-    input: "http://localhost:3000/docs/json",
+    input: "http://127.0.0.1:3000/docs/json",
     output: "./src/api/generated",
     clientName: "IoTBayClient",
   });

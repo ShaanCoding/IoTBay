@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 /**
- * LoginDto
+ * LoginSchema
  */
-export type LoginDto = {
+export type LoginSchema = {
     username: string;
     password: string;
 };

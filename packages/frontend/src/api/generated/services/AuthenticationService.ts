@@ -1,9 +1,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { LoginDto } from '../models/LoginDto';
-import type { RegisterDto } from '../models/RegisterDto';
-import type { UserDto } from '../models/UserDto';
+import type { LoginSchema } from '../models/LoginSchema';
+import type { RegisterSchema } from '../models/RegisterSchema';
+import type { UserSchema } from '../models/UserSchema';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -14,31 +14,15 @@ export class AuthenticationService {
 
     /**
      * @param requestBody 
-     * @returns UserDto Default Response
+     * @returns UserSchema Default Response
      * @throws ApiError
      */
     public login(
-requestBody?: LoginDto,
-): CancelablePromise<UserDto> {
+requestBody?: LoginSchema,
+): CancelablePromise<UserSchema> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/auth/login',
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-
-    /**
-     * @param requestBody 
-     * @returns UserDto Default Response
-     * @throws ApiError
-     */
-    public register(
-requestBody?: RegisterDto,
-): CancelablePromise<UserDto> {
-        return this.httpRequest.request({
-            method: 'POST',
-            url: '/api/auth/register',
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -52,6 +36,22 @@ requestBody?: RegisterDto,
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/auth/logout',
+        });
+    }
+
+    /**
+     * @param requestBody 
+     * @returns UserSchema Default Response
+     * @throws ApiError
+     */
+    public register(
+requestBody?: RegisterSchema,
+): CancelablePromise<UserSchema> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/api/auth/register',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 

@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 /**
- * RegisterDto
+ * RegisterSchema
  */
-export type RegisterDto = {
+export type RegisterSchema = {
     email: string;
     password: string;
     name: string;

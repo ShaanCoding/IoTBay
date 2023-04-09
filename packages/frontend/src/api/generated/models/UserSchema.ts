@@ -3,19 +3,19 @@
 /* eslint-disable */
 
 /**
- * UserDto
+ * UserSchema
  */
-export type UserDto = {
+export type UserSchema = {
     userId: string;
     email: string;
     name: string;
-    userType: UserDto.userType;
+    userType: UserSchema.userType;
     shippingAddress?: string;
     billingAddress?: string;
     dob?: string;
 };
 
-export namespace UserDto {
+export namespace UserSchema {
 
     export enum userType {
         STAFF = 'staff',
