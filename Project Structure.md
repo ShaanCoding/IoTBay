@@ -1,0 +1,67 @@
+Intermediate
+
+- Assets
+  - Images, SVG, JSON and other imports that aren't components
+- Components
+  - Components broken down into different folders
+  - form, layout, ui
+  - **tests** for components
+  - Page components ARE UNIQUE AND ARE UNDER PAGES
+- Context
+  - Any contexts
+  - Unit tests in **tests**
+- Data
+  - Data i.e. constants, JSON, etc.
+- Hooks
+  - hooks i.e. useFetch, useLocalStorage, etc.
+  - **tests** for hooks
+- Pages
+  - Page components
+    - Page specific components are in the specific home page folder
+    - same with specific context
+  - **tests** for pages
+- Utils
+  - Any utils i.e. api, helpers, etc.
+  - **tests** for utils
+- App.js
+- Index.js
+
+Advanced
+
+- Assets
+  - Images, SVG, JSON and other imports that aren't components
+- Components
+  - Components broken down into different folders
+  - form, layout, ui
+  - **tests** for components
+  - Page components ARE UNIQUE AND ARE UNDER PAGES
+- Context
+  - Any contexts
+  - Unit tests in **tests**
+- Data
+  - Data i.e. constants, JSON, etc.
+- Features
+  - Features broken down into different folders
+  - form, layout, ui
+  - **tests** for features
+  - Page components ARE UNIQUE AND ARE UNDER PAGES
+- Hooks
+  - hooks i.e. useFetch, useLocalStorage, etc.
+  - **tests** for hooks
+- Layout
+  - Layout components
+  - **tests** for layout
+- Lib
+  - Any libs i.e. api, helpers, etc.
+  - **tests** for libs
+- Pages
+  - Page components
+    - Page specific components are in the specific home page folder
+    - same with specific context
+  - **tests** for pages
+- Utils
+  - Any utils i.e. api, helpers, etc.
+  - **tests** for utils
+- Services
+  - Any services i.e. api, helpers, etc.
+  - **tests** for services

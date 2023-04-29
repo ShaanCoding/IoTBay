@@ -44,7 +44,6 @@ export const register = async (
   reply: FastifyReply
 ) => {
   const { email, password, name, phone, address } = request.body;
-  const passwordHash = await argon2.hash(password);
 
   const userExists = await prisma.user.findUnique({
     where: {
@@ -55,6 +54,8 @@ export const register = async (
   if (userExists) {
     return reply.badRequest("User already exists");
   }
+
+  const passwordHash = await argon2.hash(password);
 
   const user = await prisma.user.create({
     data: {
@@ -67,6 +68,7 @@ export const register = async (
     select: {
       userId: true,
       email: true,
+      name: true,
       userType: true,
       shippingAddress: true,
       billingAddress: true,

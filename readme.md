@@ -1,20 +1,30 @@
 # Getting Started
 
 ## Prerequisites
+
 - [Node.js](https://nodejs.org/en/)
 - [Yarn](https://yarnpkg.com/en/docs/install)
 
 ## Installation
+
 - Clone the repository
 - Run `yarn install` to install dependencies
 
 ## Running the app
+
 - Run `yarn migrate` to migrate the database
 - Run `yarn dev` to start the app (backend and frontend)
 
 You should now be able to access the app at `http://localhost:5173`.
 
 # FAQ
+
+## How do I read the Swagger documentation in the development environment or import into Postman?
+
+- Run `yarn dev` to start the app (backend and frontend)
+- Go to http://localhost:3000/docs/static/index.html to view the Swagger documentation
+
+- To import into Postman, click on the 'import' button in the top left corner of the Postman app and select the 'Link' tab. Enter the URL http://localhost:3000/docs/static/index.html and click 'Continue'. You should now be able to view the Swagger documentation in Postman.
 
 ## Auth
 
@@ -50,7 +60,7 @@ Fastify has the ability to manipulate sessions, get the currently logged in user
 
 ## Frontend
 
-Frontend is built using react and regularly sends data to the server using queries. 
+Frontend is built using react and regularly sends data to the server using queries.
 
 # Glossary
 

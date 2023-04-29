@@ -46,7 +46,7 @@ export default function Register() {
         duration: 5000,
         isClosable: true,
       });
-      navigate(`/login`);
+      navigate(`/profile`);
     } catch (error) {
       if (error instanceof ApiError) {
         toast({

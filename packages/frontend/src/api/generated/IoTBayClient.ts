@@ -6,6 +6,8 @@ import type { OpenAPIConfig } from './core/OpenAPI';
 import { FetchHttpRequest } from './core/FetchHttpRequest';
 
 import { AuthenticationService } from './services/AuthenticationService';
+import { CategoriesService } from './services/CategoriesService';
+import { ProductsService } from './services/ProductsService';
 import { UsersService } from './services/UsersService';
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
@@ -13,6 +15,8 @@ type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class IoTBayClient {
 
     public readonly authentication: AuthenticationService;
+    public readonly categories: CategoriesService;
+    public readonly products: ProductsService;
     public readonly users: UsersService;
 
     public readonly request: BaseHttpRequest;
@@ -31,6 +35,8 @@ export class IoTBayClient {
         });
 
         this.authentication = new AuthenticationService(this.request);
+        this.categories = new CategoriesService(this.request);
+        this.products = new ProductsService(this.request);
         this.users = new UsersService(this.request);
     }
 }

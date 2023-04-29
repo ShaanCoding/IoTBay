@@ -67,6 +67,7 @@ model Product {
   OrderLineItem OrderLineItem[]
   Category      ProductCategory? @relation(fields: [categoryId], references: [categoryId])
   categoryId    String?
+  lastUpdated   DateTime         @default(now()) @updatedAt
 }
 
 model Order {

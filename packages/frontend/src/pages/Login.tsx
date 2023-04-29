@@ -37,7 +37,6 @@ export default function Login() {
         username: data.email,
         password: data.password,
       });
-      // console.log(res);
       toast({
         title: "Login successful",
         description: "You have been logged in.",
@@ -45,7 +44,7 @@ export default function Login() {
         duration: 5000,
         isClosable: true,
       });
-      navigate(`/profile`)
+      navigate(`/profile`);
     } catch (error) {
       if (error instanceof ApiError) {
         toast({
@@ -64,9 +63,7 @@ export default function Login() {
           isClosable: true,
         });
       }
-      
     }
-   
   };
 
   return (

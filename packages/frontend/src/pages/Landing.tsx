@@ -1,7 +1,6 @@
 import {
   Button,
   ButtonGroup,
-  Center,
   Container,
   Heading,
   Stack,
@@ -28,11 +27,11 @@ export default function Landing() {
               Register
             </Button>
           </ButtonGroup>
-        ) : 
-            <Text textAlign={"center"} fontSize={"3xl"}>
-                Welcome, {data.name}
-            </Text>
-        }
+        ) : (
+          <Text textAlign={"center"} fontSize={"3xl"}>
+            Welcome, {data.name}
+          </Text>
+        )}
       </Stack>
     </Container>
   );
