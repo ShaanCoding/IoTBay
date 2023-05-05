@@ -15,13 +15,13 @@ export class CategoriesService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * @param categoryId 
+     * @param categoryId
      * @returns CategorySchema Default Response
      * @throws ApiError
      */
     public getCategory(
-categoryId: string,
-): CancelablePromise<CategorySchema> {
+        categoryId: string,
+    ): CancelablePromise<CategorySchema> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/categories/{categoryId}',
@@ -32,13 +32,13 @@ categoryId: string,
     }
 
     /**
-     * @param categoryId 
+     * @param categoryId
      * @returns CategorySchema Default Response
      * @throws ApiError
      */
     public deleteCategory(
-categoryId: string,
-): CancelablePromise<CategorySchema> {
+        categoryId: string,
+    ): CancelablePromise<CategorySchema> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/categories/{categoryId}',
@@ -49,15 +49,15 @@ categoryId: string,
     }
 
     /**
-     * @param categoryId 
-     * @param requestBody 
+     * @param categoryId
+     * @param requestBody
      * @returns CategorySchema Default Response
      * @throws ApiError
      */
     public updateCategory(
-categoryId: string,
-requestBody?: UpdateCategoryBodySchema,
-): CancelablePromise<CategorySchema> {
+        categoryId: string,
+        requestBody?: UpdateCategoryBodySchema,
+    ): CancelablePromise<CategorySchema> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/api/categories/{categoryId}',
@@ -81,13 +81,13 @@ requestBody?: UpdateCategoryBodySchema,
     }
 
     /**
-     * @param requestBody 
+     * @param requestBody
      * @returns CategorySchema Default Response
      * @throws ApiError
      */
     public createCategory(
-requestBody?: CreateCategoryBodySchema,
-): CancelablePromise<CategorySchema> {
+        requestBody?: CreateCategoryBodySchema,
+    ): CancelablePromise<CategorySchema> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/categories/',
@@ -97,13 +97,13 @@ requestBody?: CreateCategoryBodySchema,
     }
 
     /**
-     * @param requestBody 
+     * @param requestBody
      * @returns CategoryCollectionSchema Default Response
      * @throws ApiError
      */
     public deleteCategories(
-requestBody?: DeleteCategoriesBodySchema,
-): CancelablePromise<CategoryCollectionSchema> {
+        requestBody?: DeleteCategoriesBodySchema,
+    ): CancelablePromise<CategoryCollectionSchema> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/categories/',

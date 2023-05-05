@@ -15,13 +15,13 @@ export class ProductsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * @param productId 
+     * @param productId
      * @returns ProductsSchema Default Response
      * @throws ApiError
      */
     public getProduct(
-productId: string,
-): CancelablePromise<ProductsSchema> {
+        productId: string,
+    ): CancelablePromise<ProductsSchema> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/products/{productId}',
@@ -32,13 +32,13 @@ productId: string,
     }
 
     /**
-     * @param productId 
+     * @param productId
      * @returns ProductsSchema Default Response
      * @throws ApiError
      */
     public deleteProduct(
-productId: string,
-): CancelablePromise<ProductsSchema> {
+        productId: string,
+    ): CancelablePromise<ProductsSchema> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/products/{productId}',
@@ -49,15 +49,15 @@ productId: string,
     }
 
     /**
-     * @param productId 
-     * @param requestBody 
+     * @param productId
+     * @param requestBody
      * @returns ProductsSchema Default Response
      * @throws ApiError
      */
     public updateProduct(
-productId: string,
-requestBody?: UpdateProductBodySchema,
-): CancelablePromise<ProductsSchema> {
+        productId: string,
+        requestBody?: UpdateProductBodySchema,
+    ): CancelablePromise<ProductsSchema> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/api/products/{productId}',
@@ -81,13 +81,13 @@ requestBody?: UpdateProductBodySchema,
     }
 
     /**
-     * @param requestBody 
+     * @param requestBody
      * @returns ProductsSchema Default Response
      * @throws ApiError
      */
     public createProduct(
-requestBody?: CreateProductBodySchema,
-): CancelablePromise<ProductsSchema> {
+        requestBody?: CreateProductBodySchema,
+    ): CancelablePromise<ProductsSchema> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/products/',
@@ -97,13 +97,13 @@ requestBody?: CreateProductBodySchema,
     }
 
     /**
-     * @param requestBody 
+     * @param requestBody
      * @returns ProductsCollectionSchema Default Response
      * @throws ApiError
      */
     public deleteProducts(
-requestBody?: DeleteProductsBodySchema,
-): CancelablePromise<ProductsCollectionSchema> {
+        requestBody?: DeleteProductsBodySchema,
+    ): CancelablePromise<ProductsCollectionSchema> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/products/',

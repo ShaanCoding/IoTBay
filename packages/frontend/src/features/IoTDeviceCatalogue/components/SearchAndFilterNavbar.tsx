@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import React from "react";
-import { CategorySchema, ProductsSchema } from "../../api/generated";
+import { CategorySchema, ProductsSchema } from "../../../api/generated";
 
 interface IProps {
   search: string;

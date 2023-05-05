@@ -12,3 +12,4 @@ export type RegisterSchema = {
     phone: string;
     address: string;
 };
+

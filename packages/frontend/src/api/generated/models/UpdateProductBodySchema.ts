@@ -13,3 +13,4 @@ export type UpdateProductBodySchema = {
     description?: string;
     category?: string;
 };
+

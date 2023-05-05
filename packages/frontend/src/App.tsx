@@ -13,11 +13,13 @@ import profileLoader from "./loaders/profileLoader";
 import Profile from "./pages/Profile";
 import Logout from "./pages/Logout";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import CreateInventory from "./pages/CreateInventory";
-import ManageInventory from "./pages/ManageInventory";
-import EditInventory from "./pages/EditInventory";
+import CreateInventory from "./features/IoTDeviceCatalogue/pages/CreateInventory";
+import ManageInventory from "./features/IoTDeviceCatalogue/pages/ManageInventory";
+import EditInventory from "./features/IoTDeviceCatalogue/pages/EditInventory";
 import DarkLightModeToggle from "./components/DarkLightModeToggle";
 import staffLoader from "./loaders/staffLoader";
+import UserManagement from "./features/UserManagement/pages/UserManagement";
+import StaffDashboard from "./pages/StaffDashboard";
 
 const queryClient = new QueryClient();
 
@@ -43,17 +45,27 @@ const router = createBrowserRouter([
         loader: staffLoader(queryClient),
         children: [
           {
-            path: "inventory/manage",
-            element: <ManageInventory />,
+            index: true,
+            element: <StaffDashboard />
           },
           {
-            path: "inventory/create",
-            element: <CreateInventory />,
+            path: "inventory",
+            children: [
+              { index: true, element: <ManageInventory /> },
+              {
+                path: "create",
+                element: <CreateInventory />,
+              },
+              {
+                path: "edit/:id",
+                element: <EditInventory />,
+              },
+            ],
           },
           {
-            path: "inventory/edit/:id",
-            element: <EditInventory />,
-          },
+            path: "users",
+            element: <UserManagement />
+          }
         ],
       },
       {

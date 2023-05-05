@@ -154,7 +154,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
         {/* Breadcrumb */}
         <BreadCrumbRoute
           parameters={[
-            { paths: "Manage Inventory", links: "/staff/inventory/manage" },
+            { paths: "Manage Inventory", links: "/staff/inventory" },
             {
               paths:
                 props.createOrUpdate === "create"

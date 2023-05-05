@@ -18,9 +18,8 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import useMe from "../hooks/useMe";
-import { UserSchema } from "../api/generated";
 import logo from "../assets/icon.svg";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { UserSchema } from "../api/generated";
 
 // Path: packages\frontend\src\components\Navbar.tsx
 
@@ -109,30 +108,11 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              {data.userType === UserSchema.userType.STAFF && (
-                <Menu>
-                  {({ isOpen }) => (
-                    <>
-                      <MenuButton
-                        isActive={isOpen}
-                        as={Button}
-                        rightIcon={<ChevronDownIcon />}
-                      >
-                        Manage Inventory
-                      </MenuButton>
-                      <MenuList>
-                        <MenuItem as={"a"} href="/staff/inventory/manage">
-                          Manage Inventory
-                        </MenuItem>
-
-                        <MenuItem as={"a"} href="/staff/inventory/create">
-                          Create Inventory
-                        </MenuItem>
-                      </MenuList>
-                    </>
-                  )}
-                </Menu>
-              )}
+              {data.userType === UserSchema.userType.STAFF ? (
+                <Button as={Link} to="/staff" variant={"link"}>
+                  Staff Dashboard
+                </Button>
+              ) : null}
               <Button
                 as={Link}
                 fontSize={"sm"}

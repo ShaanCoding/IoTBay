@@ -23,13 +23,13 @@ export class UsersService {
     }
 
     /**
-     * @param userId 
+     * @param userId
      * @returns UserSchema Default Response
      * @throws ApiError
      */
     public getUser(
-userId: string,
-): CancelablePromise<UserSchema> {
+        userId: string,
+    ): CancelablePromise<UserSchema> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/users/{userId}',

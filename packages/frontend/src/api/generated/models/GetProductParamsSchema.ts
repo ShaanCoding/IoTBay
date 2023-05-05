@@ -8,3 +8,4 @@
 export type GetProductParamsSchema = {
     productId: string;
 };
+

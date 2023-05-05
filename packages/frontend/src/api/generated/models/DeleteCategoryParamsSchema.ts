@@ -8,3 +8,4 @@
 export type DeleteCategoryParamsSchema = {
     categoryId: string;
 };
+

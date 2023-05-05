@@ -8,3 +8,4 @@
 export type DeleteCategoriesBodySchema = {
     categoryIds: Array<string>;
 };
+

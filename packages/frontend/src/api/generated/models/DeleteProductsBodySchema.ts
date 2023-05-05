@@ -8,3 +8,4 @@
 export type DeleteProductsBodySchema = {
     products: Array<string>;
 };
+

@@ -5,6 +5,7 @@ import {
   BreadcrumbLink,
 } from "@chakra-ui/react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface IParameters {
   paths: string;
@@ -19,7 +20,7 @@ const BreadCrumbRoute: React.FC<{
       <Breadcrumb>
         {parameters.map((parameter) => (
           <BreadcrumbItem>
-            <BreadcrumbLink href={parameter.links}>
+            <BreadcrumbLink to={parameter.links} as={Link}>
               {parameter.paths}
             </BreadcrumbLink>
           </BreadcrumbItem>

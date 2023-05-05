@@ -13,13 +13,13 @@ import {
   HStack,
   useToast,
 } from "@chakra-ui/react";
-import { useDeleteProduct } from "../../hooks/useProducts";
+import { useDeleteProduct } from "../../../hooks/useProducts";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
-import { convertToDDMMYYYY } from "../../utils/dateFormatter";
-import { convertToCurrency } from "../../utils/currencyFormatter";
-import { ApiError } from "../../api/generated";
-import { generateCategoryColor } from "../../utils/generateCategoryColor";
+import { convertToDDMMYYYY } from "../../../utils/dateFormatter";
+import { convertToCurrency } from "../../../utils/currencyFormatter";
+import { ApiError } from "../../../api/generated";
+import { generateCategoryColor } from "../../../utils/generateCategoryColor";
 
 const TableRow: React.FC<{
   productId: string;

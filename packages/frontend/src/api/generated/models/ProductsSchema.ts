@@ -16,3 +16,4 @@ export type ProductsSchema = {
     categoryId?: string;
     lastUpdated?: string;
 };
+

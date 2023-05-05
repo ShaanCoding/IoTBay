@@ -1,8 +1,8 @@
-import CreateEditInventory from "../features/IoTDeviceCatalogue/CreateEditInventory/CreateEditInventory";
-import { useCreateProduct } from "../hooks/useProducts";
+import CreateEditInventory from "../components/CreateEditInventory";
+import { useCreateProduct } from "../../../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
-import { ApiError, ProductsSchema } from "../api/generated";
+import { ApiError, ProductsSchema } from "../../../api/generated";
 
 export default function CreateInventory() {
   const createProduct = useCreateProduct();
@@ -27,7 +27,7 @@ export default function CreateInventory() {
         duration: 5000,
         isClosable: true,
       });
-      navigate("/staff/inventory/manage");
+      navigate("/staff/inventory");
     } catch (error) {
       if (error instanceof ApiError) {
         toast({

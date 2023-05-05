@@ -8,3 +8,4 @@
 export type UpdateCategoryParamsSchema = {
     categoryId: string;
 };
+

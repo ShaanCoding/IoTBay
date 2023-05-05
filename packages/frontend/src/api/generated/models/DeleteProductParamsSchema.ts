@@ -8,3 +8,4 @@
 export type DeleteProductParamsSchema = {
     productId: string;
 };
+

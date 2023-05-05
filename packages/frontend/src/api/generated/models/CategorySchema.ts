@@ -9,3 +9,4 @@ export type CategorySchema = {
     categoryId: string;
     name: string;
 };
+

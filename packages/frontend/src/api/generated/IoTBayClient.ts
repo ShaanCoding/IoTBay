@@ -40,3 +40,4 @@ export class IoTBayClient {
         this.users = new UsersService(this.request);
     }
 }
+

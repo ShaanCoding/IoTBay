@@ -38,7 +38,7 @@ const CreateEditCancelButtons: React.FC<CreateEditCancelButtonsProps> = ({
           size="lg"
           leftIcon={<CloseIcon />}
           as={Link}
-          to="/staff/inventory/manage"
+          to="/staff/inventory"
         >
           Cancel
         </Button>

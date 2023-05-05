@@ -9,7 +9,7 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import TableRow from "./TableRow";
-import { ProductsSchema } from "../../api/generated";
+import { ProductsSchema } from "../../../api/generated";
 
 interface IProductTableProps {
   isLightMode: boolean;

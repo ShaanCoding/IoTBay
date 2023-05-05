@@ -13,3 +13,4 @@ export type CreateProductBodySchema = {
     description: string;
     category: string;
 };
+

@@ -13,13 +13,13 @@ export class AuthenticationService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * @param requestBody 
+     * @param requestBody
      * @returns UserSchema Default Response
      * @throws ApiError
      */
     public login(
-requestBody?: LoginSchema,
-): CancelablePromise<UserSchema> {
+        requestBody?: LoginSchema,
+    ): CancelablePromise<UserSchema> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/auth/login',
@@ -40,13 +40,13 @@ requestBody?: LoginSchema,
     }
 
     /**
-     * @param requestBody 
+     * @param requestBody
      * @returns UserSchema Default Response
      * @throws ApiError
      */
     public register(
-requestBody?: RegisterSchema,
-): CancelablePromise<UserSchema> {
+        requestBody?: RegisterSchema,
+    ): CancelablePromise<UserSchema> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/auth/register',

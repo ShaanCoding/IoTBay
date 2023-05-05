@@ -1,10 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import CreateEditInventory, {
   FormValues,
-} from "../features/IoTDeviceCatalogue/CreateEditInventory/CreateEditInventory";
-import { useUpdateProduct, useGetProduct } from "../hooks/useProducts";
+} from "../components/CreateEditInventory";
+import { useUpdateProduct, useGetProduct } from "../../../hooks/useProducts";
 import { useToast } from "@chakra-ui/react";
-import { ApiError, ProductsSchema } from "../api/generated";
+import { ApiError, ProductsSchema } from "../../../api/generated";
 
 export default function EditInventory() {
   const productId: string = useParams().id as string;
@@ -32,7 +32,7 @@ export default function EditInventory() {
         duration: 5000,
         isClosable: true,
       });
-      navigate("/staff/inventory/manage");
+      navigate("/staff/inventory");
     } catch (error) {
       if (error instanceof ApiError) {
         toast({

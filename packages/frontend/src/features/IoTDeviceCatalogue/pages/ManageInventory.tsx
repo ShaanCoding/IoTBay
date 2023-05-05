@@ -7,15 +7,15 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { useDeleteProducts, useGetProducts } from "../hooks/useProducts";
+import { useDeleteProducts, useGetProducts } from "../../../hooks/useProducts";
 import { Link } from "react-router-dom";
-import { useGetCategories } from "../hooks/useCategories";
+import { useGetCategories } from "../../../hooks/useCategories";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
-import BreadCrumbRoute from "../components/BreadCrumbRoute";
-import PageTitle from "../components/PageTitle";
-import SearchAndFilterNavbar from "../features/IoTDeviceCatalogue/SearchAndFilterNavbar";
-import ProductTable from "../features/IoTDeviceCatalogue/ProductTable";
-import { ApiError } from "../api/generated";
+import BreadCrumbRoute from "../../../components/BreadCrumbRoute";
+import PageTitle from "../../../components/PageTitle";
+import SearchAndFilterNavbar from "../components/SearchAndFilterNavbar";
+import ProductTable from "../components/ProductTable";
+import { ApiError } from "../../../api/generated";
 
 export default function ManageInventory() {
   const toast = useToast();
@@ -112,7 +112,7 @@ export default function ManageInventory() {
 
         <BreadCrumbRoute
           parameters={[
-            { paths: "Manage Inventory", links: "/staff/inventory/manage" },
+            { paths: "Manage Inventory", links: "/staff/inventory" },
           ]}
         />
 
