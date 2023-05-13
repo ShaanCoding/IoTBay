@@ -9,12 +9,12 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import TableRow from "./TableRow";
-import { ProductsSchema } from "../../../api/generated";
+import { RouterOutput } from "backend";
 
 interface IProductTableProps {
   isLightMode: boolean;
   getProducts: {
-    data: Array<ProductsSchema>;
+    data: RouterOutput["products"]["products"];
   };
   selectedItems: string[];
   setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;

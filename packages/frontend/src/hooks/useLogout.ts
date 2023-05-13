@@ -1,18 +1,14 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "../services/api";
-import { ApiError } from "../api/generated";
+import { trpcReact } from "../App";
 
 
 
 
 export default function useLogout() {
-  const queryClient = useQueryClient();
+  const context = trpcReact.useContext();
 
-  return useMutation<unknown, ApiError>({
-    mutationFn: () => api.authentication.logout(),
-    onSuccess: (data, variables) => {
-      queryClient.setQueryData(["me"], null);
-      queryClient.invalidateQueries(["me"]);
+  return trpcReact.auth.logout.useMutation({
+    onSuccess: () => {
+      context.users.me.invalidate();
     }
   });
 }

@@ -1,18 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import api from "../services/api";
-import {
-  ApiError,
-  ProductsCollectionSchema,
-  ProductsSchema,
-} from "../api/generated";
+import { trpcReact } from "../App";
+import React from "react";
 
 const productKey = "product";
 
 // getProduct (GET) /:productId
 export function useGetProduct(productId: string) {
-  return useQuery<ProductsSchema, ApiError>([productKey], () =>
-    api.products.getProduct(productId)
-  );
+  return trpcReact.products.product.useQuery(productId);
 }
 
 // getProducts (GET) /
@@ -23,118 +16,91 @@ export function useGetProducts({
   searchFilter?: string;
   categoryFilter?: string[];
 }) {
-  return useQuery<ProductsCollectionSchema, ApiError>(
-    [productKey],
-    () => api.products.getProducts(),
-    {
-      select: (data: ProductsCollectionSchema) => {
-        if (searchFilter) {
-          data = data.filter((product: ProductsSchema) =>
-            product.name.toLowerCase().includes(searchFilter.toLowerCase())
-          );
-        }
-        if (categoryFilter && categoryFilter.length > 0) {
-          data = data.filter((product: ProductsSchema) => {
-            return categoryFilter.includes(product.category);
-          });
-        }
-        return data;
-      },
-    }
-  );
-}
+  const { data, ...rest } = trpcReact.products.products.useQuery();
 
-type ICreateProduct = Omit<ProductsSchema, "productId">;
+  const filteredData = React.useMemo(() => {
+    if (searchFilter) {
+      return data?.filter((product) =>
+        product.name.toLowerCase().includes(searchFilter.toLowerCase())
+      ) || [];
+    }
+    if (categoryFilter && categoryFilter.length > 0) {
+      return data?.filter((product) => {
+        return categoryFilter.includes(product.category);
+      }) || [];
+    }
+    return data || [];
+  }, [data, searchFilter, categoryFilter]);
+
+  return {
+    data: filteredData,
+    ...rest,
+  };
+}
 
 // createProduct (POST) /
 export function useCreateProduct() {
-  const queryClient = useQueryClient();
+  const context = trpcReact.useContext();
 
-  return useMutation<ProductsSchema, ApiError, ICreateProduct>(
-    ({ name, price, stock, description, image, category }) =>
-      api.products.createProduct({
-        name,
-        price,
-        stock,
-        description,
-        image,
-        category,
-      }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([productKey]);
-      },
+  return trpcReact.products.create.useMutation({
+    onSuccess: () => {
+      context.products.products.invalidate();
     }
-  );
+  });
 }
 
 // deleteProduct (DELETE) /
 export function useDeleteProduct() {
-  const queryClient = useQueryClient();
+  const context = trpcReact.useContext();
 
-  return useMutation<ProductsSchema, ApiError, string>(
-    (productId) => api.products.deleteProduct(productId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([productKey]);
-      },
-      onMutate: async (productId) => {
-        await queryClient.cancelQueries([productKey]);
-        const previousProducts = queryClient.getQueryData([productKey]);
-        queryClient.setQueryData([productKey], (old: any) => {
-          return old.filter((product: ProductsSchema) => {
-            return product.productId !== productId;
-          });
-        });
-        return { previousProducts };
-      },
-    }
-  );
+  return trpcReact.products.delete.useMutation({
+    onSuccess: () => {
+      context.products.products.invalidate();
+    },
+  });
 }
 
 // deleteProducts (DELETE) /
 export function useDeleteProducts() {
-  const queryClient = useQueryClient();
-  return useMutation<ProductsCollectionSchema, ApiError, string[]>(
-    (productId) =>
-      api.products.deleteProducts({
-        products: productId,
-      }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([productKey]);
-      },
-      onMutate: async (productId) => {
-        await queryClient.cancelQueries([productKey]);
-        const previousProducts = queryClient.getQueryData([productKey]);
-        queryClient.setQueryData([productKey], (old: any) => {
-          return old.filter((product: ProductsSchema) => {
-            return !productId.includes(product.productId);
-          });
-        });
-        return { previousProducts };
-      },
+  // const queryClient = useQueryClient();
+  // return useMutation<ProductsCollectionSchema, ApiError, string[]>(
+  //   (productId) =>
+  //     api.products.deleteProducts({
+  //       products: productId,
+  //     }),
+  //   {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries([productKey]);
+  //     },
+  //     onMutate: async (productId) => {
+  //       await queryClient.cancelQueries([productKey]);
+  //       const previousProducts = queryClient.getQueryData([productKey]);
+  //       queryClient.setQueryData([productKey], (old: any) => {
+  //         return old.filter((product: ProductsSchema) => {
+  //           return !productId.includes(product.productId);
+  //         });
+  //       });
+  //       return { previousProducts };
+  //     },
+  //   }
+  // );
+
+  const context = trpcReact.useContext();
+
+  return trpcReact.products.deleteMany.useMutation({
+    onSuccess: () => {
+      context.products.products.invalidate();
     }
-  );
+  });
 }
 
 // updateProduct (PUT) /
 export function useUpdateProduct() {
-  const queryClient = useQueryClient();
-  return useMutation<ProductsSchema, ApiError, ProductsSchema>(
-    ({ productId, name, price, stock, description, image, category }) =>
-      api.products.updateProduct(productId, {
-        name: name,
-        price: price,
-        stock: stock,
-        description: description,
-        image: image,
-        category: category,
-      }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([productKey]);
-      },
+  const context = trpcReact.useContext();
+
+  return trpcReact.products.update.useMutation({
+    onSuccess: () => {
+      context.products.products.invalidate();
     }
-  );
+  });
 }

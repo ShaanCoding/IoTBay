@@ -22,7 +22,9 @@ jobs:
         run: yarn install
       - name: Generate
         run: yarn generate
-      - name: Test Frontend
-        run: yarn workspace frontend tsc --noEmit
       - name: Test Backend
         run: yarn workspace backend tsc --noEmit
+      - name: Build Backend
+        run: yarn workspace backend build
+      - name: Test Frontend
+        run: yarn workspace frontend tsc --noEmit

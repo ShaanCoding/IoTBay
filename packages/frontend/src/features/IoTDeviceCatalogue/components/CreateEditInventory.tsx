@@ -28,7 +28,7 @@ import PageTitle from "../../../components/PageTitle";
 import { useForm } from "react-hook-form";
 import CreateEditCancelButtons from "./CreateEditCancelButtons";
 import FormErrorNotification from "../../../components/Form/FormErrorNotification";
-import { ProductsSchema } from "../../../api/generated";
+import { RouterInput, RouterOutput } from "backend";
 
 export type FormValues = {
   name: string;
@@ -42,8 +42,8 @@ export type FormValues = {
 interface IEditUpdateInventoryProps {
   createOrUpdate: "create" | "edit";
 
-  createProduct?: (data: ProductsSchema) => void;
-  updateProduct?: (data: ProductsSchema) => void;
+  createProduct?: (data: RouterInput["products"]["create"]) => void;
+  updateProduct?: (data: RouterInput["products"]["update"]) => void;
 
   initialFormValues?: FormValues;
 

@@ -19,7 +19,6 @@ import {
 import { Link } from "react-router-dom";
 import useMe from "../hooks/useMe";
 import logo from "../assets/icon.svg";
-import { UserSchema } from "../api/generated";
 
 // Path: packages\frontend\src\components\Navbar.tsx
 
@@ -67,7 +66,7 @@ export default function Navbar() {
                 fontWeight={"semibold"}
               >
                 IoTBay -{" "}
-                {data?.userType === UserSchema.userType.STAFF
+                {data?.userType === "staff"
                   ? "Staff"
                   : "Customer"}
               </Text>
@@ -108,7 +107,7 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              {data.userType === UserSchema.userType.STAFF ? (
+              {data.userType === "staff" ? (
                 <Button as={Link} to="/staff" variant={"link"}>
                   Staff Dashboard
                 </Button>

@@ -7,36 +7,14 @@ import { fileURLToPath } from "node:url";
 import { config } from "dotenv";
 import prisma from "./services/prisma.service";
 
-import authRouter from "./routes/auth.router";
-import usersRouter from "./routes/users.router";
-import categoriesRouter from "./routes/categories.router";
-import productsRouter from "./routes/products.router";
-
 import fastify from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
-import {
-  LoginSchema,
-  RegisterSchema,
-  UserCollectionSchema,
-  UserSchema,
-  CategorySchema,
-  CategoryCollectionSchema,
-  GetCategoryParamsSchema,
-  CreateCategoryBodySchema,
-  DeleteCategoryParamsSchema,
-  DeleteCategoriesBodySchema,
-  UpdateCategoryParamsSchema,
-  UpdateCategoryBodySchema,
-  ProductsSchema,
-  ProductsCollectionSchema,
-  CreateProductBodySchema,
-  DeleteProductParamsSchema,
-  DeleteProductsBodySchema,
-  GetProductParamsSchema,
-  UpdateProductBodySchema,
-  UpdateProductParamSchema,
-} from "./schema";
+
 import { env } from "./utils";
+import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
+import { AppRouter, appRouter } from "./routers/root.router";
+import { createContext } from "./trpc/context";
+import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 // Load environment variables
 config();
 
@@ -47,7 +25,9 @@ const root = path.join(fileURLToPath(import.meta.url), "../..");
 const publicRoot = path.join(root, "public");
 
 // declare the server
-const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
+const server = fastify({
+  maxParamLength: 5000,
+}).withTypeProvider<TypeBoxTypeProvider>();
 
 // Register nice error messages
 await server.register(await import("@fastify/sensible"));
@@ -70,28 +50,6 @@ await server.register(await import("@fastify/swagger"), {
           in: "cookie",
         },
       },
-      schemas: {
-        UserSchema,
-        UserCollectionSchema,
-        LoginSchema,
-        RegisterSchema,
-        CategorySchema,
-        CategoryCollectionSchema,
-        GetCategoryParamsSchema,
-        CreateCategoryBodySchema,
-        DeleteCategoryParamsSchema,
-        DeleteCategoriesBodySchema,
-        UpdateCategoryParamsSchema,
-        UpdateCategoryBodySchema,
-        ProductsSchema,
-        ProductsCollectionSchema,
-        CreateProductBodySchema,
-        DeleteProductParamsSchema,
-        DeleteProductsBodySchema,
-        GetProductParamsSchema,
-        UpdateProductBodySchema,
-        UpdateProductParamSchema,
-      },
     },
     info: {
       title: "IoTBay API",
@@ -105,28 +63,6 @@ await server.register(await import("@fastify/swagger"), {
     },
   },
 });
-
-// Register schemas to swagger
-server.addSchema(UserSchema);
-server.addSchema(UserCollectionSchema);
-server.addSchema(LoginSchema);
-server.addSchema(RegisterSchema);
-server.addSchema(CategorySchema);
-server.addSchema(CategoryCollectionSchema);
-server.addSchema(GetCategoryParamsSchema);
-server.addSchema(CreateCategoryBodySchema);
-server.addSchema(DeleteCategoryParamsSchema);
-server.addSchema(DeleteCategoriesBodySchema);
-server.addSchema(UpdateCategoryParamsSchema);
-server.addSchema(UpdateCategoryBodySchema);
-server.addSchema(ProductsSchema);
-server.addSchema(ProductsCollectionSchema);
-server.addSchema(CreateProductBodySchema);
-server.addSchema(DeleteProductParamsSchema);
-server.addSchema(DeleteProductsBodySchema);
-server.addSchema(GetProductParamsSchema);
-server.addSchema(UpdateProductBodySchema);
-server.addSchema(UpdateProductParamSchema);
 
 await server.register(await import("@fastify/swagger-ui"), {
   routePrefix: "/docs",
@@ -172,17 +108,22 @@ fastifyPassport.registerUserDeserializer(async (userId: string, request) => {
   return user;
 });
 
+await server.register(fastifyTRPCPlugin, {
+  prefix: '/api/trpc',
+  trpcOptions: { router: appRouter, createContext },
+});
+
 // Register the auth router
-await server.register(authRouter, { prefix: "/api/auth" });
+// await server.register(authRouter, { prefix: "/api/auth" });
 
-// Register the users router
-await server.register(usersRouter, { prefix: "/api/users" });
+// // Register the users router
+// await server.register(usersRouter, { prefix: "/api/users" });
 
-// Register the products router
-await server.register(productsRouter, { prefix: "/api/products" });
+// // Register the products router
+// await server.register(productsRouter, { prefix: "/api/products" });
 
-// Register the categories router
-await server.register(categoriesRouter, { prefix: "/api/categories" });
+// // Register the categories router
+// await server.register(categoriesRouter, { prefix: "/api/categories" });
 
 // If there's no route, send the index.html file
 await server.setNotFoundHandler((req, res) => {
@@ -202,3 +143,8 @@ console.log(
     )
     .join("\n")}`
 );
+
+export { type AppRouter} from './routers/root.router'
+
+export type RouterInput = inferRouterInputs<AppRouter>;
+export type RouterOutput = inferRouterOutputs<AppRouter>;

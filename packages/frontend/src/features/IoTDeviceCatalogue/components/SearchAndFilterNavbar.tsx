@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import React from "react";
-import { CategorySchema, ProductsSchema } from "../../../api/generated";
+import { RouterOutput } from "backend";
 
 interface IProps {
   search: string;
@@ -26,12 +26,12 @@ interface IProps {
 
   getCategories: {
     isLoading: boolean;
-    data: Array<CategorySchema>;
+    data: RouterOutput["categories"]["categories"];
   };
 
   getProducts: {
     isLoading: boolean;
-    data: Array<ProductsSchema>;
+    data: RouterOutput["products"]["products"];
   };
 }
 

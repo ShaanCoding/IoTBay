@@ -1,38 +1,17 @@
-import { Static, Type } from "@sinclair/typebox";
+import { z } from "zod";
+import validator from 'validator'
 
-/**
- * Login schema
- * Used for data validation and documentation
- */
-export const LoginSchema = Type.Object(
-  {
-    username: Type.String({ format: "email" }),
-    password: Type.String(),
-  },
-  {
-    description: "LoginSchema",
-    $id: "LoginSchema",
-  }
-);
+export const RegisterSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8).max(100),
+  name: z.string().min(3).max(100),
+  phone: z.string().refine(validator.isMobilePhone, {
+    message: 'Invalid phone number',
+  }),
+  address: z.string().min(3).max(100),
+});
 
-export const LoginSchemaRef = Type.Ref(LoginSchema);
-
-export type LoginSchemaType = Static<typeof LoginSchema>;
-
-export const RegisterSchema = Type.Object(
-  {
-    email: Type.String({ format: "email" }),
-    password: Type.String(),
-    name: Type.String(),
-    phone: Type.String(),
-    address: Type.String(),
-  },
-  {
-    description: "RegisterSchema",
-    $id: "RegisterSchema",
-  }
-);
-
-export const RegisterSchemaRef = Type.Ref(RegisterSchema);
-
-export type RegisterSchemaType = Static<typeof RegisterSchema>;
+export const LoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8).max(100),
+});

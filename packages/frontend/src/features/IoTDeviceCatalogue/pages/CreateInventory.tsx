@@ -2,7 +2,8 @@ import CreateEditInventory from "../components/CreateEditInventory";
 import { useCreateProduct } from "../../../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
-import { ApiError, ProductsSchema } from "../../../api/generated";
+import { RouterInput } from "backend";
+import { isTRPCClientError } from "../../../utils/trpc";
 
 export default function CreateInventory() {
   const createProduct = useCreateProduct();
@@ -10,7 +11,9 @@ export default function CreateInventory() {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const createProductFunction = async (data: ProductsSchema) => {
+  const createProductFunction = async (
+    data: RouterInput["products"]["create"]
+  ) => {
     try {
       createProduct.mutateAsync({
         name: data.name,
@@ -29,13 +32,12 @@ export default function CreateInventory() {
       });
       navigate("/staff/inventory");
     } catch (error) {
-      if (error instanceof ApiError) {
+      if (isTRPCClientError(error)) {
         toast({
           title: "Inventory creation failed",
-          description: error.body?.message ?? "Unknown error",
+          description: error.message,
           status: "error",
           duration: 5000,
-          isClosable: true,
         });
       } else {
         toast({

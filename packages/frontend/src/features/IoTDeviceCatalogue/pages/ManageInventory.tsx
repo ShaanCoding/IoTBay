@@ -15,7 +15,7 @@ import BreadCrumbRoute from "../../../components/BreadCrumbRoute";
 import PageTitle from "../../../components/PageTitle";
 import SearchAndFilterNavbar from "../components/SearchAndFilterNavbar";
 import ProductTable from "../components/ProductTable";
-import { ApiError } from "../../../api/generated";
+import { isTRPCClientError } from "../../../utils/trpc";
 
 export default function ManageInventory() {
   const toast = useToast();
@@ -73,11 +73,11 @@ export default function ManageInventory() {
             colorScheme="red"
             // leftIcon={<MinusIcon />}
             leftIcon={<DeleteIcon />}
-            onClick={() => {
+            onClick={async () => {
               try {
                 if (selectedItems.length === 0) return;
 
-                deleteProducts.mutate(selectedItems);
+                await deleteProducts.mutateAsync(selectedItems);
 
                 toast({
                   title: "Products Deleted",
@@ -87,13 +87,12 @@ export default function ManageInventory() {
                   isClosable: true,
                 });
               } catch (error) {
-                if (error instanceof ApiError) {
+                if (isTRPCClientError(error)) {
                   toast({
                     title: "Products deletion failed",
-                    description: error.body?.message ?? "Unknown error",
+                    description: error.message,
                     status: "error",
                     duration: 5000,
-                    isClosable: true,
                   });
                 } else {
                   toast({

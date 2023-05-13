@@ -13,15 +13,9 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import useRegister from "../hooks/useRegister";
 import { useNavigate } from "react-router-dom";
-import { ApiError } from "../api/generated";
-
-interface LoginData {
-  name: string;
-  email: string;
-  password: string;
-  address: string;
-  phone: string;
-}
+import { isTRPCClientError } from "../utils/trpc";
+import useZodForm from "../hooks/useZodForm";
+import { RegisterSchema } from "backend/schema";
 
 export default function Register() {
   const registerMutation = useRegister();
@@ -30,13 +24,15 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginData>();
+  } = useZodForm({
+    schema: RegisterSchema
+  });
 
   const navigate = useNavigate();
 
   const toast = useToast();
 
-  const onSubmit: SubmitHandler<LoginData> = async (data) => {
+  const onSubmit: SubmitHandler<Zod.infer<typeof RegisterSchema>> = async (data) => {
     try {
       await registerMutation.mutateAsync(data);
       toast({
@@ -48,10 +44,10 @@ export default function Register() {
       });
       navigate(`/profile`);
     } catch (error) {
-      if (error instanceof ApiError) {
+      if (isTRPCClientError(error)) {
         toast({
           title: "Login failed",
-          description: error.body?.message ?? "Unknown error",
+          description: "Unknown error",
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -76,7 +72,7 @@ export default function Register() {
         </Text>
         <FormControl isInvalid={!!errors.address}>
           <FormLabel>Address</FormLabel>
-          <Input  {...register("address", { required: true })} />
+          <Input {...register("address", { required: "Address is required." })} />
           {errors.address ? (
             <FormErrorMessage>{errors.address.message}</FormErrorMessage>
           ) : (
@@ -85,7 +81,7 @@ export default function Register() {
         </FormControl>
         <FormControl isInvalid={!!errors.name}>
           <FormLabel>Name</FormLabel>
-          <Input  {...register("name", { required: true })} />
+          <Input {...register("name", { required: "Name is required" })} />
           {errors.name ? (
             <FormErrorMessage>{errors.name.message}</FormErrorMessage>
           ) : (
@@ -94,7 +90,7 @@ export default function Register() {
         </FormControl>
         <FormControl isInvalid={!!errors.phone}>
           <FormLabel>Phone</FormLabel>
-          <Input  {...register("phone", { required: true })} />
+          <Input {...register("phone", { required: "Phone is required" })} />
           {errors.phone ? (
             <FormErrorMessage>{errors.phone.message}</FormErrorMessage>
           ) : (
@@ -103,7 +99,7 @@ export default function Register() {
         </FormControl>
         <FormControl isInvalid={!!errors.email}>
           <FormLabel>Email address</FormLabel>
-          <Input type="email" {...register("email", { required: true })} />
+          <Input type="email" {...register("email", { required: "Email is required" })} />
           {errors.email ? (
             <FormErrorMessage>{errors.email.message}</FormErrorMessage>
           ) : (
@@ -114,7 +110,7 @@ export default function Register() {
           <FormLabel>Password</FormLabel>
           <Input
             type="password"
-            {...register("password", { required: true })}
+            {...register("password", { required: "Password is required" })}
           />
           {errors.password ? (
             <FormErrorMessage>{errors.password.message}</FormErrorMessage>

@@ -18,8 +18,8 @@ import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { convertToDDMMYYYY } from "../../../utils/dateFormatter";
 import { convertToCurrency } from "../../../utils/currencyFormatter";
-import { ApiError } from "../../../api/generated";
 import { generateCategoryColor } from "../../../utils/generateCategoryColor";
+import { isTRPCClientError } from "../../../utils/trpc";
 
 const TableRow: React.FC<{
   productId: string;
@@ -134,13 +134,12 @@ const TableRow: React.FC<{
                   isClosable: true,
                 });
               } catch (error) {
-                if (error instanceof ApiError) {
+                if (isTRPCClientError(error)) {
                   toast({
                     title: "Product deletion failed",
-                    description: error.body?.message ?? "Unknown error",
+                    description: error.message,
                     status: "error",
                     duration: 5000,
-                    isClosable: true,
                   });
                 } else {
                   toast({

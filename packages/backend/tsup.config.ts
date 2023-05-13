@@ -1,14 +1,14 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig(({ watch }) => ({
-  entry: ['src/index.ts', "src/controllers/**/*"],
+  entry: ['src/index.ts', 'src/schema.ts'],
   splitting: true,
   sourcemap: true,
   clean: true,
-  format: ['esm'],
+  format: ['esm', 'cjs'],
   platform: 'node',
   minify: false,
-  dts: false,
+  dts: true,
   bundle: true,
   metafile: true,
   onSuccess: watch

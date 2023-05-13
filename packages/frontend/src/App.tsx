@@ -20,8 +20,35 @@ import DarkLightModeToggle from "./components/DarkLightModeToggle";
 import staffLoader from "./loaders/staffLoader";
 import UserManagement from "./features/UserManagement/pages/UserManagement";
 import StaffDashboard from "./pages/StaffDashboard";
+import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import { AppRouter } from "backend";
+import { createTRPCReact } from "@trpc/react-query";
 
 const queryClient = new QueryClient();
+
+export const trpcClient = createTRPCProxyClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: '/api/trpc',
+      // You can pass any HTTP headers you wish here
+    }),
+  ],
+});
+
+export const trpcReact = createTRPCReact<AppRouter>();
+
+export const client = trpcReact.createClient({
+  links: [
+    httpBatchLink({
+      url: '/api/trpc',
+      // You can pass any HTTP headers you wish here
+ 
+    }),
+  ],
+})
+
+
+
 
 const ReactQueryDevtoolsProduction = React.lazy(() =>
   import("@tanstack/react-query-devtools/build/lib/index.prod.js").then(
@@ -98,6 +125,7 @@ export default function App() {
   }, []);
 
   return (
+    <trpcReact.Provider client={client} queryClient={queryClient}>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={false} />
@@ -109,5 +137,6 @@ export default function App() {
 
       <DarkLightModeToggle />
     </QueryClientProvider>
+    </trpcReact.Provider>
   );
 }

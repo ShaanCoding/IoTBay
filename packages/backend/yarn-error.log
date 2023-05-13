@@ -1,8 +1,8 @@
 Arguments: 
-  /home/sebas/.nvm/versions/node/v16.15.1/bin/node /home/sebas/.nvm/versions/node/v16.15.1/bin/yarn workspace backend build
+  /home/sebas/.nvm/versions/node/v16.15.1/bin/node /home/sebas/.nvm/versions/node/v16.15.1/lib/node_modules/yarn/lib/cli.js add @types/validator.js
 
 PATH: 
-  /tmp/yarn--1683965007546-0.9103248145092684:/home/sebas/Code/Uni/IoTBay/node_modules/.bin:/home/sebas/.config/yarn/link/node_modules/.bin:/home/sebas/Code/Uni/IoTBay/node_modules/.bin:/home/sebas/.yarn/bin:/home/sebas/.nvm/versions/node/v16.15.1/libexec/lib/node_modules/npm/bin/node-gyp-bin:/home/sebas/.nvm/versions/node/v16.15.1/lib/node_modules/npm/bin/node-gyp-bin:/home/sebas/.nvm/versions/node/v16.15.1/bin/node_modules/npm/bin/node-gyp-bin:/home/sebas/.nvm/versions/node/v16.15.1/bin:/home/sebas/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/sebas/.local/bin:/home/sebas/.dotnet:/home/sebas/.dotnet/tools:/home/sebas/.local/bin:/home/sebas/.dotnet:/home/sebas/.dotnet/tools
+  /home/sebas/.nvm/versions/node/v16.15.1/bin:/home/sebas/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/sebas/.local/bin:/home/sebas/.dotnet:/home/sebas/.dotnet/tools:/home/sebas/.local/bin:/home/sebas/.dotnet:/home/sebas/.dotnet/tools
 
 Yarn version: 
   1.22.19
@@ -14,40 +14,77 @@ Platform:
   linux x64
 
 Trace: 
-  SyntaxError: /home/sebas/Code/Uni/IoTBay/packages/backend/package.json: Unexpected token } in JSON at position 504
-      at JSON.parse (<anonymous>)
-      at /home/sebas/.nvm/versions/node/v16.15.1/lib/node_modules/yarn/lib/cli.js:1629:59
-      at Generator.next (<anonymous>)
-      at step (/home/sebas/.nvm/versions/node/v16.15.1/lib/node_modules/yarn/lib/cli.js:310:30)
-      at /home/sebas/.nvm/versions/node/v16.15.1/lib/node_modules/yarn/lib/cli.js:321:13
+  Error: https://registry.yarnpkg.com/@types%2fvalidator.js: Not found
+      at Request.params.callback [as _callback] (/home/sebas/.nvm/versions/node/v16.15.1/lib/node_modules/yarn/lib/cli.js:66145:18)
+      at Request.self.callback (/home/sebas/.nvm/versions/node/v16.15.1/lib/node_modules/yarn/lib/cli.js:140890:22)
+      at Request.emit (node:events:527:28)
+      at Request.<anonymous> (/home/sebas/.nvm/versions/node/v16.15.1/lib/node_modules/yarn/lib/cli.js:141862:10)
+      at Request.emit (node:events:527:28)
+      at IncomingMessage.<anonymous> (/home/sebas/.nvm/versions/node/v16.15.1/lib/node_modules/yarn/lib/cli.js:141784:12)
+      at Object.onceWrapper (node:events:641:28)
+      at IncomingMessage.emit (node:events:539:35)
+      at endReadableNT (node:internal/streams/readable:1345:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
 
 npm manifest: 
   {
-    "name": "isd",
+    "name": "backend",
     "version": "1.0.0",
-    "main": "index.js",
-    "repository": "https://github.com/ISD-Workshop-09-Group-02/backend.git",
-    "author": "Sebastian Pietschner <32213671+sebasptsch@users.noreply.github.com>",
+    "author": "Sebastian Pietschner <sebastian.pietschner@gmail.com>",
     "license": "MIT",
-    "private": true,
-    "workspaces": [
-      "packages/*"
-    ],
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      ".": {
+        "require": "./dist/index.cjs",
+        "import": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "./schema": {
+        "require": "./dist/schema.cjs",
+        "import": "./dist/schema.js",
+        "types": "./dist/schema.d.ts"
+      }
+    },
+    "dependencies": {
+      "@dynamicabot/signales": "^2.0.15",
+      "@fastify/cookie": "^8.3.0",
+      "@fastify/passport": "^2.2.0",
+      "@fastify/secure-session": "^6.0.0",
+      "@fastify/sensible": "^5.2.0",
+      "@fastify/session": "^10.2.0",
+      "@fastify/static": "^6.10.0",
+      "@fastify/swagger": "^8.3.1",
+      "@fastify/swagger-ui": "^1.7.0",
+      "@fastify/type-provider-typebox": "^3.0.0",
+      "@prisma/client": "^4.12.0",
+      "@sinclair/typebox": "^0.26.8",
+      "@trpc/server": "^10.25.1",
+      "argon2": "^0.30.3",
+      "dotenv": "^16.0.3",
+      "fastify": "^4.17.0",
+      "http-errors": "^2.0.0",
+      "passport-local": "^1.0.0",
+      "validator.js": "^2.0.4",
+      "zod": "^3.21.4"
+    },
     "devDependencies": {
-      "concurrently": "^8.0.1",
-      "typescript": "^5.0.3"
+      "@swc/core": "^1.3.46",
+      "@types/http-errors": "^2.0.1",
+      "@types/passport-local": "^1.0.35",
+      "prisma": "^4.12.0",
+      "prisma-dbml-generator": "^0.10.0",
+      "tsup": "^6.7.0"
     },
     "scripts": {
-      "dev:frontend": "yarn workspace frontend dev",
-      "dev:backend": "yarn workspace backend dev",
-      "dev": "concurrently \"yarn dev:frontend\" \"yarn dev:backend\"",
-      "build:frontend": "yarn workspace frontend build",
-      "build:backend": "yarn workspace backend build",
-      "build": "yarn build:frontend && yarn build:backend",
-      "build:run": "yarn build && yarn workspace backend start",
-      "migrate": "yarn workspace backend migrate",
-      "generate": "yarn workspace backend generate"
-    }
+      "dev": "tsup --watch",
+      "build": "tsup",
+      "start": "node dist/index.js",
+      "generate": "prisma generate",
+      "migrate": "npx prisma migrate deploy"
+    },
+    "type": "module"
   }
 
 yarn manifest: 
@@ -5099,6 +5136,11 @@ Lockfile:
     dependencies:
       spdx-correct "^3.0.0"
       spdx-expression-parse "^3.0.0"
+  
+  validator.js@^2.0.4:
+    version "2.0.4"
+    resolved "https://registry.yarnpkg.com/validator.js/-/validator.js-2.0.4.tgz#c9f72164aadb503a1a7be5b17b4beff3616e542e"
+    integrity sha512-6gknFyS1WrkXPlnpcb3hecx2LD4j8dEO+G9/yEJ3RYzUUtV4s3icO/IrAzTZtT9BHRSTNGRtg5JORIt+njMpIw==
   
   vary@^1.1.2:
     version "1.1.2"

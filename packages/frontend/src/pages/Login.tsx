@@ -13,12 +13,10 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import useLogin from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
-import { ApiError } from "../api/generated";
+import { isTRPCClientError } from "../utils/trpc";
+import useZodForm from "../hooks/useZodForm";
+import { LoginSchema } from "backend/schema";
 
-interface LoginData {
-  email: string;
-  password: string;
-}
 
 export default function Login() {
   const loginMutation = useLogin();
@@ -29,12 +27,14 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginData>();
+  } = useZodForm({
+    schema: LoginSchema
+  });
 
-  const onSubmit: SubmitHandler<LoginData> = async (data) => {
+  const onSubmit: SubmitHandler<Zod.infer<typeof LoginSchema>> = async (data) => {
     try {
       await loginMutation.mutateAsync({
-        username: data.email,
+        email: data.email,
         password: data.password,
       });
       toast({
@@ -46,10 +46,10 @@ export default function Login() {
       });
       navigate(`/profile`);
     } catch (error) {
-      if (error instanceof ApiError) {
+      if (isTRPCClientError(error)) {
         toast({
           title: "Login failed",
-          description: error.body?.message ?? "Unknown error",
+          description: error.message,
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -74,7 +74,7 @@ export default function Login() {
         </Text>
         <FormControl isInvalid={!!errors.email}>
           <FormLabel>Email address</FormLabel>
-          <Input type="email" {...register("email", { required: true })} />
+          <Input type="email" {...register("email", { required: "Email address is required" })} />
           {errors.email ? (
             <FormErrorMessage>{errors.email.message}</FormErrorMessage>
           ) : (
@@ -85,7 +85,7 @@ export default function Login() {
           <FormLabel>Password</FormLabel>
           <Input
             type="password"
-            {...register("password", { required: true })}
+            {...register("password", { required: "A password is required" })}
           />
           {errors.password ? (
             <FormErrorMessage>{errors.password.message}</FormErrorMessage>
