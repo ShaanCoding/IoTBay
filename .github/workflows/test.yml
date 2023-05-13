@@ -20,11 +20,35 @@ jobs:
           cache: 'yarn'
       - name: Install Dependancies
         run: yarn install
+        
       - name: Generate
         run: yarn generate
-      - name: Test Backend
-        run: yarn workspace backend tsc --noEmit
       - name: Build Backend
         run: yarn workspace backend build
+      - name: Test Backend
+        run: yarn workspace backend tsc --noEmit
+      
       - name: Test Frontend
         run: yarn workspace frontend tsc --noEmit
+  vitest:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: file:./dev.db
+      SESSION_SECRET: "rftgvyhbjunkmlftghbjnkmghbjnklfcgvhbnj"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+      - name: Install Dependancies
+        run: yarn install
+      - name: Generate
+        run: yarn workspace backend generate
+      - name: Build Backend
+        run: yarn workspace backend build
+      - name: Prisma Deploy
+        run: yarn workspace backend prisma migrate deploy
+      - name: Run Tests
+        run: yarn workspace backend test

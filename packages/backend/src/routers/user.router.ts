@@ -31,4 +31,21 @@ export const userRouterDefinition = t.router({
 
     return users.map(({ password, ...user }) => user);
   }),
+
+  deleteMe: loggedInProcedure.mutation(async ({ ctx }) => {
+    if (!ctx.req.user) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "User not found",
+      });
+    }
+
+    const {password, ...user} = await ctx.prisma.user.delete({
+      where: {
+        userId: ctx.req.user.userId,
+      },
+    });
+
+    return user;
+  })
 });

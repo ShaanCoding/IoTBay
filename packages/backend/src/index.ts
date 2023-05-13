@@ -119,6 +119,8 @@ await server.setNotFoundHandler((req, res) => {
 // Set the server to listen on port 3000
 await server.listen({ port: 3000, host: "0.0.0.0" });
 
+process.send?.("ready");
+
 // Log the server address
 console.log(
   `Server listening on ${server
