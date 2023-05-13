@@ -15,6 +15,7 @@ import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
 import { AppRouter, appRouter } from "./routers/root.router";
 import { createContext } from "./trpc/context";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+import { renderTrpcPanel } from "trpc-panel";
 // Load environment variables
 config();
 
@@ -27,46 +28,10 @@ const publicRoot = path.join(root, "public");
 // declare the server
 const server = fastify({
   maxParamLength: 5000,
-}).withTypeProvider<TypeBoxTypeProvider>();
+});
 
 // Register nice error messages
 await server.register(await import("@fastify/sensible"));
-
-// Register swagger (api viewer)
-await server.register(await import("@fastify/swagger"), {
-  openapi: {
-    servers: [
-      { url: "http://localhost:3000", description: "Development server" },
-      {
-        url: "https://isd.sebasptsch.dev",
-        description: "Production server",
-      },
-    ],
-    components: {
-      securitySchemes: {
-        sessionid: {
-          type: "apiKey",
-          name: "sessionid",
-          in: "cookie",
-        },
-      },
-    },
-    info: {
-      title: "IoTBay API",
-      version: "0.1.0",
-      description: "IoTBay API",
-    },
-  },
-  refResolver: {
-    buildLocalReference(json, baseUri, fragment, i) {
-      return json.$id?.toString() || `my-fragment-${i}`;
-    },
-  },
-});
-
-await server.register(await import("@fastify/swagger-ui"), {
-  routePrefix: "/docs",
-});
 
 await server.register(await import("@fastify/cookie"));
 
@@ -124,6 +89,27 @@ await server.register(fastifyTRPCPlugin, {
 
 // // Register the categories router
 // await server.register(categoriesRouter, { prefix: "/api/categories" });
+
+// Register the staff router
+// await server.register(staffRouter, {prefix: "/api/staff"});
+
+server.route({
+  method: "GET",
+  url: "/api/docs",
+  handler: (req, res) => {
+
+
+    // html header
+  return res.headers({
+    "Content-Type": "text/html",
+  }).send(renderTrpcPanel(appRouter, {
+    url: "/api/trpc",
+  }))
+
+    // return res.header("Content-Type", "application/html")
+    
+  }
+})
 
 // If there's no route, send the index.html file
 await server.setNotFoundHandler((req, res) => {

@@ -22,6 +22,7 @@ model User {
   dob                 DateTime?
   userType            String                @default("customer")
   customerDetails     CustomerDetails?
+  staffDetails        StaffDetails?
   shippingAddress     String?
   billingAddress      String?
   couponsAndDiscounts CouponsAndDiscounts[]
@@ -34,11 +35,18 @@ model User {
 }
 
 model CustomerDetails {
-  customerId    String          @id @default(cuid())
-  user          User            @relation(fields: [userId], references: [userId])
-  userId        String          @unique
-  isAnonymous   Boolean         @default(false)
-  sex           String
+  customerId  String  @id @default(cuid())
+  user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId      String  @unique
+  isAnonymous Boolean @default(false)
+  sex         String
+}
+
+model StaffDetails {
+  user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  userId      String  @id
+  position    String
+  isActivated Boolean @default(false)
 }
 
 model CouponsAndDiscounts {
@@ -51,9 +59,9 @@ model CouponsAndDiscounts {
 
 model RecentSearch {
   recentlySearchId String @id @default(cuid())
-  userId             String 
-  user               User   @relation(fields: [userId], references: [userId])
-  search             String // TODO: Recently Searched History
+  userId           String
+  user             User   @relation(fields: [userId], references: [userId])
+  search           String // TODO: Recently Searched History
 }
 
 model Product {
@@ -71,58 +79,58 @@ model Product {
 }
 
 model Order {
-  orderId                   String           @id @default(cuid())
-  date                      DateTime
-  total                     Float
-  userId                    String
-  user                      User             @relation(fields: [userId], references: [userId])
-  paymentId                 String
-  payment                   Payment?
-  shipmentId                String?
-  shipment                  Shipment?
-  invoiceId                 String?
-  invoice                   Invoice?         @relation(fields: [invoiceId], references: [invoiceId])
-  orderLineItem             OrderLineItem[]
+  orderId       String          @id @default(cuid())
+  date          DateTime
+  total         Float
+  userId        String
+  user          User            @relation(fields: [userId], references: [userId])
+  paymentId     String
+  payment       Payment?
+  shipmentId    String?
+  shipment      Shipment?
+  invoiceId     String?
+  invoice       Invoice?        @relation(fields: [invoiceId], references: [invoiceId])
+  orderLineItem OrderLineItem[]
 }
 
 model Payment {
-  paymentId                 String           @id @default(cuid())
-  success                   Boolean
-  orderId                   String           @unique
-  order                     Order            @relation(fields: [orderId], references: [orderId])
-  userId                    String
-  user                      User             @relation(fields: [userId], references: [userId])
+  paymentId String  @id @default(cuid())
+  success   Boolean
+  orderId   String  @unique
+  order     Order   @relation(fields: [orderId], references: [orderId])
+  userId    String
+  user      User    @relation(fields: [userId], references: [userId])
 }
 
 model Shipment {
-  shipmentId                String           @id @default(cuid())
-  date                      DateTime
-  address                   String
-  orderId                   String           @unique
-  order                     Order            @relation(fields: [orderId], references: [orderId])
-  userId                    String
-  user                      User             @relation(fields: [userId], references: [userId])
+  shipmentId String   @id @default(cuid())
+  date       DateTime
+  address    String
+  orderId    String   @unique
+  order      Order    @relation(fields: [orderId], references: [orderId])
+  userId     String
+  user       User     @relation(fields: [userId], references: [userId])
 }
 
 model Invoice {
-  invoiceId                 String           @id @default(cuid())
-  date                      DateTime
-  total                     Float
-  userId                    String
-  user                      User             @relation(fields: [userId], references: [userId])
-  orderId                   String
-  order                     Order[]
+  invoiceId String   @id @default(cuid())
+  date      DateTime
+  total     Float
+  userId    String
+  user      User     @relation(fields: [userId], references: [userId])
+  orderId   String
+  order     Order[]
 }
 
 model OrderLineItem {
-  orderLineItemId           String           @id @default(cuid())
-  orderId                   String
-  order                     Order            @relation(fields: [orderId], references: [orderId])
-  productId                 String
-  product                   Product          @relation(fields: [productId], references: [productId])
-  quantity                  Int
-  userId                    String
-  user                      User             @relation(fields: [userId], references: [userId])
+  orderLineItemId String  @id @default(cuid())
+  orderId         String
+  order           Order   @relation(fields: [orderId], references: [orderId])
+  productId       String
+  product         Product @relation(fields: [productId], references: [productId])
+  quantity        Int
+  userId          String
+  user            User    @relation(fields: [userId], references: [userId])
 }
 
 model ProductCategory {
