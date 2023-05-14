@@ -117,6 +117,8 @@ await server.setNotFoundHandler((req, res) => {
   res.sendFile("index.html");
 });
 
+await prisma.$connect();
+
 // Set the server to listen on port 3000
 await server.listen({ port: 3000, host: "0.0.0.0" });
 
