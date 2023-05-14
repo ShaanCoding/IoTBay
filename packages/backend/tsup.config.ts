@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig(({ watch }) => ({
-  entry: ['src/index.ts', 'src/schema.ts'],
+  entry: ['src/index.ts'],
   splitting: true,
   sourcemap: true,
   clean: true,

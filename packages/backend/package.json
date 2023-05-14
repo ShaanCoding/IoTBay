@@ -11,11 +11,6 @@
       "require": "./dist/index.cjs",
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
-    },
-    "./schema": {
-      "require": "./dist/schema.cjs",
-      "import": "./dist/schema.js",
-      "types": "./dist/schema.d.ts"
     }
   },
   "prisma": {
