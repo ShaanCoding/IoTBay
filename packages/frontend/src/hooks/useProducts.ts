@@ -26,7 +26,7 @@ export function useGetProducts({
     }
     if (categoryFilter && categoryFilter.length > 0) {
       return data?.filter((product) => {
-        return categoryFilter.includes(product.category);
+        return categoryFilter.includes(product.category || "");
       }) || [];
     }
     return data || [];

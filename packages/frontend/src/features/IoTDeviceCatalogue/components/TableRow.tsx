@@ -27,7 +27,7 @@ const TableRow: React.FC<{
   name: string;
   description: string;
   stock: number;
-  category: string;
+  category: string | null;
   lastUpdated: Date | null;
   price: number;
   isSelect: boolean;
@@ -78,7 +78,7 @@ const TableRow: React.FC<{
       </Td>
       <Td>
         {/* Tags */}
-        <HStack spacing={2} align="center" justify="flex-start">
+        {props.category ? <HStack spacing={2} align="center" justify="flex-start">
           <Tag
             variant="solid"
             style={{ backgroundColor: generateCategoryColor(props.category) }}
@@ -86,7 +86,8 @@ const TableRow: React.FC<{
           >
             {props.category}
           </Tag>
-        </HStack>
+        </HStack> : null}
+        
       </Td>
       <Td>
         <Box textAlign="center">

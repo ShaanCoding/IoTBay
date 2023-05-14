@@ -15,7 +15,7 @@ export const categoryRouterDefinition = t.router({
     .query(async ({ ctx, input }) => {
       const category = await ctx.prisma.productCategory.findUnique({
         where: {
-          categoryId: input,
+          name: input,
         },
       });
 
@@ -52,11 +52,11 @@ export const categoryRouterDefinition = t.router({
   delete: staffProcedure
     .input(CategoryDeleteSchema)
     .mutation(async ({ ctx, input }) => {
-      const categoryId = input;
+      const name = input;
 
       const existingCategory = await ctx.prisma.productCategory.findUnique({
         where: {
-          categoryId,
+          name,
         },
       });
 
@@ -69,7 +69,7 @@ export const categoryRouterDefinition = t.router({
 
       const category = await ctx.prisma.productCategory.delete({
         where: {
-          categoryId,
+          name,
         },
       });
 
@@ -83,7 +83,7 @@ export const categoryRouterDefinition = t.router({
 
       const existingCategories = await ctx.prisma.productCategory.findMany({
         where: {
-          categoryId: {
+          name: {
             in: categoryIds,
           },
         },
@@ -98,7 +98,7 @@ export const categoryRouterDefinition = t.router({
 
       const categories = await ctx.prisma.productCategory.deleteMany({
         where: {
-          categoryId: {
+          name: {
             in: categoryIds,
           },
         },
@@ -110,11 +110,11 @@ export const categoryRouterDefinition = t.router({
   update: staffProcedure
     .input(CategoryUpdateSchema)
     .mutation(async ({ ctx, input }) => {
-      const { categoryId, name } = input;
+      const { newName, oldName } = input;
 
       const existingCategory = await ctx.prisma.productCategory.findUnique({
         where: {
-          categoryId,
+          name: oldName,
         },
       });
 
@@ -127,10 +127,10 @@ export const categoryRouterDefinition = t.router({
 
       const category = await ctx.prisma.productCategory.update({
         where: {
-          categoryId,
+          name: oldName,
         },
         data: {
-          name,
+          name: newName,
         },
       });
 

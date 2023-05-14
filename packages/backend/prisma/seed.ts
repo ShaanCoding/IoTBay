@@ -129,8 +129,14 @@ async function main() {
     ),
 
     ...fakeCategories.map((category) =>
-      prisma.productCategory.create({
-        data: category,
+      prisma.productCategory.upsert({
+        where: {
+          name: category.name,
+        },
+        update: {},
+        create: {
+          name: category.name,
+        }
       })
     ),
   ]);

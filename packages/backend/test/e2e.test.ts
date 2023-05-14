@@ -154,7 +154,7 @@ describe("catalog", () => {
       testCategory.name
     );
 
-    categoryId = category.categoryId;
+    categoryId = category.name;
 
     expect(category).toBeDefined();
   });
