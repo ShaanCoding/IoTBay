@@ -33,7 +33,7 @@ jobs:
   vitest:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: file:./dev.db
+      DATABASE_URL: file:${{ runner.temp }}/test.db
       SESSION_SECRET: "rftgvyhbjunkmlftghbjnkmghbjnklfcgvhbnj"
     steps:
       - uses: actions/checkout@v3
