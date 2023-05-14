@@ -40,8 +40,12 @@ export const categoryRouterDefinition = t.router({
     .mutation(async ({ ctx, input }) => {
       const name = input;
 
-      const category = await ctx.prisma.productCategory.create({
-        data: {
+      const category = await ctx.prisma.productCategory.upsert({
+        where: {
+          name,
+        },
+        update: {},
+        create: {
           name,
         },
       });
