@@ -13,7 +13,7 @@ async function main() {
     userType: "customer",
     customerDetails: {
       create: {
-        sex: "irrelevant",
+        sex: faker.person.sex(),
       },
     },
   });
