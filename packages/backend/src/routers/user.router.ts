@@ -6,7 +6,7 @@ import { UserSchema } from "../schema/user.schema";
 
 export const userRouterDefinition = t.router({
   me: publicProcedure.query(({ ctx }) => {
-    return ctx.req.user;
+    return ctx.user;
   }),
 
   user: staffProcedure.input(UserSchema).query(async ({ ctx, input }) => {
@@ -33,7 +33,7 @@ export const userRouterDefinition = t.router({
   }),
 
   deleteMe: loggedInProcedure.mutation(async ({ ctx }) => {
-    if (!ctx.req.user) {
+    if (!ctx.user) {
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "User not found",
@@ -42,7 +42,7 @@ export const userRouterDefinition = t.router({
 
     const {password, ...user} = await ctx.prisma.user.delete({
       where: {
-        userId: ctx.req.user.userId,
+        userId: ctx.user.userId,
       },
     });
 

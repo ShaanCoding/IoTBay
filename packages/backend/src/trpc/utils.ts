@@ -13,7 +13,7 @@ export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 const enforceLoggedIn = t.middleware(({ ctx, next }) => {
-  if (!ctx.req.user) {
+  if (!ctx.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next();
@@ -30,7 +30,7 @@ const enforceLoggedIn = t.middleware(({ ctx, next }) => {
 export const loggedInProcedure = t.procedure.use(enforceLoggedIn);
 
 const enforceStaff = t.middleware(({ ctx, next }) => {
-    if (ctx.req.user?.userType !== "staff") {
+    if (ctx.user?.userType !== "staff") {
         throw new TRPCError({ code: "UNAUTHORIZED" });
     }
     return next();

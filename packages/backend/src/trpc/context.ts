@@ -4,7 +4,7 @@ import prisma from '../services/prisma.service';
 import { User } from '@prisma/client';
 
 export function createContext({ req, res }: CreateFastifyContextOptions) {
-  const user = req.user as Omit<User, 'password'>;
+  const user = req.user as Omit<User, 'password'> | undefined;
   return { req, res, prisma, user };
 }
 
