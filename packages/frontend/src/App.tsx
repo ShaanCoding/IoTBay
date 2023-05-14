@@ -23,6 +23,7 @@ import StaffDashboard from "./pages/StaffDashboard";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import type { AppRouter } from "backend/src/routers/root.router";
 import { createTRPCReact } from "@trpc/react-query";
+import SuperJSON from "superjson";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ export const trpcClient = createTRPCProxyClient<AppRouter>({
       // You can pass any HTTP headers you wish here
     }),
   ],
+  transformer: SuperJSON
 });
 
 export const trpcReact = createTRPCReact<AppRouter>();
@@ -45,6 +47,7 @@ export const client = trpcReact.createClient({
  
     }),
   ],
+  transformer: SuperJSON
 })
 
 
