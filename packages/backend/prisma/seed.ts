@@ -40,6 +40,7 @@ async function main() {
     stock: faker.number.int({ max: 100, min: 0 }),
     category: faker.commerce.department(),
     image: faker.image.url(),
+    lastUpdated: faker.date.recent(),
   });
 
   const createFakeCategory = (): Prisma.ProductCategoryCreateInput => ({
