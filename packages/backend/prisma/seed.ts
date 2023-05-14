@@ -18,11 +18,11 @@ async function main() {
     },
   });
 
-  const createFakeStaffUser = (): Prisma.UserCreateInput => ({
+  const createFakeStaffUser = async (): Promise<Prisma.UserCreateInput> => ({
     email: faker.internet.email(),
     address: faker.location.streetAddress(),
     name: faker.internet.userName(),
-    password: faker.internet.password(),
+    password: await argon2.hash(faker.internet.password()) ,
     phone: "1234567890",
     userType: "staff",
     staffDetails: {
@@ -49,7 +49,7 @@ async function main() {
 
   const fakeCustomers = faker.helpers.multiple(createFakeCustomerUser, { count: 20 });
 
-  const fakeStaff = faker.helpers.multiple(createFakeStaffUser, { count: 10 });
+  const fakeStaff = await Promise.all(faker.helpers.multiple(createFakeStaffUser, { count: 10 }));
 
   const fakeProducts = faker.helpers.multiple(createFakeProduct, { count: 10 });
 
