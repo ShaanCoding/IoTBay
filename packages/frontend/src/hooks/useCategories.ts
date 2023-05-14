@@ -42,12 +42,12 @@ export function useDeleteCategories() {
   });
 }
 
-export function useUpdateCategory() {
-  const context = trpcReact.useContext();
+// export function useUpdateCategory() {
+//   const context = trpcReact.useContext();
 
-  return trpcReact.categories.update.useMutation({
-    onSuccess: () => {
-      context.categories.categories.invalidate();
-    }
-  });
-}
+//   return trpcReact.categories.update.useMutation({
+//     onSuccess: () => {
+//       context.categories.categories.invalidate();
+//     }
+//   });
+// }

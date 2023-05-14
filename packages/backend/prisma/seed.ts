@@ -64,13 +64,13 @@ async function main() {
   );
 
   const fakeStaff = await Promise.all(
-    faker.helpers.multiple(createFakeStaffUser, { count: 10 })
+    faker.helpers.multiple(createFakeStaffUser, { count: 20 })
   );
 
-  const fakeProducts = faker.helpers.multiple(createFakeProduct, { count: 10 });
+  const fakeProducts = faker.helpers.multiple(createFakeProduct, { count: 20 });
 
   const fakeCategories = faker.helpers.multiple(createFakeCategory, {
-    count: 10,
+    count: 20,
   });
 
   await prisma.$transaction([

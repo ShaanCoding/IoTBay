@@ -24,17 +24,18 @@ import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import type { AppRouter } from "backend/src/routers/root.router";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
+import BrowseInventory from "./features/IoTPublicCatalogue/pages/BrowseInventory";
 
 const queryClient = new QueryClient();
 
 export const trpcClient = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
-      url: '/api/trpc',
+      url: "/api/trpc",
       // You can pass any HTTP headers you wish here
     }),
   ],
-  transformer: SuperJSON
+  transformer: SuperJSON,
 });
 
 export const trpcReact = createTRPCReact<AppRouter>();
@@ -42,16 +43,12 @@ export const trpcReact = createTRPCReact<AppRouter>();
 export const client = trpcReact.createClient({
   links: [
     httpBatchLink({
-      url: '/api/trpc',
+      url: "/api/trpc",
       // You can pass any HTTP headers you wish here
- 
     }),
   ],
-  transformer: SuperJSON
-})
-
-
-
+  transformer: SuperJSON,
+});
 
 const ReactQueryDevtoolsProduction = React.lazy(() =>
   import("@tanstack/react-query-devtools/build/lib/index.prod.js").then(
@@ -76,7 +73,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <StaffDashboard />
+            element: <StaffDashboard />,
           },
           {
             path: "inventory",
@@ -94,8 +91,8 @@ const router = createBrowserRouter([
           },
           {
             path: "users",
-            element: <UserManagement />
-          }
+            element: <UserManagement />,
+          },
         ],
       },
       {
@@ -115,6 +112,10 @@ const router = createBrowserRouter([
         path: "/logout",
         element: <Logout />,
       },
+      {
+        path: "/browse",
+        element: <BrowseInventory />,
+      },
     ],
   },
 ]);
@@ -129,17 +130,17 @@ export default function App() {
 
   return (
     <trpcReact.Provider client={client} queryClient={queryClient}>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <ReactQueryDevtools initialIsOpen={false} />
-      {showDevtools && (
-        <React.Suspense fallback={null}>
-          <ReactQueryDevtoolsProduction />
-        </React.Suspense>
-      )}
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={false} />
+        {showDevtools && (
+          <React.Suspense fallback={null}>
+            <ReactQueryDevtoolsProduction />
+          </React.Suspense>
+        )}
 
-      <DarkLightModeToggle />
-    </QueryClientProvider>
+        <DarkLightModeToggle />
+      </QueryClientProvider>
     </trpcReact.Provider>
   );
 }

@@ -19,6 +19,12 @@ You should now be able to access the app at `http://localhost:5173`.
 
 # FAQ
 
+## How do I seed the database with data?
+
+1. Delete the dev.db file in the packages/backend/prisma folder
+2. Delete all corresponding journals (with the same name dev.db) in the packages/backend/prisma/migrations folder
+3. CD to `packages/backend/prisma` and run `npx prisma migrate reset`
+
 ## How do I read the Swagger documentation in the development environment or import into Postman?
 
 - Run `yarn dev` to start the app (backend and frontend)
