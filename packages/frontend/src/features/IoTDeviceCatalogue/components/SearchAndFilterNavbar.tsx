@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { Select } from "chakra-react-select";
 import React from "react";
-import { RouterOutput } from "backend";
+import { RouterOutput } from "backend/src";
 
 interface IProps {
   search: string;

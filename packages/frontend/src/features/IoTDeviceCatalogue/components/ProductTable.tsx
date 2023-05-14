@@ -9,7 +9,7 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import TableRow from "./TableRow";
-import { RouterOutput } from "backend";
+import { RouterOutput } from "backend/src";
 
 interface IProductTableProps {
   isLightMode: boolean;

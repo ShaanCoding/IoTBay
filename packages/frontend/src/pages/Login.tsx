@@ -15,7 +15,7 @@ import useLogin from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
 import { isTRPCClientError } from "../utils/trpc";
 import useZodForm from "../hooks/useZodForm";
-import { LoginSchema } from "backend/schema";
+import { LoginSchema } from "backend/src/schema";
 
 
 export default function Login() {

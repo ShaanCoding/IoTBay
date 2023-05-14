@@ -21,7 +21,7 @@ import staffLoader from "./loaders/staffLoader";
 import UserManagement from "./features/UserManagement/pages/UserManagement";
 import StaffDashboard from "./pages/StaffDashboard";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
-import { AppRouter } from "backend";
+import type { AppRouter } from "backend/src/routers/root.router";
 import { createTRPCReact } from "@trpc/react-query";
 
 const queryClient = new QueryClient();

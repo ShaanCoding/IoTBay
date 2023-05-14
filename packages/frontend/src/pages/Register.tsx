@@ -15,7 +15,7 @@ import useRegister from "../hooks/useRegister";
 import { useNavigate } from "react-router-dom";
 import { isTRPCClientError } from "../utils/trpc";
 import useZodForm from "../hooks/useZodForm";
-import { RegisterSchema } from "backend/schema";
+import { RegisterSchema } from "backend/src/schema";
 
 export default function Register() {
   const registerMutation = useRegister();

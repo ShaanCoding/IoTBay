@@ -2,7 +2,7 @@ import CreateEditInventory from "../components/CreateEditInventory";
 import { useCreateProduct } from "../../../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
-import { RouterInput } from "backend";
+import { RouterInput } from "backend/src";
 import { isTRPCClientError } from "../../../utils/trpc";
 
 export default function CreateInventory() {

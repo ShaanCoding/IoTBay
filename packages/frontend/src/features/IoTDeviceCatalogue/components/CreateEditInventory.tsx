@@ -28,7 +28,7 @@ import PageTitle from "../../../components/PageTitle";
 import { useForm } from "react-hook-form";
 import CreateEditCancelButtons from "./CreateEditCancelButtons";
 import FormErrorNotification from "../../../components/Form/FormErrorNotification";
-import { RouterInput, RouterOutput } from "backend";
+import type { RouterInput, RouterOutput } from "backend/src";
 
 export type FormValues = {
   name: string;

@@ -4,7 +4,7 @@ import CreateEditInventory, {
 } from "../components/CreateEditInventory";
 import { useUpdateProduct, useGetProduct } from "../../../hooks/useProducts";
 import { useToast } from "@chakra-ui/react";
-import { RouterInput } from "backend";
+import { RouterInput } from "backend/src";
 import { TRPCClientError } from "@trpc/client";
 import { isTRPCClientError } from "../../../utils/trpc";
 

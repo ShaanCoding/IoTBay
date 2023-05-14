@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { DataTable } from "../../../components/Datatable";
 import useUsers from "../hooks/useUsers";
-import { RouterOutput } from "backend";
+import { RouterOutput } from "backend/src";
 
 const columnHelper = createColumnHelper<RouterOutput["users"]["users"][0]>();
 
