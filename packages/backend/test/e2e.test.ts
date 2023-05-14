@@ -1,6 +1,6 @@
 import { expect, test, beforeAll, describe, afterEach, afterAll } from "vitest";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
-import { AppRouter } from "../dist";
+import type { AppRouter } from "../src";
 import { faker } from "@faker-js/faker";
 import childProcess from "child_process";
 import path from "path";
@@ -51,8 +51,6 @@ describe("auth", () => {
     address: faker.location.streetAddress(),
   };
 
-
-
   test("should register a new user", async () => {
     const userMutation = trpcClient.auth.register.mutate(testUser);
 
@@ -87,12 +85,12 @@ describe("auth", () => {
     });
 
     expect(userMutation).rejects.toThrow();
-  })
+  });
 
   test("logout", async () => {
     const logoutMutatuion = trpcClient.auth.logout.mutate();
 
-    expect(logoutMutatuion).resolves.toBeDefined() ;
+    expect(logoutMutatuion).resolves.toBeDefined();
   });
 
   test("should not be able to get the current user", async () => {
@@ -102,7 +100,7 @@ describe("auth", () => {
   });
 
   test("should not be able to delete the current user", async () => {
-    const deleteMutation = trpcClient.users.deleteMe.mutate()
+    const deleteMutation = trpcClient.users.deleteMe.mutate();
 
     expect(deleteMutation).rejects.toThrow();
   });
@@ -117,8 +115,8 @@ describe("auth", () => {
   });
 
   test("should be able to delete the current user", async () => {
-    const deleteMutation = trpcClient.users.deleteMe.mutate()
-    
+    const deleteMutation = trpcClient.users.deleteMe.mutate();
+
     expect(deleteMutation).resolves.toBeDefined();
   });
 });
@@ -188,7 +186,7 @@ describe("catalog", () => {
     });
 
     expect(productMutation).rejects.toThrow();
-  })
+  });
 
   test("should create a new product", async () => {
     const product = await trpcClient.products.create.mutate(testProduct);
@@ -248,21 +246,19 @@ describe("staff", () => {
     ],
   });
 
-  
-
   // login
-  test("register a new customer",async () => {
-      const testCustomer = {
-        name: faker.internet.userName(),
-        email: faker.internet.email(),
-        password: faker.internet.password(),
-        phone: "1234567890",
-        address: faker.location.streetAddress(),
-      };
+  test("register a new customer", async () => {
+    const testCustomer = {
+      name: faker.internet.userName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+      phone: "1234567890",
+      address: faker.location.streetAddress(),
+    };
 
-      const customer = await trpcClient.auth.register.mutate(testCustomer);
+    const customer = await trpcClient.auth.register.mutate(testCustomer);
 
-      customerId = customer.userId;
+    customerId = customer.userId;
   });
 
   test("should login as staff", async () => {
@@ -292,7 +288,6 @@ describe("staff", () => {
     staffId = staff.userId;
     expect(staff).toBeDefined();
   });
-  
 
   test("should get staff list with new staff member", async () => {
     const staff = await trpcClient.staff.staff.query();
@@ -338,7 +333,7 @@ describe("staff", () => {
     expect(staff).toBeDefined();
   });
 
-  test("should be able to delete the customer user",async () => {
+  test("should be able to delete the customer user", async () => {
     await trpcClient.users.deleteUser.mutate(customerId);
   });
 });
