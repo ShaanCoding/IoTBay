@@ -7,6 +7,7 @@ import path from "path";
 import { fileURLToPath } from "node:url";
 
 import fetchCookie from "fetch-cookie";
+import SuperJSON from "superjson";
 
 let childProcessInstance: childProcess.ChildProcess;
 
@@ -41,6 +42,7 @@ describe("auth", () => {
         fetch: fetchCookie(fetch),
       }),
     ],
+    transformer: SuperJSON
   });
 
   const testUser = {
@@ -132,6 +134,7 @@ describe("catalog", () => {
         fetch: fetchCookie(fetch),
       }),
     ],
+    transformer: SuperJSON
   });
 
   test("login as staff", async () => {
@@ -244,6 +247,7 @@ describe("staff", () => {
         fetch: fetchCookie(fetch),
       }),
     ],
+    transformer: SuperJSON
   });
 
   // login

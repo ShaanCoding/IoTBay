@@ -104,6 +104,7 @@ server.route({
     "Content-Type": "text/html",
   }).send(renderTrpcPanel(appRouter, {
     url: "/api/trpc",
+    transformer: "superjson"
   }))
 
     // return res.header("Content-Type", "application/html")
