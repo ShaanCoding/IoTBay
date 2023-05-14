@@ -4,11 +4,11 @@ import argon2 from "argon2";
 import { faker } from "@faker-js/faker";
 
 async function main() {
-  const createFakeCustomerUser = (): Prisma.UserCreateInput => ({
+  const createFakeCustomerUser = async (): Promise<Prisma.UserCreateInput> => ({
     email: faker.internet.email(),
     address: faker.location.streetAddress(),
     name: faker.internet.userName(),
-    password: faker.internet.password(),
+    password: await argon2.hash(faker.internet.password()),
     phone: "1234567890",
     userType: "customer",
     customerDetails: {
@@ -47,7 +47,7 @@ async function main() {
     name: faker.commerce.department(),
   })
 
-  const fakeCustomers = faker.helpers.multiple(createFakeCustomerUser, { count: 20 });
+  const fakeCustomers = await Promise.all(faker.helpers.multiple(createFakeCustomerUser, { count: 20 }));
 
   const fakeStaff = await Promise.all(faker.helpers.multiple(createFakeStaffUser, { count: 10 }));
 
