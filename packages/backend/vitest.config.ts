@@ -8,6 +8,6 @@ export default defineConfig({
     globalSetup: ["./test/setup.ts"],
     reporters: process.env.GITHUB_ACTIONS
       ? ["default", new GithubActionsReporter()]
-      : "default",
+      : ["default"],
   },
 });
