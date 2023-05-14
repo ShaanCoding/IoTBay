@@ -32,9 +32,7 @@ jobs:
         run: yarn workspace frontend tsc --noEmit
   vitest:
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: file:${{ runner.temp }}/test.db
-      SESSION_SECRET: "rftgvyhbjunkmlftghbjnkmghbjnklfcgvhbnj"
+    
     steps:
       - uses: actions/checkout@v3
       - name: Setup Yarn
@@ -46,11 +44,22 @@ jobs:
         run: yarn install
       - name: Generate
         run: yarn workspace backend generate
+        env:
+          DATABASE_URL: file:${{ runner.temp }}/test.db
       - name: Build Backend
         run: yarn workspace backend build
+        env:
+          DATABASE_URL: file:${{ runner.temp }}/test.db
       - name: Prisma Deploy
         run: yarn workspace backend prisma migrate deploy
+        env:
+          DATABASE_URL: file:${{ runner.temp }}/test.db
       - name: Seed Database
         run: yarn workspace backend prisma db seed
+        env:
+          DATABASE_URL: file:${{ runner.temp }}/test.db
       - name: Run Tests
         run: yarn workspace backend test
+        env:
+          DATABASE_URL: file:${{ runner.temp }}/test.db
+          SESSION_SECRET: "rftgvyhbjunkmlftghbjnkmghbjnklfcgvhbnj"
