@@ -47,5 +47,15 @@ export const userRouterDefinition = t.router({
     });
 
     return user;
+  }),
+
+  deleteUser: staffProcedure.input(UserSchema).mutation(async ({ ctx, input }) => {
+    const { password, ...user } = await ctx.prisma.user.delete({
+      where: {
+        userId: input,
+      },
+    });
+
+    return user;
   })
 });

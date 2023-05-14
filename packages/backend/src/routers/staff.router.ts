@@ -2,16 +2,21 @@ import { t } from "../trpc";
 import { staffProcedure } from "../trpc/utils";
 import { TRPCError } from "@trpc/server";
 import argon2 from "argon2";
-import { StaffActivateSchema, StaffCreateSchema, StaffDeactivateSchema, StaffDeleteSchema, StaffListSchema } from "../schema/staff.schema";
+import {
+  StaffActivateSchema,
+  StaffCreateSchema,
+  StaffDeactivateSchema,
+  StaffDeleteSchema,
+  StaffListSchema,
+} from "../schema/staff.schema";
+import { StaffDetails, User } from "@prisma/client";
 
 export const staffRouterDefinition = t.router({
   /**
    * Create a new staff user from an existing account
    */
   activate: staffProcedure
-    .input(
-      StaffActivateSchema
-    )
+    .input(StaffActivateSchema)
     .mutation(async ({ ctx, input }) => {
       const { password, ...user } = await ctx.prisma.user.update({
         where: {
@@ -21,8 +26,8 @@ export const staffRouterDefinition = t.router({
           userType: "staff",
           staffDetails: {
             create: {
-                position: input.position,
-                isActivated: true,
+              position: input.position,
+              isActivated: true,
             },
           },
         },
@@ -61,30 +66,34 @@ export const staffRouterDefinition = t.router({
   /**
    * Get all staff users and their staff details
    */
-  staff: staffProcedure
-    .input(
-      StaffListSchema
-    )
-    .query(async ({ ctx, input }) => {
-      const user = await ctx.prisma.user.findMany({
-        where: {
-          userType: "staff",
-          staffDetails: {
-            position: input?.position,
-          },
-        },
-        include: {
-          staffDetails: true,
-        },
-      });
-    }),
+  staff: staffProcedure.input(StaffListSchema).query(async ({ ctx, input }) => {
+    const users = (await ctx.prisma.user.findMany({
+      where: {
+        userType: "staff",
+        staffDetails: input?.position
+          ? {
+              position: input.position,
+            }
+          : {
+              isNot: null,
+            },
+      },
+      include: {
+        staffDetails: true,
+      },
+    })) as (User & {
+      staffDetails: StaffDetails;
+    })[];
+
+    users.at(0)?.staffDetails;
+
+    return users.map(({ password, ...user }) => user);
+  }),
   /**
    * Create a new staff user from blank
    */
   create: staffProcedure
-    .input(
-      StaffCreateSchema
-    )
+    .input(StaffCreateSchema)
     .mutation(async ({ ctx, input }) => {
       const password = await argon2.hash(input.password);
 
@@ -107,26 +116,28 @@ export const staffRouterDefinition = t.router({
           staffDetails: true,
         },
       });
-        return user;
+      return user;
     }),
 
-  delete: staffProcedure.input(StaffDeleteSchema).mutation(async ({ctx, input}) => {
-    // the userId from the input
-    const userId = input;
+  delete: staffProcedure
+    .input(StaffDeleteSchema)
+    .mutation(async ({ ctx, input }) => {
+      // the userId from the input
+      const userId = input;
 
-    // Delete the user
-    const {password, ...user} = await ctx.prisma.user.delete({
-      where: {
-        userId: userId,
-      },
-      include: {
-        staffDetails: true,
-      }
-    });
+      // Delete the user
+      const { password, ...user } = await ctx.prisma.user.delete({
+        where: {
+          userId: userId,
+        },
+        include: {
+          staffDetails: true,
+        },
+      });
 
-    // Return the deleted user
-    return user
-  }) ,
+      // Return the deleted user
+      return user;
+    }),
 });
 
 // export const deleteStaff = async (
