@@ -1,4 +1,4 @@
 {
     "typescript.tsdk": "node_modules\\typescript\\lib",
-    "vitest.commandLine": "yarn workspace backend test"
+    "vitest.commandLine": "yarn test"
 }
