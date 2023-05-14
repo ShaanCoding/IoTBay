@@ -59,7 +59,7 @@ jobs:
         env:
           DATABASE_URL: file:${{ runner.temp }}/test.db
       - name: Run Tests
-        run: yarn workspace backend test
+        run: yarn test
         env:
           DATABASE_URL: file:${{ runner.temp }}/test.db
           SESSION_SECRET: "rftgvyhbjunkmlftghbjnkmghbjnklfcgvhbnj"
