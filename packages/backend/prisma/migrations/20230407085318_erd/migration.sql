@@ -1,3 +1,5 @@
+PRAGMA journal_mode=WAL;
+
 -- CreateTable
 CREATE TABLE "User" (
     "userId" TEXT NOT NULL PRIMARY KEY,
