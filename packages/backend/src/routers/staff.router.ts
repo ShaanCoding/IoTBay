@@ -67,21 +67,19 @@ export const staffRouterDefinition = t.router({
    * Get all staff users and their staff details
    */
   staff: staffProcedure.input(StaffListSchema).query(async ({ ctx, input }) => {
-    const users = (await ctx.prisma.user.findMany({
-      where: {
-        userType: "staff",
-        staffDetails: input?.position
-          ? {
-              position: input.position,
-            }
-          : {
-              isNot: null,
-            },
-      },
-      include: {
-        staffDetails: true,
-      },
-    })) as (User & {
+    const users = (
+      await ctx.prisma.user.findMany({
+        where: {
+          userType: "staff",
+          staffDetails: {
+            isNot: null,
+          },
+        },
+        include: {
+          staffDetails: true,
+        },
+      })
+    ).filter((user) => user.staffDetails !== null) as (User & {
       staffDetails: StaffDetails;
     })[];
 
@@ -100,23 +98,39 @@ export const staffRouterDefinition = t.router({
       const { password: _, ...user } = await ctx.prisma.user.create({
         data: {
           userType: "staff",
-          staffDetails: {
-            create: {
-              position: input.position,
-              isActivated: true,
-            },
-          },
           email: input.email,
           password,
           name: input.name,
           phone: input.phone,
           address: input.address,
         },
-        include: {
-          staffDetails: true,
+      });
+
+      const staffDetails = await ctx.prisma.staffDetails.upsert({
+        where: {
+          userId: user.userId,
+        },
+        create: {
+          user: {
+            connect: {
+              userId: user.userId,
+            },
+          },
+          position: input.position,
+          isActivated: false,
+        },
+        update: {
+          user: {
+            connect: {
+              userId: user.userId,
+            },
+          },
+          isActivated: false,
+          position: input.position,
         },
       });
-      return user;
+
+      return { ...user, staffDetails };
     }),
 
   delete: staffProcedure
