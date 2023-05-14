@@ -50,7 +50,16 @@ export const productsRouterDefinition = t.router({
           stock,
           image,
           description,
-          category,
+          Category: {
+            connectOrCreate: {
+              where: {
+                name: category,
+              },
+              create: {
+                name: category,
+              },
+            }
+          },
         },
       });
 

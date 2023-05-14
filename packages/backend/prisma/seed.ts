@@ -22,7 +22,7 @@ async function main() {
     email: faker.internet.email(),
     address: faker.location.streetAddress(),
     name: faker.internet.userName(),
-    password: await argon2.hash(faker.internet.password()) ,
+    password: await argon2.hash(faker.internet.password()),
     phone: "1234567890",
     userType: "staff",
     staffDetails: {
@@ -33,28 +33,45 @@ async function main() {
     },
   });
 
-  const createFakeProduct = (): Prisma.ProductCreateInput => ({
-    name: faker.commerce.productName(),
-    description: faker.commerce.productDescription(),
-    price: parseFloat(faker.commerce.price()),
-    stock: faker.number.int({ max: 100, min: 0 }),
-    category: faker.commerce.department(),
-    image: faker.image.url(),
-    lastUpdated: faker.date.recent(),
-  });
+  const createFakeProduct = (): Prisma.ProductCreateInput => {
+    const department = faker.commerce.department();
+    return {
+      name: faker.commerce.productName(),
+      description: faker.commerce.productDescription(),
+      price: parseFloat(faker.commerce.price()),
+      stock: faker.number.int({ max: 100, min: 0 }),
+      Category: {
+        connectOrCreate: {
+          where: {
+            name: department,
+          },
+          create: {
+            name: department,
+          },
+        },
+      },
+      image: faker.image.url(),
+      lastUpdated: faker.date.recent(),
+    };
+  };
 
   const createFakeCategory = (): Prisma.ProductCategoryCreateInput => ({
     name: faker.commerce.department(),
-  })
+  });
 
-  const fakeCustomers = await Promise.all(faker.helpers.multiple(createFakeCustomerUser, { count: 20 }));
+  const fakeCustomers = await Promise.all(
+    faker.helpers.multiple(createFakeCustomerUser, { count: 20 })
+  );
 
-  const fakeStaff = await Promise.all(faker.helpers.multiple(createFakeStaffUser, { count: 10 }));
+  const fakeStaff = await Promise.all(
+    faker.helpers.multiple(createFakeStaffUser, { count: 10 })
+  );
 
   const fakeProducts = faker.helpers.multiple(createFakeProduct, { count: 10 });
 
-  const fakeCategories = faker.helpers.multiple(createFakeCategory, { count: 10 });
-
+  const fakeCategories = faker.helpers.multiple(createFakeCategory, {
+    count: 10,
+  });
 
   await prisma.$transaction([
     prisma.user.upsert({
@@ -116,7 +133,6 @@ async function main() {
         data: category,
       })
     ),
-
   ]);
 }
 main()

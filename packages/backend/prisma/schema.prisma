@@ -71,10 +71,9 @@ model Product {
   stock         Int
   description   String
   image         String
-  category      String
   OrderLineItem OrderLineItem[]
-  Category      ProductCategory? @relation(fields: [categoryId], references: [categoryId])
-  categoryId    String?
+  Category      ProductCategory? @relation(fields: [category], references: [name])
+  category  String?
   lastUpdated   DateTime         @default(now()) @updatedAt
 }
 
@@ -134,7 +133,6 @@ model OrderLineItem {
 }
 
 model ProductCategory {
-  categoryId String    @id @default(cuid())
-  name       String
-  Product    Product[]
+  name    String    @id
+  Product Product[]
 }
