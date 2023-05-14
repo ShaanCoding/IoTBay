@@ -33,6 +33,11 @@ test("register a new customer", () => {
   expect(registration).resolves.toBeDefined();
 })
 
+afterAll(async () => {
+  const deleteMe = trpcClient.users.deleteMe.mutate();
+  expect(deleteMe).resolves.toBeDefined();
+})
+
 // add a product to cart
 
 // checkout
