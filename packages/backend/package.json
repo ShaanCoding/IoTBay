@@ -63,7 +63,8 @@
     "start": "node dist/index.js",
     "generate": "prisma generate",
     "migrate": "npx prisma migrate deploy",
-    "test": "vitest"
+    "test": "vitest",
+    "postinstall": "prisma generate"
   },
   "type": "module"
 }

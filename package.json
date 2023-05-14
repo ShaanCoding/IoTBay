@@ -22,6 +22,7 @@
     "build": "yarn build:frontend && yarn build:backend",
     "build:run": "yarn build && yarn workspace backend start",
     "migrate": "yarn workspace backend migrate",
-    "generate": "yarn workspace backend generate"
+    "generate": "yarn workspace backend generate",
+    "postinstall": "yarn workspace backend postinstall"
   }
 }
