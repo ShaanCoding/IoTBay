@@ -2,37 +2,9 @@ import { expect, test, beforeAll, describe, afterEach, afterAll } from "vitest";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import type { AppRouter } from "../src";
 import { faker } from "@faker-js/faker";
-import childProcess from "child_process";
-import path from "path";
-import { fileURLToPath } from "node:url";
 
 import fetchCookie from "fetch-cookie";
 import SuperJSON from "superjson";
-
-let childProcessInstance: childProcess.ChildProcess;
-
-beforeAll(async () => {
-  await new Promise<void>((resolve) => {
-    const pathOfFile = fileURLToPath(import.meta.url);
-
-    const root = path.join(pathOfFile, "..", "..");
-
-    childProcessInstance = childProcess.fork(
-      path.join(root, "dist", "index.js"),
-      { stdio: "inherit" }
-    );
-
-    childProcessInstance.on("message", (message) => {
-      if (message === "ready") {
-        resolve();
-      }
-    });
-  });
-});
-
-afterAll(async () => {
-  childProcessInstance.kill();
-});
 
 describe("auth", () => {
   const trpcClient = createTRPCProxyClient<AppRouter>({
