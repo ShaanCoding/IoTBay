@@ -50,5 +50,7 @@ jobs:
         run: yarn workspace backend build
       - name: Prisma Deploy
         run: yarn workspace backend prisma migrate deploy
+      - name: Seed Database
+        run: yarn workspace backend prisma db seed
       - name: Run Tests
         run: yarn workspace backend test
