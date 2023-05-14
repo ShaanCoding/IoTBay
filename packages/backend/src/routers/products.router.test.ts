@@ -10,8 +10,6 @@ import fetchCookie from "fetch-cookie";
 import SuperJSON from "superjson";
 import { faker } from "@faker-js/faker";
 
-let testProductId: string;
-let categoryId: string;
 
 let trpcClient: CreateTRPCProxyClient<AppRouter>;
 
@@ -36,14 +34,10 @@ test("login as staff", async () => {
   expect(loginMutation).resolves.toBeDefined();
 });
 
-const testCategory = {
-  name: faker.commerce.department(),
-};
+const testCategory = faker.commerce.department()
 
 test("should create a new category", async () => {
-  const category = await trpcClient.categories.create.mutate(testCategory.name);
-
-  categoryId = category.name;
+  const category = await trpcClient.categories.create.mutate(testCategory);
 
   expect(category).toBeDefined();
 });
@@ -58,7 +52,7 @@ const testProduct = {
     max: 100,
   }),
   image: faker.image.url(),
-  category: testCategory.name,
+  category: testCategory,
 };
 
 test("should not create a new product with invalid image url", async () => {
@@ -78,6 +72,8 @@ test("should not create a new product with invalid price", async () => {
 
   expect(productMutation).rejects.toThrow();
 });
+
+let testProductId: string;
 
 test("should create a new product", async () => {
   const product = await trpcClient.products.create.mutate(testProduct);
@@ -121,7 +117,7 @@ test("delete a product", async () => {
 });
 
 test("should delete a category", async () => {
-  const category = await trpcClient.categories.delete.mutate(categoryId);
+  const category = await trpcClient.categories.delete.mutate(testCategory);
 
   expect(category).toBeDefined();
 });

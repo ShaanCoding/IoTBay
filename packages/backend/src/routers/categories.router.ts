@@ -42,7 +42,7 @@ export const categoryRouterDefinition = t.router({
 
       const category = await ctx.prisma.productCategory.upsert({
         where: {
-          name,
+          name: name,
         },
         update: {},
         create: {
