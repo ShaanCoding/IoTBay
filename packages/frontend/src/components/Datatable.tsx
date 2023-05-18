@@ -9,10 +9,14 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { rankItem, RankingInfo } from "@tanstack/match-sorter-utils";
 import {
   ColumnDef,
+  FilterFn,
+  FilterMeta,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
@@ -22,11 +26,38 @@ import * as React from "react";
 export type DataTableProps<Data extends object> = {
   data: Data[];
   columns: ColumnDef<Data, any>[];
+  globalFilter?: string;
+  setGlobalFilter?: (filter: string) => void;
+};
+
+declare module "@tanstack/table-core" {
+  interface FilterFns {
+    fuzzy: FilterFn<unknown>;
+  }
+  interface FilterMeta {
+    itemRank: RankingInfo;
+  }
+}
+
+
+const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  // Rank the item
+  const itemRank = rankItem(row.getValue(columnId), value);
+
+  // Store the itemRank info
+  addMeta({
+    itemRank,
+  });
+
+  // Return if the item should be filtered in/out
+  return itemRank.passed;
 };
 
 export function DataTable<Data extends object>({
   data,
   columns,
+  globalFilter,
+  setGlobalFilter,
 }: DataTableProps<Data>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -36,11 +67,17 @@ export function DataTable<Data extends object>({
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
+    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-
+    enableGlobalFilter: true,
+    onGlobalFilterChange: setGlobalFilter,
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
     state: {
       sorting,
       columnVisibility,
+      globalFilter,
     },
   });
 

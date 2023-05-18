@@ -80,7 +80,7 @@ export default function Navbar() {
             <Button as={Link} to="/browse" variant={"link"}>
               Browse Inventory
             </Button>
-          ) : null}
+          ) : null}          
           {!data ? (
             <>
               <Button
