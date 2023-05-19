@@ -99,7 +99,9 @@ const authRouter = t.router({
 
     ctx.req.session.set("passport", user.userId);
 
-    return user;
+    const { password, ...userdata } = user;
+
+    return userdata;
   }),
 });
 

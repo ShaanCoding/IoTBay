@@ -284,6 +284,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       id="stock"
                       {...register("stock", {
                         required: "Stock is required",
+                        valueAsNumber: true,
                         max: {
                           value: 9999,
                           message: "Stock must be less than 9999",
@@ -291,10 +292,6 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                         min: {
                           value: 0,
                           message: "Stock must be greater than or equal to 0",
-                        },
-                        pattern: {
-                          value: /^[0-9]*$/,
-                          message: "Stock must be a whole number",
                         },
                       })}
                       defaultValue={
@@ -316,6 +313,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       variant="filled"
                       id="price"
                       {...register("price", {
+                        valueAsNumber: true,
                         required: "Price is required",
                         max: {
                           value: 9999,
@@ -324,11 +322,6 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                         min: {
                           value: 0,
                           message: "Price must be greater than or equal to 0",
-                        },
-                        pattern: {
-                          value: /^\d+(\.\d{1,2})?$/,
-                          message:
-                            "Price must be a number with a maximum of 2 decimal places",
                         },
                       })}
                       defaultValue={
