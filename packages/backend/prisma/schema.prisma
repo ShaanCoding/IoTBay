@@ -35,11 +35,10 @@ model User {
 }
 
 model CustomerDetails {
-  customerId  String  @id @default(cuid())
   user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  userId      String  @unique
+  userId      String  @id
   isAnonymous Boolean @default(false)
-  sex         String
+  sex         String?
 }
 
 model StaffDetails {

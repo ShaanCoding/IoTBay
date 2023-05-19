@@ -38,3 +38,13 @@ const enforceStaff = t.middleware(({ ctx, next }) => {
 );
 
 export const staffProcedure = t.procedure.use(enforceStaff);
+
+const enforceCustomer = t.middleware(({ ctx, next }) => {
+  if (ctx.user?.userType !== "customer") {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next();
+  }
+);
+
+export const customerProcedure = t.procedure.use(enforceCustomer);

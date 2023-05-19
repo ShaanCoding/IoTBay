@@ -9,6 +9,7 @@ export const RegisterSchema = z.object({
     message: 'Invalid phone number',
   }),
   address: z.string().min(3).max(100),
+  sex: z.enum(["male", "female", "other"]).optional()
 });
 
 export const LoginSchema = z.object({

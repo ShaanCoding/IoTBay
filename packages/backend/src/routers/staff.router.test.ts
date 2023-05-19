@@ -29,6 +29,7 @@ beforeAll(async () => {
         password: faker.internet.password(),
         phone: "1234567890",
         address: faker.location.streetAddress(),
+        sex: "other" as const
       };
   
       const customer = await trpcClient.auth.register.mutate(testCustomer);

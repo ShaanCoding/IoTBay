@@ -26,6 +26,7 @@ const testUser = {
   name: faker.internet.userName(),
   phone: "1234567890",
   address: faker.location.streetAddress(),
+  sex: "other" as const
 };
 
 test("register a new customer", () => {

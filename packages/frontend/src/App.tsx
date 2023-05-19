@@ -20,9 +20,10 @@ import DarkLightModeToggle from "./components/DarkLightModeToggle";
 import staffLoader from "./loaders/staffLoader";
 import UserManagement from "./features/UserManagement/pages/UserManagement";
 import StaffDashboard from "./pages/StaffDashboard";
-import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import CustomerManagement from "./features/CustomerDetailManagement(Staff)/pages/CustomersDetailPage";
+import CustomerManagementEdit from "./features/CustomerDetailManagement(Staff)/pages/CustomersEditPage";
 import type { AppRouter } from "backend/src/routers/root.router";
-import { createTRPCReact } from "@trpc/react-query";
+import { createTRPCProxyClient, createTRPCReact, httpBatchLink } from "@trpc/react-query";
 import SuperJSON from "superjson";
 import BrowseInventory from "./features/IoTPublicCatalogue/pages/BrowseInventory";
 import StaffManagement from "./features/StaffManagement/pages/StaffManagement";
@@ -94,6 +95,17 @@ const router = createBrowserRouter([
           {
             path: "users",
             element: <UserManagement />,
+          },
+          
+          {
+            path: "customerDetail",
+            children: [
+            { index: true, element: <CustomerManagement />},
+            {
+              path: "edit/:id",
+              element: <CustomerManagementEdit/>
+            }
+            ]
           },
           {
             path: "staff",

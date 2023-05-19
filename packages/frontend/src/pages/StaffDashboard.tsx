@@ -17,6 +17,10 @@ export default function StaffDashboard() {
         <Button as={Link} to="/staff/users">
             Manage Users
         </Button>
+
+        <Button as={Link} to="/staff/customerDetail">
+            Manage Customers Detail
+        </Button>
         <Button as={Link} to="/staff/staff">
             Manage Staff
         </Button>
