@@ -76,13 +76,13 @@ To set up IoTBay on your local machine, follow these instructions:
 2. Clone the IoTBay repository to your local machine using:
 
 ```
-git clone https://github.com/your_username_/iotbay.git
+git clone https://github.com/ShaanCoding/IoTBay.git
 ```
 
 3. Change directory to the cloned repository:
 
 ```
-cd iotbay
+cd IoTBay
 ```
 
 4. Install all the required dependencies:
