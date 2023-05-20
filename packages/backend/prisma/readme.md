@@ -7,3 +7,7 @@
 3. Run the command `prisma migrate dev --name <name of migration>`
 
 This will create a new migration with the changes you have made, and apply them to the database.
+
+## How to seed?
+
+1. Type `npx prisma db seed`
